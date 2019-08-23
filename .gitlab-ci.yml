@@ -1,0 +1,35 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: normal
+  GIT_STRATEGY: fetch
+  GIT_DEPTH: 1
+
+cache:
+  key: ${CI_JOB_NAME}
+  
+stages:
+  - build
+
+Windows Win32 Release:
+  stage: build
+  tags:
+    - windows
+    - msvs
+  before_script:
+    # Add MSBuild.exe to path
+    - set PATH=%PATH%;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin
+    # Update the CIBuildVersion.cs
+    - cd BACnetServerExample
+    - "echo const int CIBUILDNUMBER = %CI_PIPELINE_IID%; > CIBuildVersion.h"
+    - type CIBuildVersion.h
+    - cd ..
+  script:
+    # Create the bin directory if it does not exist
+    - cd BACnetServerExample
+    # Build and package the project in an apk for android
+    - msbuild /p:Configuration=Release /p:Platform="x86"
+    - cd ..\bin
+    - dir
+  artifacts:
+    paths:
+      - bin\BACnetServerExample_Win32_Release.exe
+  
