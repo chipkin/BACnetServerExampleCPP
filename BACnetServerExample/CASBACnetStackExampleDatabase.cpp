@@ -10,8 +10,6 @@
 #define FREE(x) HeapFree(GetProcessHeap(), 0, (x))
 #endif // WIN32
 
-
-
 bool ExampleDatabaseBitstringValue::Resize( size_t count)  {
 	this->presentValue.resize(count);
 	this->bitText.resize(count);

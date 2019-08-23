@@ -3,7 +3,6 @@
 
 #include <iostream>
 
-
 #ifndef __GNUC__ // Windows
 #include <conio.h> // _kbhit
 #endif // __GNUC__
@@ -15,7 +14,6 @@
 
 // Helpers 
 #include "SimpleUDP.h"
-// #include "common.h"
 #include "ChipkinEndianness.h"
 #include "ChipkinConvert.h"
 #include "ChipkinUtilities.h"
