@@ -56,47 +56,60 @@ ExampleDatabase::~ExampleDatabase() {
 	this->Setup();
 }
 
+const std::string ExampleDatabase::GetColorName() {
+	static uint16_t offset = 0; 
+	static const std::vector<std::string> colors = {
+	"Amber", "Bronze", "Chartreuse", "Diamond", "Emerald", "Fuchsia", "Gold", "Hot Pink", "Indigo",
+	"Kiwi", "Lilac", "Magenta", "Nickel", "Onyx", "Purple", "Quartz", "Red", "Silver", "Turquoise",
+	"Umber", "Vermilion", "White", "Xanadu", "Yellow", "Zebra White" };
+
+	++offset;
+	return colors.at(offset % colors.size());
+}
+
 void ExampleDatabase::Setup() {
+
+	this->device.instance = 389999;
+	this->device.objectName = "Device Rainbow";
+	this->device.UTCOffset = 0;
+	this->device.currentTimeOffset = 0;
+	this->device.description = "Chipkin test BACnet IP Server device";
+
 
 	// Set the object name properites. 
 	this->analogInput.instance = 0; 
-	this->analogInput.objectName = "AnalogInput_Red";
+	this->analogInput.objectName = "AnalogInput " + ExampleDatabase::GetColorName();
 	this->analogInput.description = "Incurments once a second";
 	this->analogInput.presentValue = 1.001f;
 	this->analogInput.covIncurment = 2.0f; 
 	this->analogOutput.instance = 1;
-	this->analogOutput.objectName = "AnalogOutput_Vermilion";
+	this->analogOutput.objectName = "AnalogOutput " + ExampleDatabase::GetColorName();
 	this->analogValue.instance = 2;
-	this->analogValue.objectName = "AnalogValue_Orange";
+	this->analogValue.objectName = "AnalogValue " + ExampleDatabase::GetColorName();
 	this->analogValue.presentValue = 5.43f;
 	this->analogValue.maxPresValue = 1000.0f;  
 	this->analogValue.minPresValue = -1000.0f;
 	this->binaryInput.instance = 3;
-	this->binaryInput.objectName = "BinaryInput_Amber";
+	this->binaryInput.objectName = "BinaryInput " + ExampleDatabase::GetColorName();
 	this->binaryInput.description = "Flips once a second";
 	this->binaryInput.presentValue = false;
 	this->binaryOutput.instance = 4;
-	this->binaryOutput.objectName = "BinaryOutput_Yellow";
+	this->binaryOutput.objectName = "BinaryOutput " + ExampleDatabase::GetColorName();
 	this->binaryValue.instance = 5;
-	this->binaryValue.objectName = "BinaryValue_Chartreuse";
+	this->binaryValue.objectName = "BinaryValue " + ExampleDatabase::GetColorName();
 	this->binaryValue.presentValue = false;
-	this->device.instance = 389999; 
-	this->device.objectName = "Device_Rainbow";
-	this->device.UTCOffset = 0;
-	this->device.currentTimeOffset = 0;
-	this->device.description = "Chipkin test BACnet IP Server device";
 	this->multiStateInput.instance = 13;
-	this->multiStateInput.objectName = "MultiStateInput_Green";
+	this->multiStateInput.objectName = "MultiStateInput " + ExampleDatabase::GetColorName();
 	this->multiStateInput.presentValue = 1;
 	this->multiStateOutput.instance = 14;
-	this->multiStateOutput.objectName = "MultiStateOutput_Teal";
+	this->multiStateOutput.objectName = "MultiStateOutput " + ExampleDatabase::GetColorName();
 	this->multiStateValue.instance = 19;
-	this->multiStateValue.objectName = "MultiStateValue_Blue";
+	this->multiStateValue.objectName = "MultiStateValue " + ExampleDatabase::GetColorName();
 	this->multiStateValue.presentValue = 1;
 	this->trendLog.instance = 20;
-	this->trendLog.objectName = "TrendLog_Indigo";
+	this->trendLog.objectName = "TrendLog " + ExampleDatabase::GetColorName();
 	this->bitstringValue.instance = 39;
-	this->bitstringValue.objectName = "BitstringValue_White";
+	this->bitstringValue.objectName = "BitstringValue " + ExampleDatabase::GetColorName();
 	this->bitstringValue.Resize(4);
 	this->bitstringValue.SetBitText(0,"One");
 	this->bitstringValue.SetPresentValue(0, true) ; 
@@ -107,19 +120,19 @@ void ExampleDatabase::Setup() {
 	this->bitstringValue.SetBitText(3,"Four");
 	this->bitstringValue.SetPresentValue(3, false) ; 
 	this->characterStringValue.instance = 40; 
-	this->characterStringValue.objectName = "CharacterstringValue_Gray";
+	this->characterStringValue.objectName = "CharacterstringValue " + ExampleDatabase::GetColorName();
 	this->characterStringValue.presentValue = "hello world";
 	this->dateValue.instance = 42 ;
-	this->dateValue.objectName = "DateValue_Brown";
+	this->dateValue.objectName = "DateValue " + ExampleDatabase::GetColorName();
 	this->dateValue.Set(2018-1900, 3, 15, 4 ); 
 	this->integerValue.instance = 45;
-	this->integerValue.objectName = "IntegerValue_Violet";
+	this->integerValue.objectName = "IntegerValue " + ExampleDatabase::GetColorName();
 	this->integerValue.presentValue = -12345;
 	this->largeAnalogValue.instance = 46 ;  
-	this->largeAnalogValue.objectName = "LargeAnalogValue_Purple";
+	this->largeAnalogValue.objectName = "LargeAnalogValue " + ExampleDatabase::GetColorName();
 	this->largeAnalogValue.presentValue = 123456789.85;
 	this->octetStringValue.instance = 47 ;
-	this->octetStringValue.objectName = "OctetstringValue_Black";
+	this->octetStringValue.objectName = "OctetstringValue " + ExampleDatabase::GetColorName();
 	this->octetStringValue.presentValue.push_back(0x01) ; 
 	this->octetStringValue.presentValue.push_back(0x02) ; 
 	this->octetStringValue.presentValue.push_back(0x03) ; 
@@ -128,13 +141,13 @@ void ExampleDatabase::Setup() {
 	this->octetStringValue.presentValue.push_back(0x06) ; 
 	this->octetStringValue.presentValue.push_back(0x07) ; 
 	this->positiveIntegerValue.instance = 48 ; 
-	this->positiveIntegerValue.objectName = "PositiveIntegerValue_Magenta";
+	this->positiveIntegerValue.objectName = "PositiveIntegerValue " + ExampleDatabase::GetColorName();
 	this->positiveIntegerValue.presentValue = 54321;
 	this->timeValue.instance = 50;
-	this->timeValue.objectName = "TimeValue_Pink";
+	this->timeValue.objectName = "TimeValue " + ExampleDatabase::GetColorName();
 	this->timeValue.Set(15,13,55,0);
 	this->networkPort.instance = 56; 
-	this->networkPort.objectName = "NetworkPort_Charcoal";
+	this->networkPort.objectName = "NetworkPort " + ExampleDatabase::GetColorName();
 	this->LoadNetworkPortProperties() ; 
 }
 

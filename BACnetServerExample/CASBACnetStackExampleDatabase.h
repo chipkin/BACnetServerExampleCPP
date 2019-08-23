@@ -267,6 +267,10 @@ class ExampleDatabase {
 	// Helper Functions	
 	void LoadNetworkPortProperties();
 
+	private:
+		const std::string GetColorName();
+
 };
+
 
 #endif // __CASBACnetStackExampleDatabase_h__
