@@ -37,6 +37,7 @@ class ExampleDatabaseAnalogInput : public ExampleDatabaseBaseObject
 	public:
 		float presentValue ;
 		float covIncurment; 
+		uint32_t reliability;
 		std::string description; // This is an optional property that has been enabled.  
 };
 
@@ -55,7 +56,7 @@ class ExampleDatabaseAnalogOutput : public ExampleDatabaseBaseObject
 class ExampleDatabaseAnalogValue : public ExampleDatabaseBaseObject 
 {
 	public:
-		float presentValue;
+		float presentValue;		
 		float maxPresValue; // This is an optional property 
 		float minPresValue; // This is an optional property 
 };

@@ -25,7 +25,7 @@ ExampleDatabase g_database; // The example database that stores current values.
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.1"; 
+const std::string APPLICATION_VERSION = "0.0.2"; 
 const uint32_t MAX_XML_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
@@ -205,6 +205,13 @@ int main()
 		return false;
 	}
 	std::cout << "OK" << std::endl;
+
+	std::cout << "Enabling SubscribeCOVProperty... ";
+	if (!fpSetServiceEnabled(g_database.device.instance, CASBACnetStackExampleConstants::SERVICE_SUBSCRIBE_COV_PROPERTY, true)) {
+		std::cerr << "Failed to enabled the SubscribeCOVProperty" << std::endl;
+		return false;
+	}
+	std::cout << "OK" << std::endl;
 	
 	std::cout << "Enabling CreateObject... ";
 	if (!fpSetServiceEnabled(g_database.device.instance, CASBACnetStackExampleConstants::SERVICE_CREATE_OBJECT, true)) {
@@ -283,6 +290,10 @@ int main()
 
 	// Enable the description property 
 	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_DESCRIPTION, true);
+	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_RELIABILITY, true);
+
+	// Enable a specific property to be subscribable for COVProperty 
+	fpSetPropertySubscribable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_RELIABILITY, true);
 	std::cout << "OK" << std::endl;
 	
 	// AnalogOutput (AO) 
@@ -291,8 +302,8 @@ int main()
 		std::cerr << "Failed to add AnalogOutput" << std::endl;
 		return -1;
 	}
-	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_MIN_PRES_VALUE, true);
-	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_MAX_PRES_VALUE, true);
+	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_OUTPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_MIN_PRES_VALUE, true);
+	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_OUTPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_MAX_PRES_VALUE, true);
 	std::cout << "OK" << std::endl;
 
 	// AnalogValue (AV) 
@@ -520,9 +531,27 @@ bool DoUserInput()
 		std::cout << "Incrementing Analog Output to " << g_database.analogValue.presentValue << std::endl;
 
 		// Notify the stack that this data point was updated so the stack can check for logic
-		// That may need to run on the data.  Example: check if COV (change of value) occurred.
+		// that may need to run on the data.  Example: check if COV (change of value) occurred.
 		if (fpValueUpdated != NULL) {
 			fpValueUpdated(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_VALUE, g_database.analogValue.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE);
+		}
+		break;
+	}
+	case 'r': {
+		// Toggle the Analog Input reliability status
+		// no-fault-detected (0), unreliable-other (7)
+		if (g_database.analogInput.reliability == 0) {
+			g_database.analogInput.reliability = 7; // unreliable-other (7)
+		}
+		else {
+			g_database.analogInput.reliability = 0; //no-fault-detected (0)
+		}
+		std::cout << "Toggle the Analog Input reliability status to " << g_database.analogInput.reliability << std::endl;
+
+		// Notify the stack that this data point was updated so the stack can check for logic
+		// that may need to run on the data. Example: Check if COVProperty (change of value) occurred.
+		if (fpValueUpdated != NULL) {
+			fpValueUpdated(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_RELIABILITY);
 		}
 		break;
 	}
@@ -536,6 +565,7 @@ bool DoUserInput()
 
 		std::cout << "Help:" << std::endl;
 		std::cout << "i - (i)ncrement Analog Value " << g_database.analogValue.instance << " by 1.1" << std::endl;
+		std::cout << "r - Toggle the Analog Input (r)eliability status" << std::endl;
 		std::cout << "h - (h)elp" << std::endl;
 		std::cout << "q - (q)uit" << std::endl;
 		std::cout << std::endl;
@@ -879,6 +909,14 @@ bool CallbackGetPropertyEnum(uint32_t deviceInstance, uint16_t objectType, uint3
 			}
 		}
 	}
+	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_RELIABILITY) {
+		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_database.analogInput.instance) {
+			*value = g_database.analogInput.reliability; 
+			return true;
+		}
+	}
+
+	// We could not answer this request. 
 	return false;
 }
 
@@ -1245,7 +1283,11 @@ bool CallbackSetPropertyEnum(const uint32_t deviceInstance, const uint16_t objec
 	return false;
 }
 
-// Callback used by the BACnet Stack to set Null property values to the user
+// Callback used by the BACnet Stack to set NULL property values to the user
+// 
+// This is commonly used when a BACnet client 'reliqunishes' a value in a object that has a prioerty array. The client sends a 
+// WritepProperty message with a value of "NULL" to the present value with a prioirty. When the CAS BACnet Stack recives this 
+// message, it will call the CallbackSetPropertyNull callback function with the write priorty.
 bool CallbackSetPropertyNull(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode)
 {
 	if (deviceInstance == g_database.device.instance) {

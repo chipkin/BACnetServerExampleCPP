@@ -1,14 +1,14 @@
 #include "CASBACnetStackExampleDatabase.h"
 
 #include <time.h> // time()
-#ifdef WIN32
+#ifdef _WIN32 
 #include <winsock2.h>
 #include <iphlpapi.h>
 #pragma comment(lib, "IPHLPAPI.lib")
 
 #define MALLOC(x) HeapAlloc(GetProcessHeap(), 0, (x))
 #define FREE(x) HeapFree(GetProcessHeap(), 0, (x))
-#endif // WIN32
+#endif // _WIN32 
 
 bool ExampleDatabaseBitstringValue::Resize( size_t count)  {
 	this->presentValue.resize(count);
@@ -80,6 +80,7 @@ void ExampleDatabase::Setup() {
 	this->analogInput.description = "Incurments once a second";
 	this->analogInput.presentValue = 1.001f;
 	this->analogInput.covIncurment = 2.0f; 
+	this->analogInput.reliability = 0; // no-fault-detected (0), unreliable-other (7)
 	this->analogOutput.instance = 1;
 	this->analogOutput.objectName = "AnalogOutput " + ExampleDatabase::GetColorName();
 	this->analogValue.instance = 2;
@@ -158,7 +159,7 @@ void ExampleDatabase::LoadNetworkPortProperties() {
 	this->networkPort.BACnetIPUDPPort = 47808;
 
 
-#ifdef WIN32
+#ifdef _WIN32 
 	PIP_ADAPTER_ADDRESSES pAddresses = NULL;
 	PIP_ADAPTER_INFO pAdapterInfo;
 	PIP_ADAPTER_INFO pAdapter = NULL;
@@ -267,7 +268,7 @@ void ExampleDatabase::LoadNetworkPortProperties() {
 		FREE(pAddresses);
 	}
 
-#endif // WIN32
+#endif // _WIN32 
 }
 
 

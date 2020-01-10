@@ -85,6 +85,7 @@ public:
 
 	// Property Identifiers
 	static const uint32_t PROPERTY_IDENTIFIER_ALL = 8;
+	static const uint32_t PROPERTY_IDENTIFIER_COV_INCURMENT = 22;
 	static const uint32_t PROPERTY_IDENTIFIER_DAY_LIGHT_SAVINGS_STATUS = 24;
 	static const uint32_t PROPERTY_IDENTIFIER_DESCRIPTION = 28;
 	static const uint32_t PROPERTY_IDENTIFIER_LOCAL_DATE = 56;
@@ -93,9 +94,10 @@ public:
 	static const uint32_t PROPERTY_IDENTIFIER_OBJECT_NAME = 77;	
 	static const uint32_t PROPERTY_IDENTIFIER_PRESENT_VALUE = 85;
 	static const uint32_t PROPERTY_IDENTIFIER_PRIORITY_ARRAY = 87;
+	static const uint32_t PROPERTY_IDENTIFIER_RELIABILITY = 103;
 	static const uint32_t PROPERTY_IDENTIFIER_UTC_OFFSET = 119;
 	static const uint32_t PROPERTY_IDENTIFIER_BIT_TEXT = 343;
-	static const uint32_t PROPERTY_IDENTIFIER_COV_INCURMENT = 22;
+	
 
 	static const uint32_t PROPERTY_IDENTIFIER_MAX_PRES_VALUE = 65;
 	static const uint32_t PROPERTY_IDENTIFIER_MIN_PRES_VALUE = 69;
@@ -121,6 +123,8 @@ public:
 	static const uint8_t SERVICE_TIME_SYNCHRONIZATION = 32;
 	static const uint8_t SERVICE_READ_RANGE = 35;
 	static const uint8_t SERVICE_UTC_TIME_SYNCHRONIZATION = 36;
+	static const uint8_t SERVICE_SUBSCRIBE_COV_PROPERTY = 38;
+	
 
 	// Error Codes
 	static const uint8_t ERROR_NO_SPACE_TO_WRITE_PROPERTY = 20;
