@@ -92,6 +92,7 @@ class ExampleDatabaseDevice : public ExampleDatabaseBaseObject
 		int UTCOffset;
 		int64_t currentTimeOffset;
 		std::string description;
+		uint32_t systemStatus;
 };
 
 class ExampleDatabaseMultiStateInput : public ExampleDatabaseBaseObject 

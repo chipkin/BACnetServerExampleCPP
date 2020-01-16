@@ -86,7 +86,7 @@ int main()
 		return 0;
 	}
 	std::cout << "OK" << std::endl;
-	std::cout << "FYI: BACnet Stack version: " << fpGetAPIMajorVersion() << "." << fpGetAPIMinorVersion() << "." << fpGetAPIPatchVersion() << "." << fpGetAPIBuildVersion() << std::endl;
+	std::cout << "FYI: CAS BACnet Stack version: " << fpGetAPIMajorVersion() << "." << fpGetAPIMinorVersion() << "." << fpGetAPIPatchVersion() << "." << fpGetAPIBuildVersion() << std::endl;
 
 	// 2. Connect the UDP resource to the BACnet Port
 	// ---------------------------------------------------------------------------
@@ -157,10 +157,7 @@ int main()
 
 	// Enable the services that this device supports
 	// Some services are mandatory for BACnet devices and are already enabled.
-	// These are:
-	// Read Property
-	// Who Is
-	// Who Has
+	// These are: Read Property, Who Is, Who Has
 	//
 	// Any other services need to be enabled as below.
 
@@ -240,6 +237,7 @@ int main()
 		std::cerr << "Failed to enable the description property for Device" << std::endl;
 		return false;
 	}
+
 
 	// Update Writable Device Properties
 	// UTC Offset
@@ -455,6 +453,17 @@ int main()
 	std::cout << "OK" << std::endl;
 	
 
+	// Debug to show customers how something works 
+	if (!fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_DEVICE, g_database.device.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_SYSTEM_STATUS, true)) {
+		std::cerr << "Failed to enable device.SYSTEM_STATUS" << std::endl;
+		return -1;
+	}
+	if (fpSetPropertySubscribable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_DEVICE, g_database.device.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_SYSTEM_STATUS, true)) {
+		std::cerr << "Failed to enable subscription for device.SYSTEM_STATUS" << std::endl;
+		return -1;
+	}
+
+
 
 	// 4. Send I-Am of this device
 	// ---------------------------------------------------------------------------
@@ -528,7 +537,7 @@ bool DoUserInput()
 	case 'i': {
 		// Increment the Analog Value
 		g_database.analogValue.presentValue += 1.1f;
-		std::cout << "Incrementing Analog Output to " << g_database.analogValue.presentValue << std::endl;
+		std::cout << "Incrementing Analog Value to " << g_database.analogValue.presentValue << std::endl;
 
 		// Notify the stack that this data point was updated so the stack can check for logic
 		// that may need to run on the data.  Example: check if COV (change of value) occurred.
@@ -555,6 +564,19 @@ bool DoUserInput()
 		}
 		break;
 	}
+	case 'd': {
+		// operational (0), non-operational (4)
+		if (g_database.device.systemStatus == 0) {
+			g_database.device.systemStatus = 4; 
+		}
+		else {
+			g_database.device.systemStatus = 0; 
+		}
+		std::cout << "Toggle the device.systemStatus status to " << g_database.device.systemStatus << std::endl;
+		fpValueUpdated(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_DEVICE, g_database.device.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_SYSTEM_STATUS);
+		break;
+	}
+
 	case 'h':
 	default: {
 		// Print the Help
@@ -564,8 +586,9 @@ bool DoUserInput()
 		std::cout << "https://github.com/chipkin/BACnetServerExampleCPP" << std::endl << std::endl;
 
 		std::cout << "Help:" << std::endl;
-		std::cout << "i - (i)ncrement Analog Value " << g_database.analogValue.instance << " by 1.1" << std::endl;
-		std::cout << "r - Toggle the Analog Input (r)eliability status" << std::endl;
+		std::cout << "i - (i)ncrement Analog Value:2" << g_database.analogValue.instance << " by 1.1" << std::endl;
+		std::cout << "r - Toggle the Analog Input:0 (r)eliability status" << std::endl;
+		std::cout << "d - (d)ebug" << std::endl;
 		std::cout << "h - (h)elp" << std::endl;
 		std::cout << "q - (q)uit" << std::endl;
 		std::cout << std::endl;
@@ -915,6 +938,17 @@ bool CallbackGetPropertyEnum(uint32_t deviceInstance, uint16_t objectType, uint3
 			return true;
 		}
 	}
+
+
+	// Debug for customer 
+	if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_SYSTEM_STATUS &&
+		objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_DEVICE)
+	{
+		std::cout << "Debug: Device:System Status" << std::endl;
+		*value = 1;
+		return true;
+	}
+
 
 	// We could not answer this request. 
 	return false;
