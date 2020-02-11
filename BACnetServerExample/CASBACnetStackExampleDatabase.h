@@ -100,10 +100,15 @@ class ExampleDatabaseMultiStateInput : public ExampleDatabaseBaseObject
 	public:
 		uint32_t presentValue ;
 		uint32_t numberOfStates;
+		std::vector<std::string> stateText; 
 
 		ExampleDatabaseMultiStateInput() {
 			this->presentValue = 1 ; // A value of zero is invalid.
 			this->numberOfStates = 3;
+
+			this->stateText.push_back("One");
+			this->stateText.push_back("Two");
+			this->stateText.push_back("Three");
 		}
 };
 

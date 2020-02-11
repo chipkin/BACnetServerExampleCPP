@@ -286,7 +286,7 @@ int main()
 	fpSetPropertySubscribable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
 	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_COV_INCURMENT, true);
 
-	// Enable the description property 
+	// Enable the description, and Reliabiliyty property 
 	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_DESCRIPTION, true);
 	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_RELIABILITY, true);
 
@@ -345,6 +345,7 @@ int main()
 		std::cerr << "Failed to add MultiStateInput" << std::endl;
 		return -1;
 	}
+	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_INPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_STATE_TEXT, true);
 	std::cout << "OK" << std::endl;
 
 	// MultiStateOutput (MSO)
@@ -452,19 +453,6 @@ int main()
 	}
 	std::cout << "OK" << std::endl;
 	
-
-	// Debug to show customers how something works 
-	if (!fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_DEVICE, g_database.device.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_SYSTEM_STATUS, true)) {
-		std::cerr << "Failed to enable device.SYSTEM_STATUS" << std::endl;
-		return -1;
-	}
-	if (fpSetPropertySubscribable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_DEVICE, g_database.device.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_SYSTEM_STATUS, true)) {
-		std::cerr << "Failed to enable subscription for device.SYSTEM_STATUS" << std::endl;
-		return -1;
-	}
-
-
-
 	// 4. Send I-Am of this device
 	// ---------------------------------------------------------------------------
 	// To be a good citizen on a BACnet network. We should annouce ourselfs when we start up. 
@@ -565,16 +553,6 @@ bool DoUserInput()
 		break;
 	}
 	case 'd': {
-		// operational (0), non-operational (4)
-		if (g_database.device.systemStatus == 0) {
-			g_database.device.systemStatus = 4; 
-		}
-		else {
-			g_database.device.systemStatus = 0; 
-		}
-		std::cout << "Toggle the device.systemStatus status to " << g_database.device.systemStatus << std::endl;
-		fpValueUpdated(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_DEVICE, g_database.device.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_SYSTEM_STATUS);
-		break;
 	}
 
 	case 'h':
@@ -588,7 +566,7 @@ bool DoUserInput()
 		std::cout << "Help:" << std::endl;
 		std::cout << "i - (i)ncrement Analog Value:2" << g_database.analogValue.instance << " by 1.1" << std::endl;
 		std::cout << "r - Toggle the Analog Input:0 (r)eliability status" << std::endl;
-		std::cout << "d - (d)ebug" << std::endl;
+		// std::cout << "d - (d)ebug" << std::endl;
 		std::cout << "h - (h)elp" << std::endl;
 		std::cout << "q - (q)uit" << std::endl;
 		std::cout << std::endl;
@@ -857,6 +835,13 @@ bool CallbackGetPropertyCharString(const uint32_t deviceInstance, const uint16_t
 		*valueElementCount = snprintf(value, maxElementCount, "Example custom property 512 + 3");
 		return true;
 	}
+	else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_INPUT && propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_STATE_TEXT && objectInstance == g_database.multiStateInput.instance) {
+		if (useArrayIndex && propertyArrayIndex > 0 && propertyArrayIndex <= g_database.multiStateInput.numberOfStates) {
+			// 0 is number of dates. 
+			*valueElementCount = snprintf(value, maxElementCount, g_database.multiStateInput.stateText[propertyArrayIndex-1].c_str());
+			return true;
+		}
+	}
 	return false;
 }
 
@@ -938,6 +923,7 @@ bool CallbackGetPropertyEnum(uint32_t deviceInstance, uint16_t objectType, uint3
 			return true;
 		}
 	}
+	
 
 
 	// Debug for customer 
@@ -1041,6 +1027,7 @@ bool CallbackGetPropertyInt(uint32_t deviceInstance, uint16_t objectType, uint32
 // Callback used by the BACnet Stack to get Real property values from the user
 bool CallbackGetPropertyReal(uint32_t deviceInstance, uint16_t objectType, uint32_t objectInstance, uint32_t propertyIdentifier, float* value, bool useArrayIndex, uint32_t propertyArrayIndex)
 {
+
 	// Example of Analog Input / Value Object Present Value property
 	if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE) {
 		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_database.analogInput.instance) {
@@ -1188,6 +1175,12 @@ bool CallbackGetPropertyUInt(uint32_t deviceInstance, uint16_t objectType, uint3
 		}
 		else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_VALUE && objectInstance == g_database.multiStateValue.instance) {
 			*value = g_database.multiStateValue.numberOfStates;
+			return true;
+		}
+	}
+	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_STATE_TEXT) {
+		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_INPUT && objectInstance == g_database.multiStateInput.instance) {
+			*value = g_database.multiStateInput.numberOfStates;
 			return true;
 		}
 	}
