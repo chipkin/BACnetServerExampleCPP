@@ -72,6 +72,9 @@ void ExampleDatabase::Setup() {
 	this->device.UTCOffset = 0;
 	this->device.currentTimeOffset = 0;
 	this->device.description = "Chipkin test BACnet IP Server device";
+	// BACnetDeviceStatus ::= ENUMERATED { operational (0), operational-read-only (1), download-required (2), 
+	// download-in-progress (3), non-operational (4), backup-in-progress (5) } 
+	this->device.systemStatus = 0; // operational (0), non-operational (4)
 
 
 	// Set the object name properites. 
