@@ -67,7 +67,7 @@ Linux 64Bit Release:
   image: ssmethurst/ubuntudev-18_04:latest
   before_script:
     # Update the CIBuildVersion.cs
-    - echo -e "const int CIBUILDNUMBER = %CI_PIPELINE_IID%;" > BACnetServerExample/CIBuildVersion.h"
+    - "echo -e const int CIBUILDNUMBER = %CI_PIPELINE_IID%; > BACnetServerExample/CIBuildVersion.h"
     # debug info 
     - "gcc -v"   
   script:
