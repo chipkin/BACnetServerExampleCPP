@@ -2,7 +2,23 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
   
 stages:
+  - CASBACnetStack
   - build
+
+Build BACnet Stack:  
+  stage: CASBACnetStack
+  tags:
+    - windows
+    - msvs
+  before_script:
+    - "echo #define CI_PIPELINE_IID %CI_PIPELINE_IID% >submodules/cas-bacnet-stack/source/CIBuildSettings.h"
+    - "echo #define ENABLE_ALL_BIBBS >>submodules/cas-bacnet-stack/source/CIBuildSettings.h"    
+    - "echo #define ENABLE_ALL_OBJECT_TYPES >>submodules/cas-bacnet-stack/source/CIBuildSettings.h"    
+    - "cat submodules/cas-bacnet-stack/source/CIBuildSettings.h"    
+  script:
+    - "cd submodules/cas-bacnet-stack/"
+    - "call build.cmd ReleaseLib Win32 CASBACnetStack"
+    - "copy submodules/cas-bacnet-stack/bin/CASBACnetStack_Win32_Release.lib"
 
 Windows Win32 Release:
   stage: build
