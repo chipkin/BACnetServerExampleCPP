@@ -45,7 +45,7 @@ Windows Win32 Release:
     - set PATH=%PATH%;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin
     # Update the CIBuildVersion.cs
     - "echo const int CI_PIPELINE_IID = %CI_PIPELINE_IID% >BACnetServerExample/CIBuildSettings.h"
-    - type BACnetServerExample/CIBuildVersion.h
+    - type BACnetServerExample\CIBuildVersion.h
   script:
     # Create the bin directory if it does not exist
     - cd BACnetServerExample
@@ -55,7 +55,7 @@ Windows Win32 Release:
     - dir
   artifacts:
     paths:
-      - bin\BACnetServerExample_Win32_Release.exe
+      - bin/BACnetServerExample_Win32_Release.exe
   dependencies:
     - Download BACnet Stack Libaries
 
@@ -75,7 +75,7 @@ Linux 64Bit Release:
     - "make install"
   artifacts:
     paths:
-      - bin\BACnetServerExampleCPP_linux_x64_Release
+      - bin/BACnetServerExampleCPP_linux_x64_Release
   dependencies:
     - Download BACnet Stack Libaries    
 
