@@ -1,5 +1,3 @@
-variables:
-  GIT_SUBMODULE_STRATEGY: clone
 cache:
   key: ${CI_JOB_NAME}
   
@@ -12,6 +10,9 @@ Windows Win32 Release:
     - windows
     - msvs
   before_script:
+    - git submodule sync --recursive
+    - git submodule update --init --recursive
+
     # Add MSBuild.exe to path
     - set PATH=%PATH%;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin
     # Update the CIBuildVersion.cs
