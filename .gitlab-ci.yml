@@ -20,7 +20,8 @@ Download BACnet Stack Libaries:
     # Install Zip and wget 
     - "apk --no-cache add unzip curl"
     - "mkdir -p bin"
-    - 'curl --location --output CASBACnetStackLibs.zip --header "JOB-TOKEN: $CI_JOB_TOKEN" "https://gitlab.com/chipkin/cas-bacnet-stack/-/jobs/artifacts/master/download?job=Windows%20Release%20Win32%20CASBACnetStack%20LIB"'
+    - 'echo $CI_JOB_TOKEN'
+    - 'curl --location --output CASBACnetStackLibs.zip --header "JOB-TOKEN: $CI_JOB_TOKEN" "https://gitlab.example.com/api/v4/projects/7281208/jobs/artifacts/master/download?job=Windows%20Release%20Win32%20CASBACnetStack%20LIB&job_token=$CI_JOB_TOKEN"'
     - ls -la
     - unzip CASBACnetStackLibs.zip -d bin && rm -f CASBACnetStackLibs.zip
     - ls -ls bin/ 
