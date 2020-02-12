@@ -2,10 +2,33 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
   
 stages:
+  - download
   - CASBACnetStack
   - build
 
-Build BACnet Stack:  
+#
+# Download CBACnet Stack libaries 
+# -----------------------------------------------------------------------------
+Download BACnet Stack Libaries:
+  stage: download
+  tags:
+    - docker
+  image: alpine:latest
+  only:
+    - pushes
+  script:
+    # Install Zip and wget 
+    - "apk --no-cache add unzip wget"
+    - "mkdir -p bin"
+    - wget https://gitlab.com/chipkin/cas-bacnet-stack/-/jobs/artifacts/master/download?job=Windows%20Release%20Win32%20CASBACnetStack%20LIB -O CASBACnetStackLibs.zip
+    - unzip CASBACnetStackLibs.zip -d bin && rm -f CASBACnetStackLibs.zip
+    - ls 
+    - ls bin/
+  artifacts:
+    paths:
+      - bin\*.lib
+      
+.Build BACnet Stack:  
   stage: CASBACnetStack
   tags:
     - windows
@@ -43,4 +66,5 @@ Windows Win32 Release:
   artifacts:
     paths:
       - bin\BACnetServerExample_Win32_Release.exe
-  
+  dependencies:
+    - Download BACnet Stack Libaries
