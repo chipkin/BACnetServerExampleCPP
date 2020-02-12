@@ -16,7 +16,6 @@ Download BACnet Stack Libaries:
   image: alpine:latest
   only:
     - pushes
-  GIT_SUBMODULE_STRATEGY: none
   script:
     # Install Zip and curl 
     - "apk --no-cache add unzip curl"
