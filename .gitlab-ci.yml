@@ -30,6 +30,7 @@ Download BACnet Stack Libaries:
     - unzip CASBACnetStackLibs.zip && rm -f CASBACnetStackLibs.zip
     - ls -ls bin/ 
   artifacts:
+    expire_in: 1 days
     paths:
       - bin/*.lib
       - bin/*.a
@@ -54,6 +55,7 @@ Windows Win32 Release:
     - cd ..\bin
     - dir
   artifacts:
+    expire_in: 1 days
     paths:
       - bin/BACnetServerExample_Win32_Release.exe
   dependencies:
@@ -74,6 +76,7 @@ Linux 64Bit Release:
     - "make"
     - "make install"
   artifacts:
+    expire_in: 1 days
     paths:
       - bin/BACnetServerExampleCPP_linux_x64_Release
   dependencies:
@@ -102,4 +105,4 @@ Create Zip:
     - "zip BACnetServerExampleCPP_build$CI_PIPELINE_IID.zip -r9 bin/BACnetServerExampleCPP_linux_x64_Release bin/BACnetServerExample_Win32_Release.exe"
   artifacts:
     paths:
-      - CASBACnetStack_build$CI_PIPELINE_IID.zip
+      - BACnetServerExampleCPP_build$CI_PIPELINE_IID.zip
