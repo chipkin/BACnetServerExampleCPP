@@ -44,7 +44,7 @@ Windows Win32 Release:
     # Add MSBuild.exe to path
     - set PATH=%PATH%;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin
     # Update the CIBuildVersion.cs
-    - echo -e "const int CIBUILDNUMBER = %CI_PIPELINE_IID%;" > BACnetServerExample/CIBuildVersion.h
+    - "echo const int CI_PIPELINE_IID = %CI_PIPELINE_IID% >BACnetServerExample/CIBuildSettings.h"
     - type BACnetServerExample/CIBuildVersion.h
   script:
     # Create the bin directory if it does not exist
@@ -67,7 +67,7 @@ Linux 64Bit Release:
   image: ssmethurst/ubuntudev-18_04:latest
   before_script:
     # Update the CIBuildVersion.cs
-    - echo -e "const int CIBUILDNUMBER = %CI_PIPELINE_IID%;" > BACnetServerExample/CIBuildVersion.h
+    - echo -e "const int CI_PIPELINE_IID = $CI_PIPELINE_IID\n" >BACnetServerExample/CIBuildSettings.h 
     # debug info 
     - "gcc -v"   
   script:
