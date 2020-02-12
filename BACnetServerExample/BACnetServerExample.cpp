@@ -1,12 +1,6 @@
 // BACnetServerExample.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include <iostream>
-
-#ifndef __GNUC__ // Windows
-#include <conio.h> // _kbhit
-#endif // __GNUC__
-
 #include "CASBACnetStackAdapter.h"
 #include "CASBACnetStackExampleConstants.h"
 #include "CASBACnetStackExampleDatabase.h"
@@ -18,6 +12,25 @@
 #include "ChipkinConvert.h"
 #include "ChipkinUtilities.h"
 
+#include <iostream>
+#ifndef __GNUC__ // Windows
+	#include <conio.h> // _kbhit
+#else // Linux 
+	#include <sys/ioctl.h>
+	#include <termios.h>
+	bool _kbhit() {
+		termios term;
+		tcgetattr(0, &term);
+		termios term2 = term;
+		term2.c_lflag &= ~ICANON;
+		tcsetattr(0, TCSANOW, &term2);
+		int byteswaiting;
+		ioctl(0, FIONREAD, &byteswaiting);
+		tcsetattr(0, TCSANOW, &term);
+		return byteswaiting > 0;
+	}
+#endif // __GNUC__
+
 // Globals
 // =======================================
 CSimpleUDP g_udp; // UDP resource
@@ -25,7 +38,7 @@ ExampleDatabase g_database; // The example database that stores current values.
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.2"; 
+const std::string APPLICATION_VERSION = "0.0.3";  // See CHANGELOG.md for a full list of changes.
 const uint32_t MAX_XML_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
@@ -488,7 +501,11 @@ int main()
 		g_database.Loop();
 
 		// Call Sleep to give some time back to the system
-		Sleep(0);
+		#ifdef _WIN32
+				Sleep(0); // Windows 
+		#else
+				sleep(0); // Linux 
+		#endif
 	}
 
 	// All done. 
