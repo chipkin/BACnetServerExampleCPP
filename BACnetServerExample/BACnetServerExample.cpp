@@ -29,7 +29,15 @@
 		tcsetattr(0, TCSANOW, &term);
 		return byteswaiting > 0;
 	}
+	#include <termios.h>
+	#include <unistd.h>
+	#include <fcntl.h>
+	void Sleep(int milliseconds) {
+		usleep(milliseconds * 1000);
+	}
+
 #endif // __GNUC__
+
 
 // Globals
 // =======================================
@@ -501,11 +509,7 @@ int main()
 		g_database.Loop();
 
 		// Call Sleep to give some time back to the system
-		#ifdef _WIN32
-				Sleep(0); // Windows 
-		#else
-				sleep(0); // Linux 
-		#endif
+		Sleep(0); // Windows 
 	}
 
 	// All done. 
