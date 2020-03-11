@@ -17,7 +17,7 @@ SOURCES = $(wildcard BACnetServerExample/*.cpp) $(wildcard submodules/cas-bacnet
 OBJECTS = $(addprefix obj/,$(notdir $(SOURCES:.cpp=.o)))
 INCLUDES = -IBACnetServerExample -Isubmodules/cas-bacnet-stack/adapters/cpp -Isubmodules/cas-bacnet-stack/source -Isubmodules/cas-bacnet-stack/submodules/cas-common/source
 LIBPATH = -Lbin 
-LIB = -ldl -lCASBACnetStack_x64_Debug 
+LIB = -ldl -lCASBACnetStack_x64_Release 
 
 # Build Target
 TARGET = $(NAME)
