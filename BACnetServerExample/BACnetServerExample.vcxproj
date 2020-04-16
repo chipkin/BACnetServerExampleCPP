@@ -285,8 +285,10 @@
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetListOfWriteAccessSpecifications.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetLocationSpecifier.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetLockStatus.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetLogData.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetLogDatum.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetLoggingType.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetLogMultipleRecord.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetLogRecord.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetMaintenance.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetMSTPPacket.cpp" />
@@ -361,6 +363,7 @@
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSilencedState.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSimpleAckPDU.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSimpleAckProcessor.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSingleLogData.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSourceAddress.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackActiveCOVSubscriptions.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackCommon.cpp" />
@@ -369,10 +372,14 @@
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackMessageGenerator.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackNetworkKey.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackObjectSettings.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackReadPropertyAsync.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackSentConfirmedRequests.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackStoredDBPropertyValues.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackTrendLog.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackTrendLogBase.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackTrendLogMultiple.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackUnknownAPDU.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackWritePropertyAsync.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSubscribeCOVProcessor.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSubscribeCOVProcessorHelpers.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSubscribeCOVPropertyMultipleError.cpp" />
@@ -530,8 +537,10 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetListOfWriteAccessSpecifications.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetLocationSpecifier.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetLockStatus.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetLogData.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetLogDatum.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetLoggingType.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetLogMultipleRecord.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetLogRecord.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetLogStatus.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetMaintenance.h" />
@@ -609,6 +618,7 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSilencedState.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSimpleAckPDU.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSimpleAckProcessor.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSingleLogData.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSourceAddress.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackActiveCOVSubscriptions.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackCommon.h" />
@@ -620,10 +630,14 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackMessageGenerator.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackNetworkKey.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackObjectSettings.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackReadPropertyAsync.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackSentConfirmedRequests.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackStoredDBPropertyValues.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackTrendLog.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackTrendLogBase.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackTrendLogMultiple.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackUnknownAPDU.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackWritePropertyAsync.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStatusFlags.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSubscribeCOVProcessor.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSubscribeCOVProcessorHelpers.h" />

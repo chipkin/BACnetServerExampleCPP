@@ -143,6 +143,11 @@ class ExampleDatabaseTrendLog : public ExampleDatabaseBaseObject
 	public:
 };
 
+class ExampleDatabaseTrendLogMultiple : public ExampleDatabaseBaseObject
+{
+public:
+};
+
 class ExampleDatabaseBitstringValue : public ExampleDatabaseBaseObject 
 {
 	public:
@@ -248,6 +253,7 @@ class ExampleDatabase {
 		ExampleDatabaseMultiStateOutput multiStateOutput;
 		ExampleDatabaseMultiStateValue multiStateValue;
 		ExampleDatabaseTrendLog trendLog;
+		ExampleDatabaseTrendLogMultiple trendLogMultiple;
 		ExampleDatabaseBitstringValue bitstringValue;
 		ExampleDatabaseCharacterStringValue characterStringValue;
 		ExampleDatabaseDateValue dateValue;

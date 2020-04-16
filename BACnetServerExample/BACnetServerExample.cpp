@@ -46,7 +46,7 @@ ExampleDatabase g_database; // The example database that stores current values.
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.3";  // See CHANGELOG.md for a full list of changes.
+const std::string APPLICATION_VERSION = "0.0.4";  // See CHANGELOG.md for a full list of changes.
 const uint32_t MAX_XML_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
@@ -460,8 +460,29 @@ int main()
 		return -1;
 	}
 	// Setup TrendLog Object
-	if (!fpSetTrendLogTypeToPolled(g_database.device.instance, g_database.trendLog.instance, true, false, 500)) {
-		std::cerr << "Failed to setup TrendLog to poll every 5 seconds";
+	if (!fpSetTrendLogTypeToPolled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_TREND_LOG, g_database.trendLog.instance, true, false, 3000)) {
+		std::cerr << "Failed to setup TrendLog to poll every 30 seconds";
+		return -1;
+	}
+	std::cout << "OK" << std::endl;
+
+	// Add Trend Log Multiple Object
+	std::cout << "Added TrendLogMultiple. trendLogMultiple.instance=[" << g_database.trendLogMultiple.instance << "]... ";
+	if (!fpAddTrendLogMultipleObject(g_database.device.instance, g_database.trendLogMultiple.instance, CASBACnetStackExampleConstants::MAX_TREND_LOG_MAX_BUFFER_SIZE)) {
+		std::cerr << "Failed to add TrendLogMultiple" << std::endl;
+		return -1;
+	}
+	// Setup TrendLogMultiple Object
+	if (!fpAddLoggedObjectToTrendLogMultiple(g_database.device.instance, g_database.trendLogMultiple.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, false, 0, false, 0)) {
+		std::cerr << "Failed to add AnalogInput to be logged by TrendLogMultiple" << std::endl;
+		return -1;
+	}
+	if (!fpAddLoggedObjectToTrendLogMultiple(g_database.device.instance, g_database.trendLogMultiple.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_BINARY_INPUT, g_database.binaryInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, false, 0, false, 0)) {
+		std::cerr << "Failed to add BinaryInput to be logged by TrendLogMultiple" << std::endl;
+		return -1;
+	}
+	if (!fpSetTrendLogTypeToPolled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_TREND_LOG_MULTIPLE, g_database.trendLogMultiple.instance, true, false, 3000)) {
+		std::cerr << "Failed to setup TrendLogMultiple to poll every 30 seconds";
 		return -1;
 	}
 	std::cout << "OK" << std::endl;
@@ -1607,6 +1628,16 @@ bool GetObjectName(const uint32_t deviceInstance, const uint16_t objectType, con
 		}
 		memcpy(value, g_database.trendLog.objectName.c_str(), stringSize);
 		*valueElementCount = (uint32_t) stringSize;
+		return true;
+	}
+	else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_TREND_LOG_MULTIPLE && objectInstance == g_database.trendLogMultiple.instance) {
+	stringSize = g_database.trendLogMultiple.objectName.size();
+		if (stringSize > maxElementCount) {
+			std::cerr << "Error - not enough space to store full name of objectType=[" << objectType << "], objectInstance=[" << objectInstance << "]" << std::endl;
+			return false;
+		}
+		memcpy(value, g_database.trendLogMultiple.objectName.c_str(), stringSize);
+		*valueElementCount = (uint32_t)stringSize;
 		return true;
 	}
 	else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_BITSTRING_VALUE && objectInstance == g_database.bitstringValue.instance) {

@@ -59,7 +59,7 @@ const std::string ExampleDatabase::GetColorName() {
 	static const std::vector<std::string> colors = {
 	"Amber", "Bronze", "Chartreuse", "Diamond", "Emerald", "Fuchsia", "Gold", "Hot Pink", "Indigo",
 	"Kiwi", "Lilac", "Magenta", "Nickel", "Onyx", "Purple", "Quartz", "Red", "Silver", "Turquoise",
-	"Umber", "Vermilion", "White", "Xanadu", "Yellow", "Zebra White" };
+	"Umber", "Vermilion", "White", "Xanadu", "Yellow", "Zebra White", "Apricot", "Blueberry" };
 
 	++offset;
 	return colors.at(offset % colors.size());
@@ -110,6 +110,8 @@ void ExampleDatabase::Setup() {
 	this->multiStateValue.presentValue = 1;
 	this->trendLog.instance = 20;
 	this->trendLog.objectName = "TrendLog " + ExampleDatabase::GetColorName();
+	this->trendLogMultiple.instance = 27;
+	this->trendLogMultiple.objectName = "TrendLogMultiple" + ExampleDatabase::GetColorName();
 	this->bitstringValue.instance = 39;
 	this->bitstringValue.objectName = "BitstringValue " + ExampleDatabase::GetColorName();
 	this->bitstringValue.Resize(4);
