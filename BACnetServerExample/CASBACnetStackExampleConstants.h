@@ -49,7 +49,7 @@ public:
 	//static const uint16_t OBJECT_TYPE_PULSE_CONVERTER = 24;
 	//static const uint16_t OBJECT_TYPE_EVENT_LOG = 25;
 	//static const uint16_t OBJECT_TYPE_GLOBAL_GROUP = 26;
-	//static const uint16_t OBJECT_TYPE_TREND_LOG_MULTIPLE = 27;
+	static const uint16_t OBJECT_TYPE_TREND_LOG_MULTIPLE = 27;
 	//static const uint16_t OBJECT_TYPE_LOAD_CONTROL = 28;
 	//static const uint16_t OBJECT_TYPE_STRUCTURED_VIEW = 29;
 	//static const uint16_t OBJECT_TYPE_ACCESS_DOOR = 30;
