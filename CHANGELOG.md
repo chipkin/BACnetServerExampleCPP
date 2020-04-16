@@ -2,6 +2,10 @@
 
 ## Version 0.0.x
 
+### 0.0.4.x (2020-Apr-16)
+
+- Added TrendLogMultiple to example
+
 ### 0.0.3.x (2020-Feb-12)
 
 - Added Linux make files and linux CI job.
