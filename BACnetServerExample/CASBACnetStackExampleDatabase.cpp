@@ -152,6 +152,14 @@ void ExampleDatabase::Setup() {
 	this->timeValue.Set(15,13,55,0);
 	this->networkPort.instance = 56; 
 	this->networkPort.objectName = "NetworkPort " + ExampleDatabase::GetColorName();
+	this->networkPort.ChangesPending = false;
+	this->networkPort.FdBbmdAddressHostType = 1;
+	this->networkPort.FdBbmdAddressHostIp[0] = 192;
+	this->networkPort.FdBbmdAddressHostIp[1] = 168;
+	this->networkPort.FdBbmdAddressHostIp[2] = 01;
+	this->networkPort.FdBbmdAddressHostIp[3] = 126;
+	this->networkPort.FdBbmdAddressPort = 47809;
+	this->networkPort.FdSubscriptionLifetime = 3600;
 	this->LoadNetworkPortProperties() ; 
 }
 

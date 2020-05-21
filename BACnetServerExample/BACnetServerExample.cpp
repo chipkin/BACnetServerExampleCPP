@@ -46,7 +46,7 @@ ExampleDatabase g_database; // The example database that stores current values.
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.4";  // See CHANGELOG.md for a full list of changes.
+const std::string APPLICATION_VERSION = "0.0.5";  // See CHANGELOG.md for a full list of changes.
 const uint32_t MAX_XML_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
@@ -87,6 +87,8 @@ bool CallbackSetPropertyTime(const uint32_t deviceInstance, const uint16_t objec
 bool CallbackSetPropertyUInt(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint32_t value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode);
 bool CallbackCreateObject(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance);
 bool CallbackDeleteObject(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance);
+
+bool CallbackReinitializeDevice(const uint32_t deviceInstance, const uint32_t reinitializedState, const char* password, const uint32_t passwordLength, uint32_t* errorCode);
 
 // Helper functions 
 bool DoUserInput();
@@ -164,6 +166,9 @@ int main()
 	fpRegisterCallbackCreateObject(CallbackCreateObject);
 	fpRegisterCallbackDeleteObject(CallbackDeleteObject);
 
+	// Remote Device Management
+	fpRegisterCallbackReinitializeDevice(CallbackReinitializeDevice);
+
 	// 4. Setup the BACnet device. 
 	// ---------------------------------------------------------------------------
 
@@ -191,74 +196,79 @@ int main()
 
 	std::cout << "Enabling WriteProperty... ";
 	if (!fpSetServiceEnabled(g_database.device.instance, CASBACnetStackExampleConstants::SERVICE_WRITE_PROPERTY, true)) {
-		std::cerr << "Failed to enabled the WriteProperty" << std::endl;
+		std::cerr << "Failed to enable the WriteProperty service" << std::endl;
 		return false;
 	}
 	std::cout << "OK" << std::endl;
 
 	std::cout << "Enabling WritePropertyMultiple... "; 
 	if (!fpSetServiceEnabled(g_database.device.instance, CASBACnetStackExampleConstants::SERVICE_WRITE_PROPERTY_MULTIPLE, true)) {
-		std::cerr << "Failed to enabled the WritePropertyMultiple" << std::endl;
+		std::cerr << "Failed to enable the WritePropertyMultiple service" << std::endl;
 		return false;
 	}
 	std::cout << "OK" << std::endl;	
 
 	std::cout << "Enabling TimeSynchronization... ";
 	if (!fpSetServiceEnabled(g_database.device.instance, CASBACnetStackExampleConstants::SERVICE_TIME_SYNCHRONIZATION, true)) {
-		std::cerr << "Failed to enabled the TimeSynchronization" << std::endl;
+		std::cerr << "Failed to enable the TimeSynchronization service" << std::endl;
 		return false;
 	}
 	std::cout << "OK" << std::endl;	
 
 	std::cout << "Enabling UTCTimeSynchronization... ";
 	if (!fpSetServiceEnabled(g_database.device.instance, CASBACnetStackExampleConstants::SERVICE_UTC_TIME_SYNCHRONIZATION, true)) {
-		std::cerr << "Failed to enabled the UTCTimeSynchronization" << std::endl;
+		std::cerr << "Failed to enable the UTCTimeSynchronization service" << std::endl;
 		return false;
 	}
 	std::cout << "OK" << std::endl;
 	
 	std::cout << "Enabling SubscribeCOV... ";
 	if (!fpSetServiceEnabled(g_database.device.instance, CASBACnetStackExampleConstants::SERVICE_SUBSCRIBE_COV, true)) {
-		std::cerr << "Failed to enabled the SubscribeCOV" << std::endl;
+		std::cerr << "Failed to enable the SubscribeCOV service" << std::endl;
 		return false;
 	}
 	std::cout << "OK" << std::endl;
 
 	std::cout << "Enabling SubscribeCOVProperty... ";
 	if (!fpSetServiceEnabled(g_database.device.instance, CASBACnetStackExampleConstants::SERVICE_SUBSCRIBE_COV_PROPERTY, true)) {
-		std::cerr << "Failed to enabled the SubscribeCOVProperty" << std::endl;
+		std::cerr << "Failed to enable the SubscribeCOVProperty service" << std::endl;
 		return false;
 	}
 	std::cout << "OK" << std::endl;
 	
 	std::cout << "Enabling CreateObject... ";
 	if (!fpSetServiceEnabled(g_database.device.instance, CASBACnetStackExampleConstants::SERVICE_CREATE_OBJECT, true)) {
-		std::cerr << "Failed to enabled the CreateObject" << std::endl;
+		std::cerr << "Failed to enable the CreateObject service" << std::endl;
 		return false;
 	}
 	std::cout << "OK" << std::endl;
 	
 	std::cout << "Enabling DeleteObject... ";
 	if (!fpSetServiceEnabled(g_database.device.instance, CASBACnetStackExampleConstants::SERVICE_DELETE_OBJECT, true)) {
-		std::cerr << "Failed to enabled the DeleteObject" << std::endl;
+		std::cerr << "Failed to enable the DeleteObject service" << std::endl;
 		return false;
 	}
 	std::cout << "OK" << std::endl;
 	
 	std::cout << "Enabling ReadRange... ";
 	if (!fpSetServiceEnabled(g_database.device.instance, CASBACnetStackExampleConstants::SERVICE_READ_RANGE, true)) {
-		std::cerr << "Failed to enabled the ReadRange" << std::endl;
+		std::cerr << "Failed to enable the ReadRange service" << std::endl;
 		return false;
 	}
 	std::cout << "OK" << std::endl;
-	
+
+	std::cout << "Enabling ReinitializeDevice...";
+	if (!fpSetServiceEnabled(g_database.device.instance, CASBACnetStackExampleConstants::SERVICE_REINITIALIZE_DEVICE, true)) {
+		std::cerr << "Failed to enable the ReinitializeDevice service";
+		return false;
+	}
+	std::cout << "OK" << std::endl;
 
 	// Enable Optional Device Properties
 	if (!fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_DEVICE, g_database.device.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_DESCRIPTION, true)) {
 		std::cerr << "Failed to enable the description property for Device" << std::endl;
 		return false;
 	}
-
 
 	// Update Writable Device Properties
 	// UTC Offset
@@ -537,14 +547,13 @@ int main()
 	return 0;
 }
 
-
-
-
 // Helper Functions
 
 // Handle any user input.
 // Note: User input in this example is used for the following:
 //		i - increment the analog-input value. Used to test cov
+//		r - Toggle Analog Input Reliability
+//		f - Send Register Foreign Device message
 //		h - Display options
 //		q - Quit
 bool DoUserInput()
@@ -594,7 +603,21 @@ bool DoUserInput()
 		}
 		break;
 	}
-	case 'd': {
+	case 'f': {
+		// Send Foreign Device Registration
+		
+		uint8_t connectionString[6];
+		memcpy(connectionString, g_database.networkPort.FdBbmdAddressHostIp, 4);
+		connectionString[4] = g_database.networkPort.FdBbmdAddressPort / 256;
+		connectionString[5] = g_database.networkPort.FdBbmdAddressPort % 256;
+		std::cout << "Sending Register Foreign Device to" << g_database.networkPort.FdBbmdAddressHostIp[0] << "." << 
+			g_database.networkPort.FdBbmdAddressHostIp[1] << "." << g_database.networkPort.FdBbmdAddressHostIp[2] << "." <<
+			g_database.networkPort.FdBbmdAddressHostIp[3] << ":" << g_database.networkPort.FdBbmdAddressPort << std::endl;
+
+		if (!fpSendRegisterForeignDevice(g_database.networkPort.FdSubscriptionLifetime, connectionString, 6)) {
+			std::cout << "Error - failed to send Register Foreign Device" << std::endl;
+		}
+		break;
 	}
 
 	case 'h':
@@ -608,6 +631,7 @@ bool DoUserInput()
 		std::cout << "Help:" << std::endl;
 		std::cout << "i - (i)ncrement Analog Value:2" << g_database.analogValue.instance << " by 1.1" << std::endl;
 		std::cout << "r - Toggle the Analog Input:0 (r)eliability status" << std::endl;
+		std::cout << "f - Send Register (foreign) device message" << std::endl;
 		// std::cout << "d - (d)ebug" << std::endl;
 		std::cout << "h - (h)elp" << std::endl;
 		std::cout << "q - (q)uit" << std::endl;
@@ -816,6 +840,13 @@ bool CallbackGetPropertyBool(uint32_t deviceInstance, uint16_t objectType, uint3
 			return true;
 		}
 	}
+	// Network Port Object - Changes Pending property
+	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_CHANGES_PENDING) {
+		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT && objectInstance == g_database.networkPort.instance) {
+			*value = g_database.networkPort.ChangesPending;
+			return true;
+		}
+	}
 	return false;
 }
 
@@ -965,9 +996,14 @@ bool CallbackGetPropertyEnum(uint32_t deviceInstance, uint16_t objectType, uint3
 			return true;
 		}
 	}
+	// Network Port Object - FdBbmdAddress Host Type
+	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_FD_BBMD_ADDRESS) {
+		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT && objectInstance == g_database.networkPort.instance) {
+			*value = g_database.networkPort.FdBbmdAddressHostType;
+			return true;
+		}
+	}
 	
-
-
 	// Debug for customer 
 	if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_SYSTEM_STATUS &&
 		objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_DEVICE)
@@ -1040,6 +1076,16 @@ bool CallbackGetPropertyOctetString(const uint32_t deviceInstance, const uint16_
 					*valueElementCount = g_database.networkPort.IPDNSServerLength;
 					return true;
 				}
+			}
+		}
+	}
+	// Network Port Object FdBbmdAddress Host (as IP Address)
+	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_FD_BBMD_ADDRESS) {
+		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT && objectInstance == g_database.networkPort.instance) {
+			if (useArrayIndex && propertyArrayIndex == CASBACnetStackExampleConstants::HOST_TYPE_IPADDRESS) {
+				memcpy(value, g_database.networkPort.FdBbmdAddressHostIp, 4);
+				*valueElementCount = 4;
+				return true;
 			}
 		}
 	}
@@ -1226,6 +1272,23 @@ bool CallbackGetPropertyUInt(uint32_t deviceInstance, uint16_t objectType, uint3
 			return true;
 		}
 	}
+	// Network Port Object FdBbmdAddress Port
+	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_FD_BBMD_ADDRESS) {
+		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT && objectInstance == g_database.networkPort.instance) {
+			if (useArrayIndex && propertyArrayIndex == CASBACnetStackExampleConstants::FD_BBMD_ADDRESS_PORT) {
+				// Check for index 2, which is looking for the fdBbmdAddress port portion
+				*value = g_database.networkPort.FdBbmdAddressPort;
+				return true;
+			}
+		}
+	}
+	// Network Port Object FdSubscriptionLifetime
+	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_FD_SUBSCRIPTION_LIFETIME) {
+		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT && objectInstance == g_database.networkPort.instance) {
+			*value = g_database.networkPort.FdSubscriptionLifetime;
+			return true;
+		}
+	}
 	return false;
 }
 
@@ -1402,6 +1465,28 @@ bool CallbackSetPropertyOctetString(const uint32_t deviceInstance, const uint16_
 				}
 			}
 		}
+
+		// Example of setting FdBbmdAddress Host IP
+		if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_FD_BBMD_ADDRESS) {
+			if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT && objectInstance == g_database.networkPort.instance) {
+				if (useArrayIndex && propertyArrayIndex == CASBACnetStackExampleConstants::FD_BBMD_ADDRESS_HOST) {
+					if (length > 4) {
+						*errorCode = CASBACnetStackExampleConstants::ERROR_VALUE_OUT_OF_RANGE;
+						return false;
+					}
+					if (memcmp(g_database.networkPort.FdBbmdAddressHostIp, value, length) == 0) {
+						// No change, return true
+						return true;
+					}
+					else {
+						// Store new value and set changes pending to true
+						memcpy(g_database.networkPort.FdBbmdAddressHostIp, value, length);
+						g_database.networkPort.ChangesPending = true;
+						return true;
+					}
+				}
+			}
+		}
 	}
 	return false;
 }
@@ -1508,6 +1593,24 @@ bool CallbackSetPropertyUInt(const uint32_t deviceInstance, const uint16_t objec
 			else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_OUTPUT && objectInstance == g_database.multiStateOutput.instance) {
 				g_database.multiStateOutput.priorityArrayValues[priority - 1] = value;
 				g_database.multiStateOutput.priorityArrayNulls[priority - 1] = false;
+				return true;
+			}
+		}
+		// Network Port Object FdBbmdAddress Port
+		if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_FD_BBMD_ADDRESS) {
+			if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT && objectInstance == g_database.networkPort.instance) {
+				if (useArrayIndex && propertyArrayIndex == CASBACnetStackExampleConstants::FD_BBMD_ADDRESS_PORT) {
+					g_database.networkPort.FdBbmdAddressPort = value;
+					g_database.networkPort.ChangesPending = true;
+					return true;
+				}
+			}
+		}
+		// Network Port Object FdSubscriptionLifetime
+		else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_FD_SUBSCRIPTION_LIFETIME) {
+			if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT && objectInstance == g_database.networkPort.instance) {
+				g_database.networkPort.FdSubscriptionLifetime = value;
+				g_database.networkPort.ChangesPending = true;
 				return true;
 			}
 		}
@@ -1778,6 +1881,56 @@ bool CallbackDeleteObject(
 		}
 	}
 	return false;
+}
+
+bool CallbackReinitializeDevice(const uint32_t deviceInstance, const uint32_t reinitializedState, const char* password, const uint32_t passwordLength, uint32_t* errorCode) {
+	// This callback is called when this BACnet Server device receives a ReinitializeDevice message
+	// In this callback, you will handle the reinitializedState.
+	// If reinitializedState = ACTIVATE_CHANGES (7) then you will apply any network port changes and store the values in non-volatile memory
+	// If reinitializedState = WARM_START(1) then you will apply any network port changes, store the values in non-volatile memory, and restart the device.
+
+	// Before handling the reinitializedState, first check the password.
+	// If your device does not require a password, then ignore any password passed in.
+	// Otherwise, validate the password.
+	//		If password invalid: set errorCode to PasswordInvalid (26)
+	//		If password is required, but no password was provided: set errorCode to MissingRequiredParameter (16)
+	// In this example, a password of 12345 is required.
+	if (password == NULL || passwordLength == 0) {
+		*errorCode = CASBACnetStackExampleConstants::ERROR_MISSING_REQUIRED_PARAMETER;
+		return false;
+	}
+	if (strcmp(password, "12345") != 0) {
+		*errorCode = CASBACnetStackExampleConstants::ERROR_PASSWORD_FAILURE;
+		return false;
+	}
+
+	// In this example, only the NetworkPort Object FdBbmdAddress and FdSubscriptionLifetime properties are writable and need to be
+	// stored in non-volatile memory.  For the purpose of this example, we will not storing these values in non-volaitle memory.
+
+	// 1. Store values that must be stored in non-volatile memory (i.e. must survive a reboot).
+
+	// 2. Apply any Network Port values that have been written to. 
+	// If any validation on the Network Port values failes, set errorCode to INVALID_CONFIGURATION_DATA (46)
+
+	// 3. Set Network Port ChangesPending property to false
+
+	// 4. Handle ReinitializedState. If ACTIVATE_CHANGES, no other action, return true.
+	//								 If WARM_START, prepare device for reboot, return true. and reboot.  
+	// NOTE: Must return true first before rebooting so the stack sends the SimpleAck.
+	if (reinitializedState == CASBACnetStackExampleConstants::REINITIALIZED_STATE_ACTIVATE_CHANGES) {
+		g_database.networkPort.ChangesPending = false;
+		return true;
+	}
+	else if (reinitializedState == CASBACnetStackExampleConstants::REINITIALIZED_STATE_WARM_START) {
+		// Flag for reboot and handle reboot after stack responds with SimpleAck.
+		g_database.networkPort.ChangesPending = false;
+		return true;
+	}
+	else {
+		// All other states are not supported in this example.
+		*errorCode = CASBACnetStackExampleConstants::ERROR_OPTIONAL_FUNCTIONALITY_NOT_SUPPORTED;
+		return false;
+	}
 }
 
 

@@ -226,6 +226,12 @@ class ExampleDatabaseNetworkPort : public ExampleDatabaseBaseObject
 		uint8_t IPDNSServerLength;
 
 		uint8_t BroadcastIPAddress[4];
+
+		bool ChangesPending;
+		uint8_t FdBbmdAddressHostType;	// 0 = None, 1 = IpAddress, 2 = Name
+		uint8_t FdBbmdAddressHostIp[4];
+		uint16_t FdBbmdAddressPort;
+		uint16_t FdSubscriptionLifetime;
 };
 
 struct CreatedAnalogValue {

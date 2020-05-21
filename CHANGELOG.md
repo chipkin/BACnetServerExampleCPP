@@ -2,6 +2,10 @@
 
 ## Version 0.0.x
 
+### 0.0.5.x (2020-May-21)
+
+- Added ReinitializeDevice and Writable Network Port Object properties to example
+
 ### 0.0.4.x (2020-Apr-16)
 
 - Added TrendLogMultiple to example
