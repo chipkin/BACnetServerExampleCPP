@@ -1,7 +1,23 @@
 # BACnet Server Example CPP
 
-A basic BACnet IP server example written with C++ using the [CAS BACnet Stack](https://www.bacnetstack.com/).
+A basic BACnet IP server example written in C++ using the [CAS BACnet Stack](https://www.bacnetstack.com/).
 
+## Releases
+
+Build versions of this example can be downloaded from the releases page: 
+
+[https://github.com/chipkin/BACnetServerExampleCPP/releases](https://github.com/chipkin/BACnetServerExampleCPP/releases)
+
+## Installation
+
+Download the latest release zip file on the releases page.
+
+## Usage
+
+Windows: Run the exe executable included in the zip file.
+Linux: Run the linux_release executable included in the zip file.
+
+Pre-configured with the following BACnet device object and properties:
 - Device: 389999 (Device Rainbow)
   - analog_input: 0  (AnalogInput Bronze)
   - analog_output: 1  (AnalogOutput Chartreuse)
@@ -24,14 +40,10 @@ A basic BACnet IP server example written with C++ using the [CAS BACnet Stack](h
   - time_value: 50  (TimeValue Umber)
   - NetworkPort: 56  (NetworkPort Vermilion)
 
-## Building
+## Build
 
 A [Visual studio 2019](https://visualstudio.microsoft.com/downloads/) project is included with this project.
 
 This project also auto built using [Gitlab CI](https://docs.gitlab.com/ee/ci/) on every commit.
 
-## Releases
-
-Build versions of this example can be downloaded from the releases page: 
-
-[https://github.com/chipkin/BACnetServerExampleCPP/releases](https://github.com/chipkin/BACnetServerExampleCPP/releases)
+The CAS BACnet Stack submodule is required for build.
