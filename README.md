@@ -42,10 +42,15 @@ Pre-configured with the following BACnet device and objects:
   - NetworkPort: 56  (NetworkPort Vermilion)
 
 Property values can be modified through typing into the server window
+
 q: Quit and exit the server
+
 i: Increment the analog_value property Diamond by 1.1
+
 r: Toggle the analog input reliability status 
+
 f: Send foreign device registration
+
 h: Display help menu
 
 ## Build
