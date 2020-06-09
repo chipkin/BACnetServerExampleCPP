@@ -41,7 +41,6 @@ Pre-configured with the following example BACnet device and objects:
   - NetworkPort: 56  (NetworkPort Vermilion)
 
 The following keyboard commands can be issued in the server window:
-
 * **q**: Quit and exit the server
 * **i**: Increment the analog_value property Diamond by 1.1
 * **r**: Toggle the analog input reliability status 
@@ -50,8 +49,31 @@ The following keyboard commands can be issued in the server window:
 
 ## Build
 
-A [Visual studio 2019](https://visualstudio.microsoft.com/downloads/) project is included with this project.
-
-This project also auto built using [Gitlab CI](https://docs.gitlab.com/ee/ci/) on every commit.
+A [Visual studio 2019](https://visualstudio.microsoft.com/downloads/) project is included with this project. This project also auto built using [Gitlab CI](https://docs.gitlab.com/ee/ci/) on every commit.
 
 The CAS BACnet Stack submodule is required for compilation.
+
+## Example Output
+
+```txt
+CAS BACnet Stack Server Example v0.0.5.0
+https://github.com/chipkin/BACnetServerExampleCPP
+
+FYI: Loading CAS BACnet Stack functions... OK
+FYI: CAS BACnet Stack version: 3.16.0.0
+FYI: Connecting UDP Resource to port=[47808]... OK, Connected to port
+FYI: Registering the callback Functions with the CAS BACnet Stack
+Setting up server device. device.instance=[389999]
+Created Device.
+Enabling ReadPropertyMultiple... OK
+Enabling WriteProperty... OK
+...
+Adding AnalogInput. analogInput.instance=[0]... OK
+...
+Added TrendLogMultiple. trendLogMultiple.instance=[27]... OK
+Added NetworkPort. networkPort.instance=[56]... OK
+FYI: Sending I-AM broadcast
+FYI: Entering main loop...
+...
+FYI: Received message from [192.168.56.1:47808], length [25]
+```

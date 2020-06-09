@@ -1,5 +1,17 @@
-// BACnetServerExample.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+/*
+ * BACnet Server Example C++
+ * ----------------------------------------------------------------------------
+ * BACnetServerExample.cpp
+ * 
+ * In this CAS BACnet Stack example, we create a BACnet IP server with various
+ * objects and properties from an example database
+ *
+ * More information https://github.com/chipkin/BACnetServerExampleCPP
+ * 
+ * This file contains the 'main' function. Program execution begins and ends there.
+ * 
+ * Created by: Steven Smethurst
+ */
 
 #include "CASBACnetStackAdapter.h"
 #include "CASBACnetStackExampleConstants.h"
@@ -123,9 +135,9 @@ int main()
 	std::cout << "OK, Connected to port" << std::endl;
 
 
-	// 3. Setup the callbacks. 
+	// 3. Setup the callbacks
 	// ---------------------------------------------------------------------------
-	std::cout << "FYI: Registering the callback Functions with the CAS BACnet Stack" << std::endl;
+	std::cout << "FYI: Registering the Callback Functions with the CAS BACnet Stack" << std::endl;
 
 	// Message Callback Functions
 	fpRegisterCallbackReceiveMessage(CallbackReceiveMessage);
@@ -169,7 +181,7 @@ int main()
 	// Remote Device Management
 	fpRegisterCallbackReinitializeDevice(CallbackReinitializeDevice);
 
-	// 4. Setup the BACnet device. 
+	// 4. Setup the BACnet device
 	// ---------------------------------------------------------------------------
 
 	std::cout << "Setting up server device. device.instance=[" << g_database.device.instance << "]" << std::endl; 
@@ -307,17 +319,17 @@ int main()
 		std::cerr << "Failed to add AnalogInput" << std::endl ;
 		return -1;
 	}
-	// Enable ProprietaryProperty for an object. 
-	// These properties are not part of the BACnet spec. 
+	// Enable ProprietaryProperty for an object 
+	// These properties are not part of the BACnet spec 
 	fpSetProprietaryProperty(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 512 + 1, false, false, CASBACnetStackExampleConstants::DATA_TYPE_CHARACTER_STRING, false, false, false);
 	fpSetProprietaryProperty(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 512 + 2, true, false, CASBACnetStackExampleConstants::DATA_TYPE_CHARACTER_STRING, false, false, false);
 	fpSetProprietaryProperty(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 512 + 3, true, true, CASBACnetStackExampleConstants::DATA_TYPE_CHARACTER_STRING, false, false, false);
 
-	// Set the Present value to subscribable. 
+	// Set the Present value to subscribable 
 	fpSetPropertySubscribable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
 	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_COV_INCURMENT, true);
 
-	// Enable the description, and Reliabiliyty property 
+	// Enable the description, and Reliability property 
 	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_DESCRIPTION, true);
 	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_RELIABILITY, true);
 
@@ -406,7 +418,7 @@ int main()
 	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_BITSTRING_VALUE, g_database.bitstringValue.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
 	std::cout << "OK" << std::endl;
 
-	// characterStringValue
+	// characterStringValue (CSV)
 	std::cout << "Added characterStringValue. characterStringValue.instance=[" << g_database.characterStringValue.instance << "]...";
 	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_CHARACTERSTRING_VALUE, g_database.characterStringValue.instance)) {
 		std::cerr << "Failed to add characterStringValue" << std::endl;
@@ -415,6 +427,7 @@ int main()
 	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_CHARACTERSTRING_VALUE, g_database.characterStringValue.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
 	std::cout << "OK" << std::endl;
 
+	// DateValue (DV)
 	std::cout << "Added DateValue. dateValue.instance=[" << g_database.dateValue.instance << "]... "; 
 	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_DATE_VALUE, g_database.dateValue.instance)) {
 		std::cerr << "Failed to add DateValue" << std::endl;
@@ -423,6 +436,7 @@ int main()
 	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_DATE_VALUE, g_database.dateValue.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
 	std::cout << "OK" << std::endl;
 
+	// IntegerValue (IV)
 	std::cout << "Added IntegerValue. integerValue.instance=[" << g_database.integerValue.instance << "]... ";
 	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_INTEGER_VALUE, g_database.integerValue.instance)) {
 		std::cerr << "Failed to add IntegerValue" << std::endl;
@@ -431,6 +445,7 @@ int main()
 	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_INTEGER_VALUE, g_database.integerValue.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
 	std::cout << "OK" << std::endl;
 
+	// LargeAnalogValue (LAV)
 	std::cout << "Added LargeAnalogValue. largeAnalogValue.instance=[" << g_database.largeAnalogValue.instance << "]... ";
 	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_LARGE_ANALOG_VALUE, g_database.largeAnalogValue.instance)) {
 		std::cerr << "Failed to add LargeAnalogValue" << std::endl;
@@ -439,6 +454,7 @@ int main()
 	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_LARGE_ANALOG_VALUE, g_database.largeAnalogValue.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
 	std::cout << "OK" << std::endl;
 
+	// octetStringValue (OSV)
 	std::cout << "Added octetStringValue. octetStringValue.instance=[" << g_database.octetStringValue.instance << "]... ";
 	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_OCTETSTRING_VALUE, g_database.octetStringValue.instance)) {
 		std::cerr << "Failed to add octetStringValue" << std::endl;
@@ -447,6 +463,7 @@ int main()
 	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_OCTETSTRING_VALUE, g_database.octetStringValue.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
 	std::cout << "OK" << std::endl;
 
+	// PositiveIntegerValue (PIV)
 	std::cout << "Added PositiveIntegerValue. positiveIntegerValue.instance=[" << g_database.positiveIntegerValue.instance << "]... ";
 	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_POSITIVE_INTEGER_VALUE, g_database.positiveIntegerValue.instance)) {
 		std::cerr << "Failed to add PositiveIntegerValue" << std::endl;
@@ -455,6 +472,7 @@ int main()
 	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_POSITIVE_INTEGER_VALUE, g_database.positiveIntegerValue.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
 	std::cout << "OK" << std::endl;
 
+	// TimeValue (TV)
 	std::cout << "Added TimeValue. timeValue.instance=[" << g_database.timeValue.instance << "]... ";
 	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_TIME_VALUE, g_database.timeValue.instance)) {
 		std::cerr << "Failed to add TimeValue" << std::endl;
@@ -469,6 +487,7 @@ int main()
 		std::cerr << "Failed to add TrendLog" << std::endl;
 		return -1;
 	}
+
 	// Setup TrendLog Object
 	if (!fpSetTrendLogTypeToPolled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_TREND_LOG, g_database.trendLog.instance, true, false, 3000)) {
 		std::cerr << "Failed to setup TrendLog to poll every 30 seconds";
@@ -482,6 +501,7 @@ int main()
 		std::cerr << "Failed to add TrendLogMultiple" << std::endl;
 		return -1;
 	}
+
 	// Setup TrendLogMultiple Object
 	if (!fpAddLoggedObjectToTrendLogMultiple(g_database.device.instance, g_database.trendLogMultiple.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, false, 0, false, 0)) {
 		std::cerr << "Failed to add AnalogInput to be logged by TrendLogMultiple" << std::endl;
@@ -505,9 +525,9 @@ int main()
 	}
 	std::cout << "OK" << std::endl;
 	
-	// 4. Send I-Am of this device
+	// 5. Send I-Am of this device
 	// ---------------------------------------------------------------------------
-	// To be a good citizen on a BACnet network. We should annouce ourselfs when we start up. 
+	// To be a good citizen on a BACnet network. We should announce ourself when we start up. 
 	std::cout << "FYI: Sending I-AM broadcast" << std::endl;
 	uint8_t connectionString[6]; //= { 0xC0, 0xA8, 0x01, 0xFF, 0xBA, 0xC0 };
 	memcpy(connectionString, g_database.networkPort.BroadcastIPAddress, 4);
@@ -519,7 +539,7 @@ int main()
 		return false;
 	}
 
-	// 5. Start the main loop
+	// 6. Start the main loop
 	// ---------------------------------------------------------------------------
 	std::cout << "FYI: Entering main loop..." << std::endl ;
 	for (;;) {
@@ -551,7 +571,7 @@ int main()
 
 // Handle any user input.
 // Note: User input in this example is used for the following:
-//		i - increment the analog-input value. Used to test cov
+//		i - increment the analog-input value. Used to test COV
 //		r - Toggle Analog Input Reliability
 //		f - Send Register Foreign Device message
 //		h - Display options
@@ -1417,8 +1437,8 @@ bool CallbackSetPropertyEnum(const uint32_t deviceInstance, const uint16_t objec
 
 // Callback used by the BACnet Stack to set NULL property values to the user
 // 
-// This is commonly used when a BACnet client 'reliqunishes' a value in a object that has a prioerty array. The client sends a 
-// WritepProperty message with a value of "NULL" to the present value with a prioirty. When the CAS BACnet Stack recives this 
+// This is commonly used when a BACnet client 'reliqunishes' a value in a object that has a priority array. The client sends a 
+// WriteProperty message with a value of "NULL" to the present value with a priority. When the CAS BACnet Stack receives this 
 // message, it will call the CallbackSetPropertyNull callback function with the write priorty.
 bool CallbackSetPropertyNull(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode)
 {
