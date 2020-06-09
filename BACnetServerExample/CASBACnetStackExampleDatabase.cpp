@@ -1,3 +1,13 @@
+/*
+ * BACnet Server Example C++
+ * ----------------------------------------------------------------------------
+ * CASBACnetStackExampleDatabase.cpp
+ * 
+ * Sets up object names and properties in the database.
+ * 
+ * Created by: Steven Smethurst
+*/
+
 #include "CASBACnetStackExampleDatabase.h"
 
 #include <time.h> // time()
@@ -42,9 +52,6 @@ void ExampleDatabaseTimeValue::Set( uint8_t hour, uint8_t minute, uint8_t second
 	this->presentValueSecond = second;
 	this->presentValueHundrethSecond = hundrethSecond;
 }
-
-
-
 
 ExampleDatabase::ExampleDatabase() {
 	this->Setup();
@@ -164,7 +171,6 @@ void ExampleDatabase::Setup() {
 }
 
 void ExampleDatabase::LoadNetworkPortProperties() {
-
 	// This function loads the Network port property values needed.
 	// It uses system functions to get values like the IP Address and stores them
 	// in the example database

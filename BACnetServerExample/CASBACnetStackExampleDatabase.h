@@ -1,18 +1,23 @@
+/*
+ * BACnet Server Example C++
+ * ----------------------------------------------------------------------------
+ * CASBACnetStackExampleDatabase.h
+ * 
+ * The CASBACnetStackExampleDatabase is a data store that contains 
+ * some example data used in the BACnetStackDLLExample.
+ * This data is represented by BACnet objects for this server example.
+ * There will be one object of each type currently supported by the CASBACnetStack.
+ * 
+ * The database will include the following:
+ *	- present value
+ *	- name
+ *	- for outputs priority array (bool and value)
+ * 
+ * Created by: Steven Smethurst
+*/
+
 #ifndef __CASBACnetStackExampleDatabase_h__
 #define __CASBACnetStackExampleDatabase_h__
-
-/*
-The CASBACnetStackExampleDatabase is a data store that contains the
-some example data used in the BACnetStackDLLExample.
-
-This data is represented by BACnet objects for this server example.
-There will be one object of each type currently supported by the CASBACnetStack.
-
-The database will include the following:
-	- present value
-	- name
-	- for outputs priority array (bool and value)
-*/
 
 #include <string>
 #include <vector>
@@ -243,7 +248,6 @@ struct CreatedAnalogValue {
 		this->value = 0.0f;
 	}
 };
-
 
 class ExampleDatabase {
 
