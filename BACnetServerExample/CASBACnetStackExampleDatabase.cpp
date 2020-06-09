@@ -171,7 +171,6 @@ void ExampleDatabase::Setup() {
 }
 
 void ExampleDatabase::LoadNetworkPortProperties() {
-
 	// This function loads the Network port property values needed.
 	// It uses system functions to get values like the IP Address and stores them
 	// in the example database

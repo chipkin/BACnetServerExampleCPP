@@ -249,7 +249,6 @@ struct CreatedAnalogValue {
 	}
 };
 
-
 class ExampleDatabase {
 
 	public:

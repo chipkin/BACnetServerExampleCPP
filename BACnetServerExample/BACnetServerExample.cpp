@@ -4,7 +4,7 @@
  * BACnetServerExample.cpp
  * 
  * In this CAS BACnet Stack example, we create a BACnet IP server with various
- * objects and properties from an example database
+ * objects and properties from an example database.
  *
  * More information https://github.com/chipkin/BACnetServerExampleCPP
  * 
