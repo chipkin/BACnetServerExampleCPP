@@ -1,8 +1,24 @@
-# BACnet Server Example CPP
+# BACnet Server Example C++
 
-A basic BACnet IP server example written with C++ using the [CAS BACnet Stack](https://www.bacnetstack.com/).
+A basic BACnet IP server example written in C++ using the [CAS BACnet Stack](https://store.chipkin.com/services/stacks/bacnet-stack). Includes various sample 
+BACnet objects and services.
 
-- Device: 389999 (Device Rainbow)
+## Releases
+
+Build versions of this example can be downloaded from the releases page: 
+
+[https://github.com/chipkin/BACnetServerExampleCPP/releases](https://github.com/chipkin/BACnetServerExampleCPP/releases)
+
+## Installation
+
+Download the latest release zip file on the releases page.
+
+## Usage
+
+Run the executable included in the zip file.
+
+Pre-configured with the following example BACnet device and objects:
+- **Device**: 389999 (Device Rainbow)
   - analog_input: 0  (AnalogInput Bronze)
   - analog_output: 1  (AnalogOutput Chartreuse)
   - analog_value: 2  (AnalogValue Diamond)
@@ -24,14 +40,40 @@ A basic BACnet IP server example written with C++ using the [CAS BACnet Stack](h
   - time_value: 50  (TimeValue Umber)
   - NetworkPort: 56  (NetworkPort Vermilion)
 
-## Building
+The following keyboard commands can be issued in the server window:
+* **q**: Quit and exit the server
+* **i**: Increment the analog_value property Diamond by 1.1
+* **r**: Toggle the analog input reliability status 
+* **f**: Send foreign device registration
+* **h**: Display help menu
 
-A [Visual studio 2019](https://visualstudio.microsoft.com/downloads/) project is included with this project.
+## Build
 
-This project also auto built using [Gitlab CI](https://docs.gitlab.com/ee/ci/) on every commit.
+A [Visual studio 2019](https://visualstudio.microsoft.com/downloads/) project is included with this project. This project also auto built using [Gitlab CI](https://docs.gitlab.com/ee/ci/) on every commit.
 
-## Releases
+The CAS BACnet Stack submodule is required for compilation.
 
-Build versions of this example can be downloaded from the releases page: 
+## Example Output
 
-[https://github.com/chipkin/BACnetServerExampleCPP/releases](https://github.com/chipkin/BACnetServerExampleCPP/releases)
+```txt
+CAS BACnet Stack Server Example v0.0.5.0
+https://github.com/chipkin/BACnetServerExampleCPP
+
+FYI: Loading CAS BACnet Stack functions... OK
+FYI: CAS BACnet Stack version: 3.16.0.0
+FYI: Connecting UDP Resource to port=[47808]... OK, Connected to port
+FYI: Registering the callback Functions with the CAS BACnet Stack
+Setting up server device. device.instance=[389999]
+Created Device.
+Enabling ReadPropertyMultiple... OK
+Enabling WriteProperty... OK
+...
+Adding AnalogInput. analogInput.instance=[0]... OK
+...
+Added TrendLogMultiple. trendLogMultiple.instance=[27]... OK
+Added NetworkPort. networkPort.instance=[56]... OK
+FYI: Sending I-AM broadcast
+FYI: Entering main loop...
+...
+FYI: Received message from [192.168.56.1:47808], length [25]
+```

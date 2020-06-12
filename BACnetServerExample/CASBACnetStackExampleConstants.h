@@ -1,11 +1,16 @@
+/*
+ * BACnet Server Example C++ 
+ * ----------------------------------------------------------------------------
+ * CASBACnetStackExampleConstants.h
+ * 
+ * This is a fully static class that contains all the constants used by the example.
+ * Includes Object Types, Property Identifiers, etc.
+ * 
+ * Created by: Steven Smethurst
+*/
+
 #ifndef __CASBACnetStackExampleConstants_h__
 #define __CASBACnetStackExampleConstants_h__
-
-/*
-This is a fully static class that contains all the constants used by the example
-
-This includes Object Types, Property Identifiers, etc
-*/
 
 #include "datatypes.h"
 
