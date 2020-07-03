@@ -58,7 +58,7 @@ ExampleDatabase g_database; // The example database that stores current values.
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.5";  // See CHANGELOG.md for a full list of changes.
+const std::string APPLICATION_VERSION = "0.0.6";  // See CHANGELOG.md for a full list of changes.
 const uint32_t MAX_XML_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
@@ -1029,7 +1029,7 @@ bool CallbackGetPropertyEnum(uint32_t deviceInstance, uint16_t objectType, uint3
 		objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_DEVICE)
 	{
 		std::cout << "Debug: Device:System Status" << std::endl;
-		*value = 1;
+		*value = g_database.device.systemStatus;
 		return true;
 	}
 
