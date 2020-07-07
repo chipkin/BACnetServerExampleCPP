@@ -2,6 +2,10 @@
 
 ## Version 0.0.x
 
+### 0.0.6.x (2020-Jul-3)
+
+- Fixed CallbackGetPropertyEnum to retrieve system status from database for COV notifications
+
 ### 0.0.5.x (2020-May-21)
 
 - Added ReinitializeDevice and Writable Network Port Object properties to example
