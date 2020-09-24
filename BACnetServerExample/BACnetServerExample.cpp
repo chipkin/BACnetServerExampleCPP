@@ -204,6 +204,7 @@ int main()
 		std::cerr << "Failed to enabled the IAm" << std::endl;
 		return -1;
 	}
+	std::cout << "OK" << std::endl;
 
 	std::cout << "Enabling ReadPropertyMultiple... "; 
 	if (!fpSetServiceEnabled(g_database.device.instance, CASBACnetStackExampleConstants::SERVICE_READ_PROPERTY_MULTIPLE, true)) {
