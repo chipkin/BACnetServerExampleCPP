@@ -2,6 +2,10 @@
 
 ## Version 0.0.x
 
+### 0.0.7.x (2020-Sep-24)
+
+- Updated to CAS BACnet Stack Version 3.19.0.0 
+
 ### 0.0.6.x (2020-Jul-3)
 
 - Fixed CallbackGetPropertyEnum to retrieve system status from database for COV notifications

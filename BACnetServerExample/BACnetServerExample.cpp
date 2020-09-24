@@ -58,7 +58,7 @@ ExampleDatabase g_database; // The example database that stores current values.
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.6";  // See CHANGELOG.md for a full list of changes.
+const std::string APPLICATION_VERSION = "0.0.7";  // See CHANGELOG.md for a full list of changes.
 const uint32_t MAX_XML_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
@@ -198,6 +198,12 @@ int main()
 	// These are: Read Property, Who Is, Who Has
 	//
 	// Any other services need to be enabled as below.
+
+	std::cout << "Enabling IAm... ";
+	if (!fpSetServiceEnabled(g_database.device.instance, CASBACnetStackExampleConstants::SERVICE_I_AM, true)) {
+		std::cerr << "Failed to enabled the IAm" << std::endl;
+		return -1;
+	}
 
 	std::cout << "Enabling ReadPropertyMultiple... "; 
 	if (!fpSetServiceEnabled(g_database.device.instance, CASBACnetStackExampleConstants::SERVICE_READ_PROPERTY_MULTIPLE, true)) {
