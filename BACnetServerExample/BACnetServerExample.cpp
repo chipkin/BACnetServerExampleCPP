@@ -16,7 +16,7 @@
 #include "CASBACnetStackAdapter.h"
 #include "CASBACnetStackExampleConstants.h"
 #include "CASBACnetStackExampleDatabase.h"
-#include "CIBuildVersion.h"
+#include "CIBuildSettings.h"
 
 // Helpers 
 #include "SimpleUDP.h"

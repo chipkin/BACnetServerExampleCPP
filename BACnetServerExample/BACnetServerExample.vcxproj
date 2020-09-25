@@ -779,7 +779,7 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\submodules\cas-common\source\ChipkinUtilities.h" />
     <ClInclude Include="CASBACnetStackExampleConstants.h" />
     <ClInclude Include="CASBACnetStackExampleDatabase.h" />
-    <ClInclude Include="CIBuildVersion.h" />
+    <ClInclude Include="CIBuildSettings.h" />
     <ClInclude Include="SimpleUDP.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
