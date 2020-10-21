@@ -656,8 +656,8 @@ bool DoUserInput()
 		std::cout << "https://github.com/chipkin/BACnetServerExampleCPP" << std::endl << std::endl;
 
 		std::cout << "Help:" << std::endl;
-		std::cout << "i - (i)ncrement Analog Value:2" << g_database.analogValue.instance << " by 1.1" << std::endl;
-		std::cout << "r - Toggle the Analog Input:0 (r)eliability status" << std::endl;
+		std::cout << "i - (i)ncrement Analog Value: " << g_database.analogValue.instance << " by 1.1" << std::endl;
+		std::cout << "r - Toggle the Analog Input: 0 (r)eliability status" << std::endl;
 		std::cout << "f - Send Register (foreign) device message" << std::endl;
 		// std::cout << "d - (d)ebug" << std::endl;
 		std::cout << "h - (h)elp" << std::endl;
