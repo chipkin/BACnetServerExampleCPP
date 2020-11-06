@@ -2,9 +2,14 @@
 
 ## Version 0.0.x
 
+### 0.0.8.x (2020-Nov-05)
+
+- Updated to CAS BACnet Stack Version 3.20.0
+- Added ability to set the device instance from the command line.
+
 ### 0.0.7.x (2020-Sep-24)
 
-- Updated to CAS BACnet Stack Version 3.19.0.0 
+- Updated to CAS BACnet Stack Version 3.19.0.0
 
 ### 0.0.6.x (2020-Jul-3)
 
