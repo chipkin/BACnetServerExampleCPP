@@ -58,7 +58,7 @@ ExampleDatabase g_database; // The example database that stores current values.
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.7";  // See CHANGELOG.md for a full list of changes.
+const std::string APPLICATION_VERSION = "0.0.8";  // See CHANGELOG.md for a full list of changes.
 const uint32_t MAX_XML_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
@@ -107,11 +107,21 @@ bool DoUserInput();
 bool GetObjectName(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, char* value, uint32_t* valueElementCount, const uint32_t maxElementCount);
 
 
-int main()
+int main(int argc, char** argv)
 {
 	// Print the application version information 
 	std::cout << "CAS BACnet Stack Server Example v" << APPLICATION_VERSION << "." << CIBUILDNUMBER << std::endl; 
 	std::cout << "https://github.com/chipkin/BACnetServerExampleCPP" << std::endl << std::endl;
+
+	// Check to see if they defined the device.instance via the command arguments.
+	if (argc >= 2) {		
+		g_database.device.instance = atoi(argv[1]); 
+		std::cout << "FYI: Device instance= " << g_database.device.instance << std::endl;
+	}
+	else {
+		std::cout << "FYI: Default to use device instance= " << g_database.device.instance << std::endl;
+	}
+
 
 	// 1. Load the CAS BACnet stack functions
 	// ---------------------------------------------------------------------------

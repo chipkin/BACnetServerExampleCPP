@@ -1,11 +1,10 @@
 # BACnet Server Example C++
 
-A basic BACnet IP server example written in C++ using the [CAS BACnet Stack](https://store.chipkin.com/services/stacks/bacnet-stack). Includes various sample 
-BACnet objects and services.
+A basic BACnet IP server example written in C++ using the [CAS BACnet Stack](https://store.chipkin.com/services/stacks/bacnet-stack). Includes various sample BACnet objects and services.
 
 ## Releases
 
-Build versions of this example can be downloaded from the releases page: 
+Build versions of this example can be downloaded from the releases page:
 
 [https://github.com/chipkin/BACnetServerExampleCPP/releases](https://github.com/chipkin/BACnetServerExampleCPP/releases)
 
@@ -18,6 +17,7 @@ Download the latest release zip file on the releases page.
 Run the executable included in the zip file.
 
 Pre-configured with the following example BACnet device and objects:
+
 - **Device**: 389999 (Device Rainbow)
   - analog_input: 0  (AnalogInput Bronze)
   - analog_output: 1  (AnalogOutput Chartreuse)
@@ -41,11 +41,16 @@ Pre-configured with the following example BACnet device and objects:
   - NetworkPort: 56  (NetworkPort Vermilion)
 
 The following keyboard commands can be issued in the server window:
-* **q**: Quit and exit the server
-* **i**: Increment the analog_value property Diamond by 1.1
-* **r**: Toggle the analog input reliability status 
-* **f**: Send foreign device registration
-* **h**: Display help menu
+
+- **q**: Quit and exit the server
+- **i**: Increment the analog_value property Diamond by 1.1
+- **r**: Toggle the analog input reliability status
+- **f**: Send foreign device registration
+- **h**: Display help menu
+
+## Command arguments
+
+The first argument is the device instance. If no arguments are defined then the default device instance.
 
 ## Build
 
