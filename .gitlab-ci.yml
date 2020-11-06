@@ -82,6 +82,24 @@ Linux 64Bit Release:
   dependencies:
     - Download BACnet Stack Libaries    
 
+Linux-Rpi Arm7:
+  <<: *linux_all_features
+  stage: build  
+  when: manual  
+  tags: 
+    - arm7
+  script:
+    - "apk --no-cache add unzip curl"
+    - 'curl --location --output CASBACnetStackLibs.zip --header "PRIVATE-TOKEN: $SETTING_PRIVATE_TOKEN" "https://gitlab.com/api/v4/projects/7281208/jobs/artifacts/master/download?job=Linux-Rpi%20Arm7%20CASBACnetStack&job_token=$CI_JOB_TOKEN"'
+    - unzip CASBACnetStackLibs.zip && rm -f CASBACnetStackLibs.zip    
+    - uname -a  
+    - gcc --version 
+    - "make -f=makefileArm7"
+    - "make install -f=makefileArm7"    
+  artifacts:
+    expire_in: 1 days
+    paths:
+      - bin/BACnetServerExampleCPP_linux_Arm7_Release
 
 # CreateZip
 Create Zip:
