@@ -6,7 +6,7 @@ NAME := BACnetServerExampleCPP_linux_Arm7_Release
 # -m32 for 32bit, -m64 for 64bit
 # -Wall turns on most, but not all, compiler warnings
 #
-CFLAGS := -Wall
+CFLAGS := -Wall -std=c++11
 
 DEBUGFLAGS = -O0 -g3 -DCAS_BACNET_STACK_LIB_TYPE_LIB
 RELEASEFLAGS = -O3 -DCAS_BACNET_STACK_LIB_TYPE_LIB
@@ -15,7 +15,7 @@ LDFLAGS = -static
 
 SOURCES = $(wildcard BACnetServerExample/*.cpp) $(wildcard submodules/cas-bacnet-stack/adapters/cpp/*.cpp)  $(wildcard submodules/cas-bacnet-stack/submodules/cas-common/source/*.cpp) 
 OBJECTS = $(addprefix obj/,$(notdir $(SOURCES:.cpp=.o)))
-INCLUDES = -IBACnetServerExample -Isubmodules/cas-bacnet-stack/adapters/cpp -Isubmodules/cas-bacnet-stack/source -Isubmodules/cas-bacnet-stack/submodules/cas-common/source
+INCLUDES = -IBACnetServerExample -Isubmodules/cas-bacnet-stack/adapters/cpp -Isubmodules/cas-bacnet-stack/source -Isubmodules/cas-bacnet-stack/submodules/cas-common/source -Isubmodules/cas-bacnet-stack/submodules/xml2json/include
 LIBPATH = -Lbin 
 LIB = -ldl -lCASBACnetStack_Arm7_Release 
 
