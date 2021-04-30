@@ -58,7 +58,7 @@ ExampleDatabase g_database; // The example database that stores current values.
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.8";  // See CHANGELOG.md for a full list of changes.
+const std::string APPLICATION_VERSION = "0.0.9";  // See CHANGELOG.md for a full list of changes.
 const uint32_t MAX_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
@@ -330,37 +330,212 @@ int main(int argc, char** argv)
 
 	// Add Objects
 	// ---------------------------------------
-	std::cout << "Adding vendor-proprietary objects. Object Type=389";
-	if (!fpAddObject(g_database.device.instance, 389, 389)) {
-		std::cerr << "Failed to add vendor-proprietary objects. Object Type=389" << std::endl;
-		return -1;
-	}
-	fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_OBJECT_NAME, true);
-	fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 371, true);
-
-	// Enable ProprietaryProperty for an object 
-	// These properties are not part of the BACnet spec 
-	fpSetProprietaryProperty(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 512 + 4, false, false, CASBACnetStackExampleConstants::DATA_TYPE_CHARACTER_STRING, false, false, false);
-	fpSetProprietaryProperty(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 512 + 5, true, false, CASBACnetStackExampleConstants::DATA_TYPE_CHARACTER_STRING, false, false, false);
-	fpSetProprietaryProperty(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 512 + 6, true, true, CASBACnetStackExampleConstants::DATA_TYPE_CHARACTER_STRING, false, false, false);
-
-
-	// AnalogInput (AI) 
+	// AnalogInput (AO) 
 	std::cout << "Adding AnalogInput. analogInput.instance=[" << g_database.analogInput.instance << "]... ";
 	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance)) {
-		std::cerr << "Failed to add AnalogInput" << std::endl ;
+		std::cerr << "Failed to add AnalogInput" << std::endl;
 		return -1;
 	}
-
 	// Enable ProprietaryProperty for an object 
 	// These properties are not part of the BACnet spec 
 	fpSetProprietaryProperty(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 512 + 1, false, false, CASBACnetStackExampleConstants::DATA_TYPE_CHARACTER_STRING, false, false, false);
 	fpSetProprietaryProperty(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 512 + 2, true, false, CASBACnetStackExampleConstants::DATA_TYPE_CHARACTER_STRING, false, false, false);
 	fpSetProprietaryProperty(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 512 + 3, true, true, CASBACnetStackExampleConstants::DATA_TYPE_CHARACTER_STRING, false, false, false);
 
+	// Set the Present value to subscribable 
+	fpSetPropertySubscribable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
+	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_COV_INCURMENT, true);
+
+	// Enable the description, and Reliability property 
+	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_DESCRIPTION, true);
+	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_RELIABILITY, true);
+
+	// Enable a specific property to be subscribable for COVProperty 
+	fpSetPropertySubscribable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_RELIABILITY, true);
+	std::cout << "OK" << std::endl;
+
+	// AnalogOutput (AO) 
+	std::cout << "Added AnalogOutput. analogOutput.instance=[" << g_database.analogOutput.instance << "]... ";
+	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_OUTPUT, g_database.analogOutput.instance)) {
+		std::cerr << "Failed to add AnalogOutput" << std::endl;
+		return -1;
+	}
+	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_OUTPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_MIN_PRES_VALUE, true);
+	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_OUTPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_MAX_PRES_VALUE, true);
+	std::cout << "OK" << std::endl;
+
+	// AnalogValue (AV) 
+	std::cout << "Added AnalogValue. analogValue.instance=[" << g_database.analogValue.instance << "]... ";
+	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_VALUE, g_database.analogValue.instance)) {
+		std::cerr << "Failed to add AnalogValue" << std::endl;
+		return -1;
+	}
+	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_VALUE, g_database.analogValue.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
+	fpSetPropertySubscribable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_VALUE, g_database.analogValue.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
+	std::cout << "OK" << std::endl;
+
+	// BinaryInput (BI)
+	std::cout << "Adding BinaryInput. binaryInput.instance=[" << g_database.binaryInput.instance << "]... ";
+	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_BINARY_INPUT, g_database.binaryInput.instance)) {
+		std::cerr << "Failed to add BinaryInput" << std::endl;
+		return -1;
+	}
+	std::cout << "OK" << std::endl;
+
+	// BinaryOutput (BO)
+	std::cout << "Added BinaryOutput. binaryOutput.instance=[" << g_database.binaryOutput.instance << "]... ";
+	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_BINARY_OUTPUT, g_database.binaryOutput.instance)) {
+		std::cerr << "Failed to add BinaryOutput" << std::endl;
+		return -1;
+	}
+	std::cout << "OK" << std::endl;
+
+	// BinaryValue (BV)
+	std::cout << "Added BinaryValue. binaryValue.instance=[" << g_database.binaryValue.instance << "]... ";
+	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_BINARY_VALUE, g_database.binaryValue.instance)) {
+		std::cerr << "Failed to add BinaryValue" << std::endl;
+		return -1;
+	}
+	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_BINARY_VALUE, g_database.binaryValue.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
+	std::cout << "OK" << std::endl;
+
+	// MultiStateInput (MSI) 
+	std::cout << "Added MultiStateInput. multiStateInput.instance=[" << g_database.multiStateInput.instance << "]... ";
+	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_INPUT, g_database.multiStateInput.instance)) {
+		std::cerr << "Failed to add MultiStateInput" << std::endl;
+		return -1;
+	}
+	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_INPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_STATE_TEXT, true);
+	std::cout << "OK" << std::endl;
+
+	// MultiStateOutput (MSO)
+	std::cout << "Added MultiStateOutput. multiStateOutput.instance=[" << g_database.multiStateOutput.instance << "]... ";
+	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_OUTPUT, g_database.multiStateOutput.instance)) {
+		std::cerr << "Failed to add MultiStateOutput" << std::endl;
+		return -1;
+	}
+	std::cout << "OK" << std::endl;
+
+	// MultiStateValue (MSV)
+	std::cout << "Added MultiStateValue. multiStateValue.instance=[" << g_database.multiStateValue.instance << "]... ";
+	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_VALUE, g_database.multiStateValue.instance)) {
+		std::cerr << "Failed to add MultiStateValue" << std::endl;
+		return -1;
+	}
+	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_VALUE, g_database.multiStateValue.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
+	std::cout << "OK" << std::endl;
+
+	// BitstringValue (BSV)
+	std::cout << "Added BitstringValue. bitstringValue.instance=[" << g_database.bitstringValue.instance << "]...";
+	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_BITSTRING_VALUE, g_database.bitstringValue.instance)) {
+		std::cerr << "Failed to add BitstringValue" << std::endl;
+		return -1;
+	}
+	fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_BITSTRING_VALUE, g_database.bitstringValue.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_BIT_TEXT, true);
+	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_BITSTRING_VALUE, g_database.bitstringValue.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
+	std::cout << "OK" << std::endl;
+
+	// characterStringValue (CSV)
+	std::cout << "Added characterStringValue. characterStringValue.instance=[" << g_database.characterStringValue.instance << "]...";
+	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_CHARACTERSTRING_VALUE, g_database.characterStringValue.instance)) {
+		std::cerr << "Failed to add characterStringValue" << std::endl;
+		return -1;
+	}
+	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_CHARACTERSTRING_VALUE, g_database.characterStringValue.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
+	std::cout << "OK" << std::endl;
+
+	// DateValue (DV)
+	std::cout << "Added DateValue. dateValue.instance=[" << g_database.dateValue.instance << "]... ";
+	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_DATE_VALUE, g_database.dateValue.instance)) {
+		std::cerr << "Failed to add DateValue" << std::endl;
+		return -1;
+	}
+	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_DATE_VALUE, g_database.dateValue.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
+	std::cout << "OK" << std::endl;
+
+	// IntegerValue (IV)
+	std::cout << "Added IntegerValue. integerValue.instance=[" << g_database.integerValue.instance << "]... ";
+	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_INTEGER_VALUE, g_database.integerValue.instance)) {
+		std::cerr << "Failed to add IntegerValue" << std::endl;
+		return -1;
+	}
+	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_INTEGER_VALUE, g_database.integerValue.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
+	std::cout << "OK" << std::endl;
+
+	// LargeAnalogValue (LAV)
+	std::cout << "Added LargeAnalogValue. largeAnalogValue.instance=[" << g_database.largeAnalogValue.instance << "]... ";
+	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_LARGE_ANALOG_VALUE, g_database.largeAnalogValue.instance)) {
+		std::cerr << "Failed to add LargeAnalogValue" << std::endl;
+		return -1;
+	}
+	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_LARGE_ANALOG_VALUE, g_database.largeAnalogValue.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
+	std::cout << "OK" << std::endl;
+
+	// octetStringValue (OSV)
+	std::cout << "Added octetStringValue. octetStringValue.instance=[" << g_database.octetStringValue.instance << "]... ";
+	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_OCTETSTRING_VALUE, g_database.octetStringValue.instance)) {
+		std::cerr << "Failed to add octetStringValue" << std::endl;
+		return -1;
+	}
+	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_OCTETSTRING_VALUE, g_database.octetStringValue.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
+	std::cout << "OK" << std::endl;
+
+	// PositiveIntegerValue (PIV)
+	std::cout << "Added PositiveIntegerValue. positiveIntegerValue.instance=[" << g_database.positiveIntegerValue.instance << "]... ";
+	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_POSITIVE_INTEGER_VALUE, g_database.positiveIntegerValue.instance)) {
+		std::cerr << "Failed to add PositiveIntegerValue" << std::endl;
+		return -1;
+	}
+	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_POSITIVE_INTEGER_VALUE, g_database.positiveIntegerValue.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
+	std::cout << "OK" << std::endl;
+
+	// TimeValue (TV)
+	std::cout << "Added TimeValue. timeValue.instance=[" << g_database.timeValue.instance << "]... ";
+	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_TIME_VALUE, g_database.timeValue.instance)) {
+		std::cerr << "Failed to add TimeValue" << std::endl;
+		return -1;
+	}
+	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_TIME_VALUE, g_database.timeValue.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
+	std::cout << "OK" << std::endl;
+
+	// Add Trend Log Object
+	std::cout << "Added TrendLog. trendLog.instance=[" << g_database.trendLog.instance << "]... ";
+	if (!fpAddTrendLogObject(g_database.device.instance, g_database.trendLog.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, CASBACnetStackExampleConstants::MAX_TREND_LOG_MAX_BUFFER_SIZE, false, 0)) {
+		std::cerr << "Failed to add TrendLog" << std::endl;
+		return -1;
+	}
+
+	// Setup TrendLog Object
+	if (!fpSetTrendLogTypeToPolled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_TREND_LOG, g_database.trendLog.instance, true, false, 3000)) {
+		std::cerr << "Failed to setup TrendLog to poll every 30 seconds";
+		return -1;
+	}
+	std::cout << "OK" << std::endl;
+
+	// Add Trend Log Multiple Object
+	std::cout << "Added TrendLogMultiple. trendLogMultiple.instance=[" << g_database.trendLogMultiple.instance << "]... ";
+	if (!fpAddTrendLogMultipleObject(g_database.device.instance, g_database.trendLogMultiple.instance, CASBACnetStackExampleConstants::MAX_TREND_LOG_MAX_BUFFER_SIZE)) {
+		std::cerr << "Failed to add TrendLogMultiple" << std::endl;
+		return -1;
+	}
+
+	// Setup TrendLogMultiple Object
+	if (!fpAddLoggedObjectToTrendLogMultiple(g_database.device.instance, g_database.trendLogMultiple.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, false, 0, false, 0)) {
+		std::cerr << "Failed to add AnalogInput to be logged by TrendLogMultiple" << std::endl;
+		return -1;
+	}
+	if (!fpAddLoggedObjectToTrendLogMultiple(g_database.device.instance, g_database.trendLogMultiple.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_BINARY_INPUT, g_database.binaryInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, false, 0, false, 0)) {
+		std::cerr << "Failed to add BinaryInput to be logged by TrendLogMultiple" << std::endl;
+		return -1;
+	}
+	if (!fpSetTrendLogTypeToPolled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_TREND_LOG_MULTIPLE, g_database.trendLogMultiple.instance, true, false, 3000)) {
+		std::cerr << "Failed to setup TrendLogMultiple to poll every 30 seconds";
+		return -1;
+	}
+	std::cout << "OK" << std::endl;
 
 	// Add the Network Port Object
-	std::cout << "Added NetworkPort. networkPort.instance=[" << g_database.networkPort.instance << "]... "; 
+	std::cout << "Added NetworkPort. networkPort.instance=[" << g_database.networkPort.instance << "]... ";
 	if (!fpAddNetworkPortObject(g_database.device.instance, g_database.networkPort.instance, CASBACnetStackExampleConstants::NETWORK_TYPE_IPV4, CASBACnetStackExampleConstants::PROTOCOL_LEVEL_BACNET_APPLICATION, CASBACnetStackExampleConstants::NETWORK_PORT_LOWEST_PROTOCOL_LAYER)) {
 		std::cerr << "Failed to add NetworkPort" << std::endl;
 		return -1;

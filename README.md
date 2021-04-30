@@ -56,7 +56,7 @@ The first argument is the device instance. If no arguments are defined then the 
 
 A [Visual studio 2019](https://visualstudio.microsoft.com/downloads/) project is included with this project. This project also auto built using [Gitlab CI](https://docs.gitlab.com/ee/ci/) on every commit.
 
-The CAS BACnet Stack submodule is required for compilation.
+The [CAS BACnet Stack submodule](https://github.com/chipkin/BACnetServerExampleCPP/issues/8) is required for compilation.
 
 ## Example Output
 
