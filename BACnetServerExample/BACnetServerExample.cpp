@@ -58,8 +58,8 @@ ExampleDatabase g_database; // The example database that stores current values.
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.8";  // See CHANGELOG.md for a full list of changes.
-const uint32_t MAX_XML_RENDER_BUFFER_LENGTH = 1024 * 20;
+const std::string APPLICATION_VERSION = "0.0.9";  // See CHANGELOG.md for a full list of changes.
+const uint32_t MAX_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
 // Callback Functions to Register to the DLL
@@ -203,6 +203,7 @@ int main(int argc, char** argv)
 	}
 	std::cout << "Created Device." << std::endl; 
 
+
 	// Enable the services that this device supports
 	// Some services are mandatory for BACnet devices and are already enabled.
 	// These are: Read Property, Who Is, Who Has
@@ -329,11 +330,10 @@ int main(int argc, char** argv)
 
 	// Add Objects
 	// ---------------------------------------
-
 	// AnalogInput (AO) 
 	std::cout << "Adding AnalogInput. analogInput.instance=[" << g_database.analogInput.instance << "]... ";
 	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance)) {
-		std::cerr << "Failed to add AnalogInput" << std::endl ;
+		std::cerr << "Failed to add AnalogInput" << std::endl;
 		return -1;
 	}
 	// Enable ProprietaryProperty for an object 
@@ -353,7 +353,7 @@ int main(int argc, char** argv)
 	// Enable a specific property to be subscribable for COVProperty 
 	fpSetPropertySubscribable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_RELIABILITY, true);
 	std::cout << "OK" << std::endl;
-	
+
 	// AnalogOutput (AO) 
 	std::cout << "Added AnalogOutput. analogOutput.instance=[" << g_database.analogOutput.instance << "]... ";
 	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_OUTPUT, g_database.analogOutput.instance)) {
@@ -391,7 +391,7 @@ int main(int argc, char** argv)
 	std::cout << "OK" << std::endl;
 
 	// BinaryValue (BV)
-	std::cout << "Added BinaryValue. binaryValue.instance=[" << g_database.binaryValue.instance << "]... "; 
+	std::cout << "Added BinaryValue. binaryValue.instance=[" << g_database.binaryValue.instance << "]... ";
 	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_BINARY_VALUE, g_database.binaryValue.instance)) {
 		std::cerr << "Failed to add BinaryValue" << std::endl;
 		return -1;
@@ -400,7 +400,7 @@ int main(int argc, char** argv)
 	std::cout << "OK" << std::endl;
 
 	// MultiStateInput (MSI) 
-	std::cout << "Added MultiStateInput. multiStateInput.instance=[" << g_database.multiStateInput.instance << "]... "; 
+	std::cout << "Added MultiStateInput. multiStateInput.instance=[" << g_database.multiStateInput.instance << "]... ";
 	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_INPUT, g_database.multiStateInput.instance)) {
 		std::cerr << "Failed to add MultiStateInput" << std::endl;
 		return -1;
@@ -445,7 +445,7 @@ int main(int argc, char** argv)
 	std::cout << "OK" << std::endl;
 
 	// DateValue (DV)
-	std::cout << "Added DateValue. dateValue.instance=[" << g_database.dateValue.instance << "]... "; 
+	std::cout << "Added DateValue. dateValue.instance=[" << g_database.dateValue.instance << "]... ";
 	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_DATE_VALUE, g_database.dateValue.instance)) {
 		std::cerr << "Failed to add DateValue" << std::endl;
 		return -1;
@@ -499,7 +499,7 @@ int main(int argc, char** argv)
 	std::cout << "OK" << std::endl;
 
 	// Add Trend Log Object
-	std::cout << "Added TrendLog. trendLog.instance=[" << g_database.trendLog.instance << "]... "; 
+	std::cout << "Added TrendLog. trendLog.instance=[" << g_database.trendLog.instance << "]... ";
 	if (!fpAddTrendLogObject(g_database.device.instance, g_database.trendLog.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, CASBACnetStackExampleConstants::MAX_TREND_LOG_MAX_BUFFER_SIZE, false, 0)) {
 		std::cerr << "Failed to add TrendLog" << std::endl;
 		return -1;
@@ -535,7 +535,7 @@ int main(int argc, char** argv)
 	std::cout << "OK" << std::endl;
 
 	// Add the Network Port Object
-	std::cout << "Added NetworkPort. networkPort.instance=[" << g_database.networkPort.instance << "]... "; 
+	std::cout << "Added NetworkPort. networkPort.instance=[" << g_database.networkPort.instance << "]... ";
 	if (!fpAddNetworkPortObject(g_database.device.instance, g_database.networkPort.instance, CASBACnetStackExampleConstants::NETWORK_TYPE_IPV4, CASBACnetStackExampleConstants::PROTOCOL_LEVEL_BACNET_APPLICATION, CASBACnetStackExampleConstants::NETWORK_PORT_LOWEST_PROTOCOL_LAYER)) {
 		std::cerr << "Failed to add NetworkPort" << std::endl;
 		return -1;
@@ -555,6 +555,7 @@ int main(int argc, char** argv)
 		std::cerr << "Unable to send IAm broadcast" << std::endl ; 
 		return false;
 	}
+
 
 	// 6. Start the main loop
 	// ---------------------------------------------------------------------------
@@ -717,11 +718,24 @@ uint16_t CallbackReceiveMessage(uint8_t* message, const uint16_t maxMessageLengt
 		*receivedConnectionStringLength = 6;
 		*networkType = CASBACnetStackExampleConstants::NETWORK_TYPE_IP;
 
+		/*
 		// Process the message as XML
-		static char xmlRenderBuffer[MAX_XML_RENDER_BUFFER_LENGTH]; 
-		if (fpDecodeAsXML((char*)message, bytesRead, xmlRenderBuffer, MAX_XML_RENDER_BUFFER_LENGTH) > 0) {
+		static char xmlRenderBuffer[MAX_RENDER_BUFFER_LENGTH ]; 
+		if (fpDecodeAsXML((char*)message, bytesRead, xmlRenderBuffer, MAX_RENDER_BUFFER_LENGTH ) > 0) {
+			std::cout << "---------------------" << std::endl;				
 			std::cout << xmlRenderBuffer << std::endl; 
-			memset(xmlRenderBuffer, 0, MAX_XML_RENDER_BUFFER_LENGTH);
+			std::cout << "---------------------" << std::endl;
+			memset(xmlRenderBuffer, 0, MAX_RENDER_BUFFER_LENGTH );
+		}
+		*/
+
+		// Process the message as JSON
+		static char jsonRenderBuffer[MAX_RENDER_BUFFER_LENGTH];
+		if (fpDecodeAsJSON((char*)message, bytesRead, jsonRenderBuffer, MAX_RENDER_BUFFER_LENGTH) > 0) {
+			std::cout << "---------------------" << std::endl;
+			std::cout << jsonRenderBuffer << std::endl;
+			std::cout << "---------------------" << std::endl;
+			memset(jsonRenderBuffer, 0, MAX_RENDER_BUFFER_LENGTH);
 		}
 	}
 
@@ -731,6 +745,8 @@ uint16_t CallbackReceiveMessage(uint8_t* message, const uint16_t maxMessageLengt
 // Callback used by the BACnet Stack to send a BACnet message
 uint16_t CallbackSendMessage(const uint8_t* message, const uint16_t messageLength, const uint8_t* connectionString, const uint8_t connectionStringLength, const uint8_t networkType, bool broadcast)
 {
+	std::cout << "CallbackSendMessage" << std::endl;
+
 	if (message == NULL || messageLength == 0) {
 		std::cout << "Nothing to send" << std::endl;
 		return 0;
@@ -772,11 +788,22 @@ uint16_t CallbackSendMessage(const uint8_t* message, const uint16_t messageLengt
 		return 0;
 	}
 
+	/*
 	// Get the XML rendered version of the just sent message
 	static char xmlRenderBuffer[MAX_XML_RENDER_BUFFER_LENGTH];
 	if (fpDecodeAsXML((char*)message, messageLength, xmlRenderBuffer, MAX_XML_RENDER_BUFFER_LENGTH) > 0) {
 		std::cout << xmlRenderBuffer << std::endl;
 		memset(xmlRenderBuffer, 0, MAX_XML_RENDER_BUFFER_LENGTH);
+	}
+	*/
+
+	// Get the JSON rendered version of the just sent message
+	static char jsonRenderBuffer[MAX_RENDER_BUFFER_LENGTH];
+	if (fpDecodeAsJSON((char*)message, messageLength, jsonRenderBuffer, MAX_RENDER_BUFFER_LENGTH) > 0) {
+		std::cout << "---------------------" << std::endl;
+		std::cout << jsonRenderBuffer << std::endl;
+		std::cout << "---------------------" << std::endl;
+		memset(jsonRenderBuffer, 0, MAX_RENDER_BUFFER_LENGTH);
 	}
 
 	return messageLength;
@@ -999,6 +1026,8 @@ bool CallbackGetPropertyDouble(uint32_t deviceInstance, uint16_t objectType, uin
 // Callback used by the BACnet Stack to get Enumerated property values from the user
 bool CallbackGetPropertyEnum(uint32_t deviceInstance, uint16_t objectType, uint32_t objectInstance, uint32_t propertyIdentifier, uint32_t* value, bool useArrayIndex, uint32_t propertyArrayIndex)
 {
+	std::cout << "CallbackGetPropertyEnum deviceInstance=" << deviceInstance << ", objectType=" << objectType << ", objectInstance=" << objectInstance << ", propertyIdentifier=" << propertyIdentifier << ", useArrayIndex=" << useArrayIndex << ", propertyArrayIndex=" << propertyArrayIndex << std::endl; 
+
 	// Example of Binary Input / Value Object Present Value property
 	if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE) {
 		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_BINARY_INPUT && objectInstance == g_database.binaryInput.instance) {
@@ -1680,13 +1709,14 @@ bool GetObjectName(const uint32_t deviceInstance, const uint16_t objectType, con
 		*valueElementCount = (uint32_t) stringSize;
 		return true;
 	}
-	else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_OUTPUT && objectInstance == g_database.analogOutput.instance) {
-		stringSize = g_database.analogOutput.objectName.size();
+	else if (objectType == 389 ) {
+		std::string name = "This is an example of the name";
+		stringSize = name.size();
 		if (stringSize > maxElementCount) {
 			std::cerr << "Error - not enough space to store full name of objectType=[" << objectType << "], objectInstance=[" << objectInstance << " ]" << std::endl;
 			return false;
 		}
-		memcpy(value, g_database.analogOutput.objectName.c_str(), stringSize);
+		memcpy(value, name.c_str(), stringSize);
 		*valueElementCount = (uint32_t) stringSize;
 		return true;
 	}

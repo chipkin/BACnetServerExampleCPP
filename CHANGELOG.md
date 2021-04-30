@@ -2,6 +2,11 @@
 
 ## Version 0.0.x
 
+### 0.0.9.x (2020-Nov-05)
+
+- Updated to CAS BACnet Stack Version 3.21.0
+- Decode incoming packets as JSON instead of XML
+
 ### 0.0.8.x (2020-Nov-05)
 
 - Updated to CAS BACnet Stack Version 3.20.0
