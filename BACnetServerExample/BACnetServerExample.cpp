@@ -294,6 +294,14 @@ int main(int argc, char** argv)
 	}
 	std::cout << "OK" << std::endl;
 
+	std::cout << "Enabling UnconfirmedTextMessage...";
+	if (!fpSetServiceEnabled(g_database.device.instance, CASBACnetStackExampleConstants::SERVICE_UNCONFIRMED_TEXT_MESSAGE, true)) {
+		std::cerr << "Failed to enable the UnconfirmedTextMessage service";
+		return false;
+	}
+	std::cout << "OK" << std::endl;
+
+
 	// Enable Optional Device Properties
 	if (!fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_DEVICE, g_database.device.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_DESCRIPTION, true)) {
 		std::cerr << "Failed to enable the description property for Device" << std::endl;
@@ -556,6 +564,13 @@ int main(int argc, char** argv)
 		return false;
 	}
 
+	// Broadcast BACnet stack version to the network via UnconfirmedTextMessage
+	char stackVersionInfo[50];
+	sprintf(stackVersionInfo, "CAS BACnet Stack v%u.%u.%u.%u", fpGetAPIMajorVersion(), fpGetAPIMinorVersion(), fpGetAPIPatchVersion(), fpGetAPIBuildVersion());
+	if (!fpSendUnconfirmedTextMessage(g_database.device.instance, false, 0, NULL, 0, 0, stackVersionInfo, strlen(stackVersionInfo), connectionString, 6, CASBACnetStackExampleConstants::NETWORK_TYPE_IP, true, 65535, NULL, 0)) {
+		std::cerr << "Unable to send UnconfirmedTextMessage broadcast" << std::endl;
+		return false;
+	}
 
 	// 6. Start the main loop
 	// ---------------------------------------------------------------------------
@@ -718,7 +733,7 @@ uint16_t CallbackReceiveMessage(uint8_t* message, const uint16_t maxMessageLengt
 		*receivedConnectionStringLength = 6;
 		*networkType = CASBACnetStackExampleConstants::NETWORK_TYPE_IP;
 
-		/*
+		
 		// Process the message as XML
 		static char xmlRenderBuffer[MAX_RENDER_BUFFER_LENGTH ]; 
 		if (fpDecodeAsXML((char*)message, bytesRead, xmlRenderBuffer, MAX_RENDER_BUFFER_LENGTH ) > 0) {
@@ -727,8 +742,8 @@ uint16_t CallbackReceiveMessage(uint8_t* message, const uint16_t maxMessageLengt
 			std::cout << "---------------------" << std::endl;
 			memset(xmlRenderBuffer, 0, MAX_RENDER_BUFFER_LENGTH );
 		}
-		*/
-
+		
+		/*
 		// Process the message as JSON
 		static char jsonRenderBuffer[MAX_RENDER_BUFFER_LENGTH];
 		if (fpDecodeAsJSON((char*)message, bytesRead, jsonRenderBuffer, MAX_RENDER_BUFFER_LENGTH) > 0) {
@@ -737,6 +752,7 @@ uint16_t CallbackReceiveMessage(uint8_t* message, const uint16_t maxMessageLengt
 			std::cout << "---------------------" << std::endl;
 			memset(jsonRenderBuffer, 0, MAX_RENDER_BUFFER_LENGTH);
 		}
+		*/
 	}
 
 	return bytesRead;
@@ -788,15 +804,15 @@ uint16_t CallbackSendMessage(const uint8_t* message, const uint16_t messageLengt
 		return 0;
 	}
 
-	/*
+	
 	// Get the XML rendered version of the just sent message
-	static char xmlRenderBuffer[MAX_XML_RENDER_BUFFER_LENGTH];
-	if (fpDecodeAsXML((char*)message, messageLength, xmlRenderBuffer, MAX_XML_RENDER_BUFFER_LENGTH) > 0) {
+	static char xmlRenderBuffer[MAX_RENDER_BUFFER_LENGTH];
+	if (fpDecodeAsXML((char*)message, messageLength, xmlRenderBuffer, MAX_RENDER_BUFFER_LENGTH) > 0) {
 		std::cout << xmlRenderBuffer << std::endl;
-		memset(xmlRenderBuffer, 0, MAX_XML_RENDER_BUFFER_LENGTH);
+		memset(xmlRenderBuffer, 0, MAX_RENDER_BUFFER_LENGTH);
 	}
-	*/
-
+	
+	/*
 	// Get the JSON rendered version of the just sent message
 	static char jsonRenderBuffer[MAX_RENDER_BUFFER_LENGTH];
 	if (fpDecodeAsJSON((char*)message, messageLength, jsonRenderBuffer, MAX_RENDER_BUFFER_LENGTH) > 0) {
@@ -805,6 +821,7 @@ uint16_t CallbackSendMessage(const uint8_t* message, const uint16_t messageLengt
 		std::cout << "---------------------" << std::endl;
 		memset(jsonRenderBuffer, 0, MAX_RENDER_BUFFER_LENGTH);
 	}
+	*/
 
 	return messageLength;
 }
