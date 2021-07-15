@@ -742,7 +742,7 @@ uint16_t CallbackReceiveMessage(uint8_t* message, const uint16_t maxMessageLengt
 		*receivedConnectionStringLength = 6;
 		*networkType = CASBACnetStackExampleConstants::NETWORK_TYPE_IP;
 
-		
+		/*
 		// Process the message as XML
 		static char xmlRenderBuffer[MAX_RENDER_BUFFER_LENGTH ]; 
 		if (fpDecodeAsXML((char*)message, bytesRead, xmlRenderBuffer, MAX_RENDER_BUFFER_LENGTH ) > 0) {
@@ -751,8 +751,8 @@ uint16_t CallbackReceiveMessage(uint8_t* message, const uint16_t maxMessageLengt
 			std::cout << "---------------------" << std::endl;
 			memset(xmlRenderBuffer, 0, MAX_RENDER_BUFFER_LENGTH );
 		}
+		*/
 		
-		/*
 		// Process the message as JSON
 		static char jsonRenderBuffer[MAX_RENDER_BUFFER_LENGTH];
 		if (fpDecodeAsJSON((char*)message, bytesRead, jsonRenderBuffer, MAX_RENDER_BUFFER_LENGTH) > 0) {
@@ -761,7 +761,6 @@ uint16_t CallbackReceiveMessage(uint8_t* message, const uint16_t maxMessageLengt
 			std::cout << "---------------------" << std::endl;
 			memset(jsonRenderBuffer, 0, MAX_RENDER_BUFFER_LENGTH);
 		}
-		*/
 	}
 
 	return bytesRead;
@@ -813,15 +812,15 @@ uint16_t CallbackSendMessage(const uint8_t* message, const uint16_t messageLengt
 		return 0;
 	}
 
-	
+	/*
 	// Get the XML rendered version of the just sent message
 	static char xmlRenderBuffer[MAX_RENDER_BUFFER_LENGTH];
 	if (fpDecodeAsXML((char*)message, messageLength, xmlRenderBuffer, MAX_RENDER_BUFFER_LENGTH) > 0) {
 		std::cout << xmlRenderBuffer << std::endl;
 		memset(xmlRenderBuffer, 0, MAX_RENDER_BUFFER_LENGTH);
 	}
+	*/
 	
-	/*
 	// Get the JSON rendered version of the just sent message
 	static char jsonRenderBuffer[MAX_RENDER_BUFFER_LENGTH];
 	if (fpDecodeAsJSON((char*)message, messageLength, jsonRenderBuffer, MAX_RENDER_BUFFER_LENGTH) > 0) {
@@ -830,7 +829,6 @@ uint16_t CallbackSendMessage(const uint8_t* message, const uint16_t messageLengt
 		std::cout << "---------------------" << std::endl;
 		memset(jsonRenderBuffer, 0, MAX_RENDER_BUFFER_LENGTH);
 	}
-	*/
 
 	return messageLength;
 }
@@ -2029,18 +2027,16 @@ bool CallbackReinitializeDevice(const uint32_t deviceInstance, const uint32_t re
 bool HookTextMessage(const uint32_t sourceDeviceIdentifier, const bool useMessageClass, const uint32_t messageClassUnsigned, const char* messageClassString, const uint32_t messageClassStringLength, const uint8_t messagePriority, const char* message, const uint32_t messageLength, const uint8_t* connectionString, const uint8_t connectionStringLength, const uint8_t networkType, const uint16_t sourceNetwork, const uint8_t* sourceAddress, const uint8_t sourceAddressLength, uint16_t* errorClass, uint16_t* errorCode) {
 	// Configured to respond to Client example Confirmed Text Message Requests
 	uint32_t expectedSourceDeviceIdentifier = 389002;
-	char expectedMessage[] = "Hello from the C++ client example";
 	uint32_t expectedMessageClass = 5;
 	uint8_t expectedMessagePriority = 0; // normal
 
 	// Check that this device is configured to do some logic using the text message
 	if (sourceDeviceIdentifier == expectedSourceDeviceIdentifier &&
 		messageClassUnsigned == expectedMessageClass &&
-		messagePriority == expectedMessagePriority &&
-		memcmp(message, expectedMessage, messageLength) == 0) {
+		messagePriority == expectedMessagePriority) {
 
-		// Perform some logic
-		std::cout << std::endl << "Received text message request meant for us to perform some logic" << std::endl;
+		// Perform some logic using the message
+		std::cout << std::endl << "Received text message request meant for us to perform some logic: " << message << std::endl;
 
 		// Device is configured to handle the confirmed text message, response is Result(+) or simpleAck
 		return true;
