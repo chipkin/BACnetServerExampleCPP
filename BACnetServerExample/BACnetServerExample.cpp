@@ -101,6 +101,7 @@ bool CallbackCreateObject(const uint32_t deviceInstance, const uint16_t objectTy
 bool CallbackDeleteObject(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance);
 
 bool CallbackReinitializeDevice(const uint32_t deviceInstance, const uint32_t reinitializedState, const char* password, const uint32_t passwordLength, uint32_t* errorCode);
+bool HookTextMessage(const uint32_t sourceDeviceIdentifier, const bool useMessageClass, const uint32_t messageClassUnsigned, const char* messageClassString, const uint32_t messageClassStringLength, const uint8_t messagePriority, const char* message, const uint32_t messageLength, const uint8_t* connectionString, const uint8_t connectionStringLength, const uint8_t networkType, const uint16_t sourceNetwork, const uint8_t* sourceAddress, const uint8_t sourceAddressLength, uint16_t* errorClass, uint16_t* errorCode);
 
 // Helper functions 
 bool DoUserInput();
@@ -190,6 +191,7 @@ int main(int argc, char** argv)
 
 	// Remote Device Management
 	fpRegisterCallbackReinitializeDevice(CallbackReinitializeDevice);
+	fpRegisterHookTextMessage(HookTextMessage);
 
 	// 4. Setup the BACnet device
 	// ---------------------------------------------------------------------------
@@ -297,6 +299,13 @@ int main(int argc, char** argv)
 	std::cout << "Enabling UnconfirmedTextMessage...";
 	if (!fpSetServiceEnabled(g_database.device.instance, CASBACnetStackExampleConstants::SERVICE_UNCONFIRMED_TEXT_MESSAGE, true)) {
 		std::cerr << "Failed to enable the UnconfirmedTextMessage service";
+		return false;
+	}
+	std::cout << "OK" << std::endl;
+
+	std::cout << "Enabling ConfirmedTextMessage...";
+	if (!fpSetServiceEnabled(g_database.device.instance, CASBACnetStackExampleConstants::SERVICE_CONFIRMED_TEXT_MESSAGE, true)) {
+		std::cerr << "Failed to enable the ConfirmedTextMessage service";
 		return false;
 	}
 	std::cout << "OK" << std::endl;
@@ -2017,4 +2026,35 @@ bool CallbackReinitializeDevice(const uint32_t deviceInstance, const uint32_t re
 	}
 }
 
+bool HookTextMessage(const uint32_t sourceDeviceIdentifier, const bool useMessageClass, const uint32_t messageClassUnsigned, const char* messageClassString, const uint32_t messageClassStringLength, const uint8_t messagePriority, const char* message, const uint32_t messageLength, const uint8_t* connectionString, const uint8_t connectionStringLength, const uint8_t networkType, const uint16_t sourceNetwork, const uint8_t* sourceAddress, const uint8_t sourceAddressLength, uint16_t* errorClass, uint16_t* errorCode) {
+	// Configured to respond to Client example Confirmed Text Message Requests
+	uint32_t expectedSourceDeviceIdentifier = 389002;
+	char expectedMessage[] = "Hello from the C++ client example";
+	uint32_t expectedMessageClass = 5;
+	uint8_t expectedMessagePriority = 0; // normal
+
+	// Check that this device is configured to do some logic using the text message
+	if (sourceDeviceIdentifier == expectedSourceDeviceIdentifier &&
+		messageClassUnsigned == expectedMessageClass &&
+		messagePriority == expectedMessagePriority &&
+		memcmp(message, expectedMessage, messageLength) == 0) {
+
+		// Perform some logic
+		std::cout << std::endl << "Received text message request meant for us to perform some logic" << std::endl;
+
+		// Device is configured to handle the confirmed text message, response is Result(+) or simpleAck
+		return true;
+	}
+
+	// This device is not configured to handle the text message, response is Result(-)
+	// Ignored for Unconfirmed Text Message Requests
+
+	// Create an error
+	uint16_t deviceErrorClass = 0;
+	uint16_t notConfiguredErrorCode = 132;
+
+	*errorClass = deviceErrorClass;
+	*errorCode = notConfiguredErrorCode;
+	return false;
+}
 
