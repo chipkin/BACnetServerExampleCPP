@@ -129,9 +129,11 @@ public:
 	static const uint8_t SERVICE_READ_PROPERTY_MULTIPLE = 14;
 	static const uint8_t SERVICE_WRITE_PROPERTY = 15;
 	static const uint8_t SERVICE_WRITE_PROPERTY_MULTIPLE = 16;
+	static const uint8_t SERVICE_CONFIRMED_TEXT_MESSAGE = 19;
 	static const uint8_t SERVICE_REINITIALIZE_DEVICE = 20;
 	static const uint8_t SERVICE_I_AM = 26;
 	static const uint8_t SERVICE_I_HAVE = 27;
+	static const uint8_t SERVICE_UNCONFIRMED_TEXT_MESSAGE = 31;
 	static const uint8_t SERVICE_TIME_SYNCHRONIZATION = 32;
 	static const uint8_t SERVICE_READ_RANGE = 35;
 	static const uint8_t SERVICE_UTC_TIME_SYNCHRONIZATION = 36;

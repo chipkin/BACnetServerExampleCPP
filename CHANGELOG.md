@@ -2,6 +2,12 @@
 
 ## Version 0.0.x
 
+### 0.0.10.x (2021-Jul-15)
+
+- Updated to CAS BACnet Stack Version 3.24.6
+- Added support for confirmed and unconfirmed text message requests
+- Added UnconfirmedTextMessageRequest broadcast of stack version on application startup
+
 ### 0.0.9.x (2020-Nov-05)
 
 - Updated to CAS BACnet Stack Version 3.21.0

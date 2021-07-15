@@ -58,7 +58,7 @@ ExampleDatabase g_database; // The example database that stores current values.
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.9";  // See CHANGELOG.md for a full list of changes.
+const std::string APPLICATION_VERSION = "0.0.10";  // See CHANGELOG.md for a full list of changes.
 const uint32_t MAX_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
@@ -101,6 +101,7 @@ bool CallbackCreateObject(const uint32_t deviceInstance, const uint16_t objectTy
 bool CallbackDeleteObject(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance);
 
 bool CallbackReinitializeDevice(const uint32_t deviceInstance, const uint32_t reinitializedState, const char* password, const uint32_t passwordLength, uint32_t* errorCode);
+bool HookTextMessage(const uint32_t sourceDeviceIdentifier, const bool useMessageClass, const uint32_t messageClassUnsigned, const char* messageClassString, const uint32_t messageClassStringLength, const uint8_t messagePriority, const char* message, const uint32_t messageLength, const uint8_t* connectionString, const uint8_t connectionStringLength, const uint8_t networkType, const uint16_t sourceNetwork, const uint8_t* sourceAddress, const uint8_t sourceAddressLength, uint16_t* errorClass, uint16_t* errorCode);
 
 // Helper functions 
 bool DoUserInput();
@@ -190,6 +191,7 @@ int main(int argc, char** argv)
 
 	// Remote Device Management
 	fpRegisterCallbackReinitializeDevice(CallbackReinitializeDevice);
+	fpRegisterHookTextMessage(HookTextMessage);
 
 	// 4. Setup the BACnet device
 	// ---------------------------------------------------------------------------
@@ -293,6 +295,21 @@ int main(int argc, char** argv)
 		return false;
 	}
 	std::cout << "OK" << std::endl;
+
+	std::cout << "Enabling UnconfirmedTextMessage...";
+	if (!fpSetServiceEnabled(g_database.device.instance, CASBACnetStackExampleConstants::SERVICE_UNCONFIRMED_TEXT_MESSAGE, true)) {
+		std::cerr << "Failed to enable the UnconfirmedTextMessage service";
+		return false;
+	}
+	std::cout << "OK" << std::endl;
+
+	std::cout << "Enabling ConfirmedTextMessage...";
+	if (!fpSetServiceEnabled(g_database.device.instance, CASBACnetStackExampleConstants::SERVICE_CONFIRMED_TEXT_MESSAGE, true)) {
+		std::cerr << "Failed to enable the ConfirmedTextMessage service";
+		return false;
+	}
+	std::cout << "OK" << std::endl;
+
 
 	// Enable Optional Device Properties
 	if (!fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_DEVICE, g_database.device.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_DESCRIPTION, true)) {
@@ -556,6 +573,13 @@ int main(int argc, char** argv)
 		return false;
 	}
 
+	// Broadcast BACnet stack version to the network via UnconfirmedTextMessage
+	char stackVersionInfo[50];
+	sprintf(stackVersionInfo, "CAS BACnet Stack v%u.%u.%u.%u", fpGetAPIMajorVersion(), fpGetAPIMinorVersion(), fpGetAPIPatchVersion(), fpGetAPIBuildVersion());
+	if (!fpSendUnconfirmedTextMessage(g_database.device.instance, false, 0, NULL, 0, 0, stackVersionInfo, strlen(stackVersionInfo), connectionString, 6, CASBACnetStackExampleConstants::NETWORK_TYPE_IP, true, 65535, NULL, 0)) {
+		std::cerr << "Unable to send UnconfirmedTextMessage broadcast" << std::endl;
+		return false;
+	}
 
 	// 6. Start the main loop
 	// ---------------------------------------------------------------------------
@@ -728,7 +752,7 @@ uint16_t CallbackReceiveMessage(uint8_t* message, const uint16_t maxMessageLengt
 			memset(xmlRenderBuffer, 0, MAX_RENDER_BUFFER_LENGTH );
 		}
 		*/
-
+		
 		// Process the message as JSON
 		static char jsonRenderBuffer[MAX_RENDER_BUFFER_LENGTH];
 		if (fpDecodeAsJSON((char*)message, bytesRead, jsonRenderBuffer, MAX_RENDER_BUFFER_LENGTH) > 0) {
@@ -790,13 +814,13 @@ uint16_t CallbackSendMessage(const uint8_t* message, const uint16_t messageLengt
 
 	/*
 	// Get the XML rendered version of the just sent message
-	static char xmlRenderBuffer[MAX_XML_RENDER_BUFFER_LENGTH];
-	if (fpDecodeAsXML((char*)message, messageLength, xmlRenderBuffer, MAX_XML_RENDER_BUFFER_LENGTH) > 0) {
+	static char xmlRenderBuffer[MAX_RENDER_BUFFER_LENGTH];
+	if (fpDecodeAsXML((char*)message, messageLength, xmlRenderBuffer, MAX_RENDER_BUFFER_LENGTH) > 0) {
 		std::cout << xmlRenderBuffer << std::endl;
-		memset(xmlRenderBuffer, 0, MAX_XML_RENDER_BUFFER_LENGTH);
+		memset(xmlRenderBuffer, 0, MAX_RENDER_BUFFER_LENGTH);
 	}
 	*/
-
+	
 	// Get the JSON rendered version of the just sent message
 	static char jsonRenderBuffer[MAX_RENDER_BUFFER_LENGTH];
 	if (fpDecodeAsJSON((char*)message, messageLength, jsonRenderBuffer, MAX_RENDER_BUFFER_LENGTH) > 0) {
@@ -2000,4 +2024,33 @@ bool CallbackReinitializeDevice(const uint32_t deviceInstance, const uint32_t re
 	}
 }
 
+bool HookTextMessage(const uint32_t sourceDeviceIdentifier, const bool useMessageClass, const uint32_t messageClassUnsigned, const char* messageClassString, const uint32_t messageClassStringLength, const uint8_t messagePriority, const char* message, const uint32_t messageLength, const uint8_t* connectionString, const uint8_t connectionStringLength, const uint8_t networkType, const uint16_t sourceNetwork, const uint8_t* sourceAddress, const uint8_t sourceAddressLength, uint16_t* errorClass, uint16_t* errorCode) {
+	// Configured to respond to Client example Confirmed Text Message Requests
+	uint32_t expectedSourceDeviceIdentifier = 389002;
+	uint32_t expectedMessageClass = 5;
+	uint8_t expectedMessagePriority = 0; // normal
+
+	// Check that this device is configured to do some logic using the text message
+	if (sourceDeviceIdentifier == expectedSourceDeviceIdentifier &&
+		messageClassUnsigned == expectedMessageClass &&
+		messagePriority == expectedMessagePriority) {
+
+		// Perform some logic using the message
+		std::cout << std::endl << "Received text message request meant for us to perform some logic: " << message << std::endl;
+
+		// Device is configured to handle the confirmed text message, response is Result(+) or simpleAck
+		return true;
+	}
+
+	// This device is not configured to handle the text message, response is Result(-)
+	// Ignored for Unconfirmed Text Message Requests
+
+	// Create an error
+	uint16_t deviceErrorClass = 0;
+	uint16_t notConfiguredErrorCode = 132;
+
+	*errorClass = deviceErrorClass;
+	*errorCode = notConfiguredErrorCode;
+	return false;
+}
 
