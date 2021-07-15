@@ -219,6 +219,7 @@
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetConfirmedServiceACK.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetConfirmedServiceChoice.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetConfirmedServiceRequest.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetConfirmedTextMessageRequest.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetCOVMultipleSubscription.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetCovNotification.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetCOVNotificationMultipleRequest.cpp" />
@@ -313,8 +314,11 @@
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetLogMultipleRecord.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetLogRecord.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetMaintenance.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetMessageClass.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetMessagePriority.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetMSTPPacket.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetNetworkLayerProtocolMessage.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetNetworkLayerVendorProprietaryMessage.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetNetworkNumberIs.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetNetworkNumberQuality.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetNetworkParameters.cpp" />
@@ -416,6 +420,7 @@
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackObjectSettings.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackReadPropertyAsync.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackSentConfirmedRequests.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackSettings.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackStoredDBPropertyValues.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackTrendLog.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackTrendLogBase.cpp" />
@@ -432,6 +437,8 @@
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSubscribeCOVPropertyRequest.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSubscribeCOVRequest.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetTag.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetTextMessage.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetTextMessageProcessor.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetTimeRangeSpecifier.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetTimerState.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetTimerTransition.cpp" />
@@ -444,6 +451,7 @@
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetUnconfirmedRequestProcessor.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetUnconfirmedServiceChoice.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetUnconfirmedServiceRequest.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetUnconfirmedTextMessageRequest.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetUTCTimeSynchronizationProcessor.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetUTCTimeSynchronizationRequest.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetVTClass.cpp" />
@@ -518,6 +526,7 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetConfirmedServiceACK.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetConfirmedServiceChoice.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetConfirmedServiceRequest.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetConfirmedTextMessageRequest.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetCOVMultipleSubscription.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetCovNotification.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetCOVNotificationMultipleRequest.h" />
@@ -613,8 +622,11 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetLogRecord.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetLogStatus.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetMaintenance.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetMessageClass.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetMessagePriority.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetMSTPPacket.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetNetworkLayerProtocolMessage.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetNetworkLayerVendorProprietaryMessage.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetNetworkNumberIs.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetNetworkNumberQuality.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetNetworkParameters.h" />
@@ -721,6 +733,7 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackObjectSettings.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackReadPropertyAsync.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackSentConfirmedRequests.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackSettings.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackStoredDBPropertyValues.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackTrendLog.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackTrendLogBase.h" />
@@ -738,6 +751,8 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSubscribeCOVPropertyRequest.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSubscribeCOVRequest.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetTag.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetTextMessage.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetTextMessageProcessor.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetTimeRangeSpecifier.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetTimerState.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetTimerTransition.h" />
@@ -750,6 +765,7 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetUnconfirmedRequestProcessor.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetUnconfirmedServiceChoice.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetUnconfirmedServiceRequest.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetUnconfirmedTextMessageRequest.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetUTCTimeSynchronizationProcessor.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetUTCTimeSynchronizationRequest.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetVTClass.h" />
