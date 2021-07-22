@@ -58,7 +58,7 @@ ExampleDatabase g_database; // The example database that stores current values.
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.10";  // See CHANGELOG.md for a full list of changes.
+const std::string APPLICATION_VERSION = "0.0.11";  // See CHANGELOG.md for a full list of changes.
 const uint32_t MAX_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
@@ -789,11 +789,11 @@ uint16_t CallbackSendMessage(const uint8_t* message, const uint16_t messageLengt
 	// Prepare the IP Address
 	char ipAddress[32];
 	if (broadcast) {
-		snprintf( ipAddress, 32, "%u.%u.%u.%u",
-			(connectionString[0] & g_database.networkPort.IPSubnetMask[0]) == 0 ? 255 : connectionString[0],
-			(connectionString[1] & g_database.networkPort.IPSubnetMask[1]) == 0 ? 255 : connectionString[1],
-			(connectionString[2] & g_database.networkPort.IPSubnetMask[2]) == 0 ? 255 : connectionString[2],
-			(connectionString[3] & g_database.networkPort.IPSubnetMask[3]) == 0 ? 255 : connectionString[3]);
+		snprintf( ipAddress, 32, "%hhu.%hhu.%hhu.%hhu",
+			connectionString[0] | ~g_database.networkPort.IPSubnetMask[0],
+			connectionString[1] | ~g_database.networkPort.IPSubnetMask[1],
+			connectionString[2] | ~g_database.networkPort.IPSubnetMask[2],
+			connectionString[3] | ~g_database.networkPort.IPSubnetMask[3]);
 	}
 	else {
 		snprintf( ipAddress, 32, "%u.%u.%u.%u", connectionString[0], connectionString[1], connectionString[2], connectionString[3]);
