@@ -230,7 +230,7 @@ void ExampleDatabase::LoadNetworkPortProperties() {
 
 				// Prepare the broadcast address
 				for (size_t i = 0; i < 4; i++) {
-					this->networkPort.BroadcastIPAddress[i] = ((this->networkPort.IPAddress[i] & this->networkPort.IPSubnetMask[i]) == 0 ? 0xFF : this->networkPort.IPAddress[i]);
+					this->networkPort.BroadcastIPAddress[i] = this->networkPort.IPAddress[i] | ~this->networkPort.IPSubnetMask[i];
 				}
 
 				break;
