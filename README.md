@@ -58,7 +58,7 @@ A [Visual studio 2019](https://visualstudio.microsoft.com/downloads/) project is
 
 The [CAS BACnet Stack submodule](https://github.com/chipkin/BACnetServerExampleCPP/issues/8) is required for compilation.
 
-For the example server to run properly, please enable all object types and features of the CAS BACNet Stack. For more details, please reference `Enabling optional functionality` and `Compiling example projects` sections of the [Quick Start Guide](https://docs.google.com/document/d/1xhUkrseDBnwMS6MU79KKqB7WBDRgA-3XYL8rDkH4_Yk/edit#heading=h.4v5o7vyy6trs).
+For the example server to run properly, please enable all object types and features of the CAS BACNet Stack. For more details, please reference `Enabling optional functionality` and `Compiling example projects` sections of the *Quick Start Guide* (please contact Chipkin for this document).
 
 ## Example Output
 
