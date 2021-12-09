@@ -245,6 +245,7 @@
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDeleteForeignDeviceTableEntry.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDeleteObjectProcessor.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDeleteObjectRequest.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDeviceCommunicationControlProcessor.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDeviceCommunicationControlRequest.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDeviceObjectPropertyReference.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDeviceObjectReference.cpp" />
@@ -552,6 +553,7 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDeleteForeignDeviceTableEntry.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDeleteObjectProcessor.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDeleteObjectRequest.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDeviceCommunicationControlProcessor.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDeviceCommunicationControlRequest.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDeviceObjectPropertyReference.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDeviceObjectReference.h" />

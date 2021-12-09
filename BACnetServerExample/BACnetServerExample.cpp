@@ -58,7 +58,7 @@ ExampleDatabase g_database; // The example database that stores current values.
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.11";  // See CHANGELOG.md for a full list of changes.
+const std::string APPLICATION_VERSION = "0.0.12";  // See CHANGELOG.md for a full list of changes.
 const uint32_t MAX_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
@@ -101,6 +101,7 @@ bool CallbackCreateObject(const uint32_t deviceInstance, const uint16_t objectTy
 bool CallbackDeleteObject(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance);
 
 bool CallbackReinitializeDevice(const uint32_t deviceInstance, const uint32_t reinitializedState, const char* password, const uint32_t passwordLength, uint32_t* errorCode);
+bool CallbackDeviceCommunicationControl(const uint32_t deviceInstance, const uint8_t enableDisable, const char* password, const uint8_t passwordLength, const bool useTimeDuration, const uint16_t timeDuration, uint32_t* errorCode);
 bool HookTextMessage(const uint32_t sourceDeviceIdentifier, const bool useMessageClass, const uint32_t messageClassUnsigned, const char* messageClassString, const uint32_t messageClassStringLength, const uint8_t messagePriority, const char* message, const uint32_t messageLength, const uint8_t* connectionString, const uint8_t connectionStringLength, const uint8_t networkType, const uint16_t sourceNetwork, const uint8_t* sourceAddress, const uint8_t sourceAddressLength, uint16_t* errorClass, uint16_t* errorCode);
 
 // Helper functions 
@@ -191,6 +192,7 @@ int main(int argc, char** argv)
 
 	// Remote Device Management
 	fpRegisterCallbackReinitializeDevice(CallbackReinitializeDevice);
+	fpRegisterCallbackDeviceCommunicationControl(CallbackDeviceCommunicationControl);
 	fpRegisterHookTextMessage(HookTextMessage);
 
 	// 4. Setup the BACnet device
@@ -292,6 +294,13 @@ int main(int argc, char** argv)
 	std::cout << "Enabling ReinitializeDevice...";
 	if (!fpSetServiceEnabled(g_database.device.instance, CASBACnetStackExampleConstants::SERVICE_REINITIALIZE_DEVICE, true)) {
 		std::cerr << "Failed to enable the ReinitializeDevice service";
+		return false;
+	}
+	std::cout << "OK" << std::endl;
+
+	std::cout << "Enabling DeviceCommunicationControl...";
+	if (!fpSetServiceEnabled(g_database.device.instance, CASBACnetStackExampleConstants::SERVICE_DEVICE_COMMUNICATION_CONTROL, true)) {
+		std::cerr << "Failed to enable the DeviceCommunicationControl service";
 		return false;
 	}
 	std::cout << "OK" << std::endl;
@@ -2022,6 +2031,30 @@ bool CallbackReinitializeDevice(const uint32_t deviceInstance, const uint32_t re
 		*errorCode = CASBACnetStackExampleConstants::ERROR_OPTIONAL_FUNCTIONALITY_NOT_SUPPORTED;
 		return false;
 	}
+}
+
+bool CallbackDeviceCommunicationControl(const uint32_t deviceInstance, const uint8_t enableDisable, const char* password, const uint8_t passwordLength, const bool useTimeDuration, const uint16_t timeDuration, uint32_t* errorCode) {
+	// This callback is called when this BACnet Server device receives a DeviceCommunicationControl message
+	// In this callback, you will handle the password. All other parameters are purely for logging to know
+	// what parameters the DeviceCommunicationControl request had.
+	
+	// To handle the password:
+	// If your device does not require a password, then ignore any password passed in.
+	// Otherwise, validate the password.
+	//		If password invalid: set errorCode to PasswordInvalid (26)
+	//		If password is required, but no password was provided: set errorCode to MissingRequiredParameter (16)
+	// In this example, a password of 12345 is required.
+	if (password == NULL || passwordLength == 0) {
+		*errorCode = CASBACnetStackExampleConstants::ERROR_MISSING_REQUIRED_PARAMETER;
+		return false;
+	}
+	if (strcmp(password, "12345") != 0) {
+		*errorCode = CASBACnetStackExampleConstants::ERROR_PASSWORD_FAILURE;
+		return false;
+	}
+
+	// Must return true to allow for the DeviceCommunicationControl logic to continue
+	return true;
 }
 
 bool HookTextMessage(const uint32_t sourceDeviceIdentifier, const bool useMessageClass, const uint32_t messageClassUnsigned, const char* messageClassString, const uint32_t messageClassStringLength, const uint8_t messagePriority, const char* message, const uint32_t messageLength, const uint8_t* connectionString, const uint8_t connectionStringLength, const uint8_t networkType, const uint16_t sourceNetwork, const uint8_t* sourceAddress, const uint8_t sourceAddressLength, uint16_t* errorClass, uint16_t* errorCode) {
