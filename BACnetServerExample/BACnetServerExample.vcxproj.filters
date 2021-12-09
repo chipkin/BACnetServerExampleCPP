@@ -990,6 +990,9 @@
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackWritePropertyAsync.cpp">
       <Filter>CASBACnetStack\Helper</Filter>
     </ClCompile>
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDeviceCommunicationControlProcessor.cpp">
+      <Filter>CASBACnetStack\Processors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CASBACnetStackExampleConstants.h">
@@ -1948,6 +1951,9 @@
     </ClInclude>
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackWritePropertyAsync.h">
       <Filter>CASBACnetStack\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDeviceCommunicationControlProcessor.h">
+      <Filter>CASBACnetStack\Processors</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
