@@ -158,6 +158,7 @@ public:
 	static const uint8_t FD_BBMD_ADDRESS_PORT = 2;
 
 	// Network Type
+	static const uint8_t NETWORK_TYPE_BACNET_IP = 0;
 	static const uint8_t NETWORK_TYPE_IPV4 = 5;
 
 	// Protocol Level
