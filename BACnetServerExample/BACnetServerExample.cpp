@@ -690,6 +690,23 @@ bool DoUserInput()
 		}
 		break;
 	}
+	case 'm': {
+		// Send text message
+		uint8_t connectionString[6];
+		memcpy(connectionString, g_database.networkPort.FdBbmdAddressHostIp, 4);
+		connectionString[4] = g_database.networkPort.FdBbmdAddressPort / 256;
+		connectionString[5] = g_database.networkPort.FdBbmdAddressPort % 256;
+
+		uint8_t message[24] = "This is a test message.";
+		std::cout << "Sending text message to" << g_database.networkPort.FdBbmdAddressHostIp[0] << "." << 
+			g_database.networkPort.FdBbmdAddressHostIp[1] << "." << g_database.networkPort.FdBbmdAddressHostIp[2] << "." <<
+			g_database.networkPort.FdBbmdAddressHostIp[3] << ":" << g_database.networkPort.FdBbmdAddressPort << std::endl;
+
+		if (!CallbackSendMessage(message, 24, connectionString, 6, CASBACnetStackExampleConstants::NETWORK_TYPE_BACNET_IP, true)) {
+			std::cout << "Error - failed to send Text Message" << std::endl;
+		}
+		break;
+	}
 
 	case 'h':
 	default: {
@@ -705,6 +722,7 @@ bool DoUserInput()
 		std::cout << "f - Send Register (foreign) device message" << std::endl;
 		// std::cout << "d - (d)ebug" << std::endl;
 		std::cout << "h - (h)elp" << std::endl;
+		std::cout << "m - Send text (m)essage" << std::endl;
 		std::cout << "q - (q)uit" << std::endl;
 		std::cout << std::endl;
 		break;
