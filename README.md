@@ -63,7 +63,7 @@ For the example server to run properly, please enable all object types and featu
 ## Example Output
 
 ```txt
-CAS BACnet Stack Server Example v0.0.11.0
+CAS BACnet Stack Server Example v0.0.13.0
 https://github.com/chipkin/BACnetServerExampleCPP
 
 FYI: Default to use device instance= 389999
