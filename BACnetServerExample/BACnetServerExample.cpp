@@ -566,6 +566,13 @@ int main(int argc, char** argv)
 		std::cerr << "Failed to add NetworkPort" << std::endl;
 		return -1;
 	}
+	fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT, g_database.networkPort.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_BBMD_ACCEPT_FD_REGISTRATIONS, true);
+	fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT, g_database.networkPort.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_BBMD_BROADCAST_DISTRIBUTION_TABLE, true);
+	fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT, g_database.networkPort.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_BBMD_FOREIGN_DEVICE_TABLE, true);
+	uint8_t bbmdIpAddress[6] = {192, 168, 1, 208, 0xBA, 0xC0};
+	uint8_t bbmdIpMask[4] = {255, 255, 255, 0};
+	fpAddBDTEntry(bbmdIpAddress, 6, bbmdIpMask, 4);
+	fpSetBBMD(g_database.device.instance, g_database.networkPort.instance);
 	std::cout << "OK" << std::endl;
 	
 	// 5. Send I-Am of this device
