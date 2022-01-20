@@ -578,6 +578,13 @@ int main(int argc, char** argv)
 	fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT, g_database.networkPort.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_BBMD_BROADCAST_DISTRIBUTION_TABLE, true);
 	fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT, g_database.networkPort.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_BBMD_FOREIGN_DEVICE_TABLE, true);
 
+	uint8_t ipPortConcat[6];
+	memcpy(ipPortConcat, g_database.networkPort.IPAddress, 4);
+	ipPortConcat[4] = g_database.networkPort.BACnetIPUDPPort / 256;
+	ipPortConcat[5] = g_database.networkPort.BACnetIPUDPPort % 256;
+	fpAddBDTEntry(ipPortConcat, 6, g_database.networkPort.IPSubnetMask, 4);		// First BDT Entry must be server device
+	fpSetBBMD(g_database.device.instance, g_database.networkPort.instance);
+
 	std::cout << "OK" << std::endl;
 	
 	// 5. Send I-Am of this device
@@ -692,7 +699,6 @@ bool DoUserInput()
 			
 		fpAddBDTEntry(bbmdIpAddress, 6, bbmdIpMask, 4);
 		fpSetBBMD(g_database.device.instance, g_database.networkPort.instance);
-
 		break;
 	}
 	case 'i': {
@@ -768,6 +774,7 @@ bool DoUserInput()
 		std::cout << "https://github.com/chipkin/BACnetServerExampleCPP" << std::endl << std::endl;
 
 		std::cout << "Help:" << std::endl;
+		std::cout << "b - Add (B)roadcast Distribution Table entry" << std::endl;
 		std::cout << "i - (i)ncrement Analog Value: " << g_database.analogValue.instance << " by 1.1" << std::endl;
 		std::cout << "r - Toggle the Analog Input: 0 (r)eliability status" << std::endl;
 		std::cout << "f - Send Register (foreign) device message" << std::endl;
