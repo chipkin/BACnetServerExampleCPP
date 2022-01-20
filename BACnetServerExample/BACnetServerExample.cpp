@@ -577,42 +577,8 @@ int main(int argc, char** argv)
 	fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT, g_database.networkPort.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_BBMD_ACCEPT_FD_REGISTRATIONS, true);
 	fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT, g_database.networkPort.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_BBMD_BROADCAST_DISTRIBUTION_TABLE, true);
 	fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT, g_database.networkPort.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_BBMD_FOREIGN_DEVICE_TABLE, true);
-	
-	// Ask for BBMD Address, Port, and Mask
-	std::string bbmdIpStr, bbmdPortStr, bbmdIpMaskStr;
-	std::cout << "\nEnter BBMD IP Address (Format: WWW.XXX.YYY.ZZZ) (Enter empty string to use default value [192.168.1.208]):";
-	std::cin >> bbmdIpStr;
-	std::cout << "Enter BBMD IP Port (Enter [N] to use default value [47808])";
-	std::cin >> bbmdPortStr;
-	std::cout << "Enter BBMD IP Mask (Format: WWW.XXX.YYY.ZZZ) (Enter [N] to use default value [255.255.255.0]):";
-	std::cin >> bbmdIpMaskStr;
-	uint8_t bbmdIpAddress[6] = {192, 168, 1, 208, 0xBA, 0xC0};
-	uint8_t bbmdIpMask[4] = {255, 255, 255, 0};
-	uint8_t periodIndex;
-	if (bbmdIpStr != "N" && bbmdIpStr != "n") {
-		for (uint8_t i = 0; i < 3; i++) {
-			periodIndex = bbmdIpStr.find(".");
-			bbmdIpAddress[i] = std::atoi(bbmdIpStr.substr(0, periodIndex).c_str());
-			bbmdIpStr = bbmdIpStr.substr(periodIndex + 1);
-		}
-		bbmdIpAddress[3] = std::atoi(bbmdIpStr.c_str());
-	}
-	if (bbmdPortStr != "N" && bbmdPortStr != "n") {
-		bbmdIpAddress[4] = std::atoi(bbmdPortStr.c_str()) / 256;
-		bbmdIpAddress[5] = std::atoi(bbmdPortStr.c_str()) % 256;
-	}
-	if (bbmdIpMaskStr != "N" && bbmdIpMaskStr != "n") {
-		for (uint8_t i = 0; i < 3; i++) {
-			periodIndex = bbmdIpMaskStr.find(".");
-			bbmdIpMask[i] = std::atoi(bbmdIpMaskStr.substr(0, periodIndex).c_str());
-			bbmdIpMaskStr = bbmdIpMaskStr.substr(periodIndex + 1);
-		}
-		bbmdIpMask[3] = std::atoi(bbmdIpMaskStr.c_str());
-	}
-		
-	fpAddBDTEntry(bbmdIpAddress, 6, bbmdIpMask, 4);
-	fpSetBBMD(g_database.device.instance, g_database.networkPort.instance);
-	std::cout << "... OK" << std::endl;
+
+	std::cout << "OK" << std::endl;
 	
 	// 5. Send I-Am of this device
 	// ---------------------------------------------------------------------------
@@ -697,6 +663,45 @@ bool DoUserInput()
 		// Quit
 	case 'q': {
 		return false;
+	}
+	case 'b': {
+		// Add BDT Entry
+		// Ask for BBMD Address, Port, and Mask
+		std::string bbmdIpStr, bbmdPortStr, bbmdIpMaskStr;
+		std::cout << "\nEnter BBMD IP Address (Format: WWW.XXX.YYY.ZZZ) (Enter empty string to use default value [192.168.1.208]):";
+		std::cin >> bbmdIpStr;
+		std::cout << "Enter BBMD IP Port (Enter [N] to use default value [47808])";
+		std::cin >> bbmdPortStr;
+		std::cout << "Enter BBMD IP Mask (Format: WWW.XXX.YYY.ZZZ) (Enter [N] to use default value [255.255.255.0]):";
+		std::cin >> bbmdIpMaskStr;
+		uint8_t bbmdIpAddress[6] = {192, 168, 1, 208, 0xBA, 0xC0};
+		uint8_t bbmdIpMask[4] = {255, 255, 255, 0};
+		uint8_t periodIndex;
+		if (bbmdIpStr != "N" && bbmdIpStr != "n") {
+			for (uint8_t i = 0; i < 3; i++) {
+				periodIndex = bbmdIpStr.find(".");
+				bbmdIpAddress[i] = std::atoi(bbmdIpStr.substr(0, periodIndex).c_str());
+				bbmdIpStr = bbmdIpStr.substr(periodIndex + 1);
+			}
+			bbmdIpAddress[3] = std::atoi(bbmdIpStr.c_str());
+		}
+		if (bbmdPortStr != "N" && bbmdPortStr != "n") {
+			bbmdIpAddress[4] = std::atoi(bbmdPortStr.c_str()) / 256;
+			bbmdIpAddress[5] = std::atoi(bbmdPortStr.c_str()) % 256;
+		}
+		if (bbmdIpMaskStr != "N" && bbmdIpMaskStr != "n") {
+			for (uint8_t i = 0; i < 3; i++) {
+				periodIndex = bbmdIpMaskStr.find(".");
+				bbmdIpMask[i] = std::atoi(bbmdIpMaskStr.substr(0, periodIndex).c_str());
+				bbmdIpMaskStr = bbmdIpMaskStr.substr(periodIndex + 1);
+			}
+			bbmdIpMask[3] = std::atoi(bbmdIpMaskStr.c_str());
+		}
+			
+		fpAddBDTEntry(bbmdIpAddress, 6, bbmdIpMask, 4);
+		fpSetBBMD(g_database.device.instance, g_database.networkPort.instance);
+
+		break;
 	}
 	case 'i': {
 		// Increment the Analog Value
