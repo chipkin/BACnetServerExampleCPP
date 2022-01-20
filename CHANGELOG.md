@@ -2,6 +2,9 @@
 
 ## Version 0.0.x
 
+### 0.0.14.x (2021-Jan-20)
+- Added LogDebugMessage callback to example
+
 ### 0.0.13.x (2021-Jan-14)
 - Added BroadcastDistributionTable to example
 

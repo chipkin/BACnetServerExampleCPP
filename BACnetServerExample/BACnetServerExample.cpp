@@ -14,6 +14,9 @@
  */
 
 #include "CASBACnetStackAdapter.h"
+// !!!!!! This file is part of the CAS BACnet Stack. Please contact Chipkin for more information.
+// !!!!!! https://github.com/chipkin/BACnetServerExampleCPP/issues/8
+
 #include "CASBACnetStackExampleConstants.h"
 #include "CASBACnetStackExampleDatabase.h"
 #include "CIBuildSettings.h"
@@ -50,7 +53,6 @@
 
 #endif // __GNUC__
 
-
 // Globals
 // =======================================
 CSimpleUDP g_udp; // UDP resource
@@ -58,7 +60,7 @@ ExampleDatabase g_database; // The example database that stores current values.
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.13";  // See CHANGELOG.md for a full list of changes.
+const std::string APPLICATION_VERSION = "0.0.14";  // See CHANGELOG.md for a full list of changes.
 const uint32_t MAX_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
