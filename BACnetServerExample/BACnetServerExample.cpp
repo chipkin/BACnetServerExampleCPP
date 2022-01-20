@@ -108,6 +108,8 @@ bool HookTextMessage(const uint32_t sourceDeviceIdentifier, const bool useMessag
 bool DoUserInput();
 bool GetObjectName(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, char* value, uint32_t* valueElementCount, const uint32_t maxElementCount);
 
+// Debug Message Function
+void CallbackLogDebugMessage(const char* message, const uint16_t messageLength, const uint8_t messageType);
 
 int main(int argc, char** argv)
 {
@@ -194,6 +196,10 @@ int main(int argc, char** argv)
 	fpRegisterCallbackReinitializeDevice(CallbackReinitializeDevice);
 	fpRegisterCallbackDeviceCommunicationControl(CallbackDeviceCommunicationControl);
 	fpRegisterHookTextMessage(HookTextMessage);
+
+	// Get Debug Message Function
+	fpRegisterCallbackLogDebugMessage(CallbackLogDebugMessage);
+	
 
 	// 4. Setup the BACnet device
 	// ---------------------------------------------------------------------------
@@ -600,6 +606,7 @@ int main(int argc, char** argv)
 	// 6. Start the main loop
 	// ---------------------------------------------------------------------------
 	std::cout << "FYI: Entering main loop..." << std::endl ;
+	std::string debugMessage = "";
 	for (;;) {
 		// Call the DLLs loop function which checks for messages and processes them.
 		fpLoop();
@@ -616,6 +623,13 @@ int main(int argc, char** argv)
 
 		// Update values in the example database
 		g_database.Loop();
+
+		// Check for debug messages
+		if (debugMessage.c_str() != g_database.debugMessage && g_database.debugMessage != "") {
+			std::cout << "Debug message received! Message type: " << (g_database.debugMessageType == CASBACnetStackExampleConstants::BACNET_DEBUG_LOG_TYPE_ERROR ? "Error message" : "Info message") << std::endl;
+			std::cout << "Debug message: \n" << g_database.debugMessage << std::endl;
+			debugMessage = g_database.debugMessage;
+		}
 
 		// Call Sleep to give some time back to the system
 		Sleep(0); // Windows 
@@ -2080,6 +2094,16 @@ bool CallbackDeviceCommunicationControl(const uint32_t deviceInstance, const uin
 
 	// Must return true to allow for the DeviceCommunicationControl logic to continue
 	return true;
+}
+
+void CallbackLogDebugMessage(const char* message, const uint16_t messageLength, const uint8_t messageType) {
+	// This callback is called when the CAS BACnet Stack logs an error or info message
+	// In this callback, you will be able to access this debug message. This callback is optional.
+	if (message != NULL && messageLength != 0) {
+		g_database.debugMessageType = messageType;
+		g_database.debugMessage = std::string(message, messageLength);
+	}
+	return;
 }
 
 bool HookTextMessage(const uint32_t sourceDeviceIdentifier, const bool useMessageClass, const uint32_t messageClassUnsigned, const char* messageClassString, const uint32_t messageClassStringLength, const uint8_t messagePriority, const char* message, const uint32_t messageLength, const uint8_t* connectionString, const uint8_t connectionStringLength, const uint8_t networkType, const uint16_t sourceNetwork, const uint8_t* sourceAddress, const uint8_t sourceAddressLength, uint16_t* errorClass, uint16_t* errorCode) {

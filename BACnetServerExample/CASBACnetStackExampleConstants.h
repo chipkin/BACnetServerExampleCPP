@@ -192,6 +192,10 @@ public:
 	// Reinitialized State
 	static const uint8_t REINITIALIZED_STATE_WARM_START = 1;
 	static const uint8_t REINITIALIZED_STATE_ACTIVATE_CHANGES = 7;
+
+	// Debug Message Type
+	static const uint8_t BACNET_DEBUG_LOG_TYPE_ERROR = 0;
+	static const uint8_t BACNET_DEBUG_LOG_TYPE_INFO = 1;
 };
 
 #endif // __CASBACnetStackExampleConstants_h__

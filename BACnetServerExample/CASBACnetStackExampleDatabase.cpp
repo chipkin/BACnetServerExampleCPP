@@ -82,6 +82,8 @@ void ExampleDatabase::Setup() {
 	// BACnetDeviceStatus ::= ENUMERATED { operational (0), operational-read-only (1), download-required (2), 
 	// download-in-progress (3), non-operational (4), backup-in-progress (5) } 
 	this->device.systemStatus = 0; // operational (0), non-operational (4)
+	this->debugMessage = "";
+	this->debugMessageType = 0;
 
 
 	// Set the object name properites. 
