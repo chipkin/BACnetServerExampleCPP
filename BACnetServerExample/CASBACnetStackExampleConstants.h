@@ -116,6 +116,9 @@ public:
 	static const uint32_t PROPERTY_IDENTIFIER_IP_DNS_SERVER = 406;
 	static const uint32_t PROPERTY_IDENTIFIER_IP_SUBNET_MASK = 411;
 	static const uint32_t PROPERTY_IDENTIFIER_BACNET_IP_UDP_PORT = 412;
+	static const uint32_t PROPERTY_IDENTIFIER_BBMD_ACCEPT_FD_REGISTRATIONS = 413;
+	static const uint32_t PROPERTY_IDENTIFIER_BBMD_BROADCAST_DISTRIBUTION_TABLE = 414;
+	static const uint32_t PROPERTY_IDENTIFIER_BBMD_FOREIGN_DEVICE_TABLE = 415;
 	static const uint32_t PROPERTY_IDENTIFIER_CHANGES_PENDING = 416;
 	static const uint32_t PROPERTY_IDENTIFIER_FD_BBMD_ADDRESS = 418;
 	static const uint32_t PROPERTY_IDENTIFIER_FD_SUBSCRIPTION_LIFETIME = 419;
@@ -189,6 +192,10 @@ public:
 	// Reinitialized State
 	static const uint8_t REINITIALIZED_STATE_WARM_START = 1;
 	static const uint8_t REINITIALIZED_STATE_ACTIVATE_CHANGES = 7;
+
+	// Debug Message Type
+	static const uint8_t BACNET_DEBUG_LOG_TYPE_ERROR = 0;
+	static const uint8_t BACNET_DEBUG_LOG_TYPE_INFO = 1;
 };
 
 #endif // __CASBACnetStackExampleConstants_h__

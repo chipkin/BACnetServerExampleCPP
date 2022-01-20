@@ -14,6 +14,9 @@
  */
 
 #include "CASBACnetStackAdapter.h"
+// !!!!!! This file is part of the CAS BACnet Stack. Please contact Chipkin for more information.
+// !!!!!! https://github.com/chipkin/BACnetServerExampleCPP/issues/8
+
 #include "CASBACnetStackExampleConstants.h"
 #include "CASBACnetStackExampleDatabase.h"
 #include "CIBuildSettings.h"
@@ -50,7 +53,6 @@
 
 #endif // __GNUC__
 
-
 // Globals
 // =======================================
 CSimpleUDP g_udp; // UDP resource
@@ -58,7 +60,7 @@ ExampleDatabase g_database; // The example database that stores current values.
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.12";  // See CHANGELOG.md for a full list of changes.
+const std::string APPLICATION_VERSION = "0.0.14";  // See CHANGELOG.md for a full list of changes.
 const uint32_t MAX_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
@@ -108,6 +110,8 @@ bool HookTextMessage(const uint32_t sourceDeviceIdentifier, const bool useMessag
 bool DoUserInput();
 bool GetObjectName(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, char* value, uint32_t* valueElementCount, const uint32_t maxElementCount);
 
+// Debug Message Function
+void CallbackLogDebugMessage(const char* message, const uint16_t messageLength, const uint8_t messageType);
 
 int main(int argc, char** argv)
 {
@@ -194,6 +198,10 @@ int main(int argc, char** argv)
 	fpRegisterCallbackReinitializeDevice(CallbackReinitializeDevice);
 	fpRegisterCallbackDeviceCommunicationControl(CallbackDeviceCommunicationControl);
 	fpRegisterHookTextMessage(HookTextMessage);
+
+	// Get Debug Message Function
+	fpRegisterCallbackLogDebugMessage(CallbackLogDebugMessage);
+	
 
 	// 4. Setup the BACnet device
 	// ---------------------------------------------------------------------------
@@ -566,6 +574,10 @@ int main(int argc, char** argv)
 		std::cerr << "Failed to add NetworkPort" << std::endl;
 		return -1;
 	}
+	fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT, g_database.networkPort.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_BBMD_ACCEPT_FD_REGISTRATIONS, true);
+	fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT, g_database.networkPort.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_BBMD_BROADCAST_DISTRIBUTION_TABLE, true);
+	fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT, g_database.networkPort.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_BBMD_FOREIGN_DEVICE_TABLE, true);
+
 	std::cout << "OK" << std::endl;
 	
 	// 5. Send I-Am of this device
@@ -643,6 +655,45 @@ bool DoUserInput()
 		// Quit
 	case 'q': {
 		return false;
+	}
+	case 'b': {
+		// Add BDT Entry
+		// Ask for BBMD Address, Port, and Mask
+		std::string bbmdIpStr, bbmdPortStr, bbmdIpMaskStr;
+		std::cout << "\nEnter BBMD IP Address (Format: WWW.XXX.YYY.ZZZ) (Enter empty string to use default value [192.168.1.208]):";
+		std::cin >> bbmdIpStr;
+		std::cout << "Enter BBMD IP Port (Enter [N] to use default value [47808])";
+		std::cin >> bbmdPortStr;
+		std::cout << "Enter BBMD IP Mask (Format: WWW.XXX.YYY.ZZZ) (Enter [N] to use default value [255.255.255.0]):";
+		std::cin >> bbmdIpMaskStr;
+		uint8_t bbmdIpAddress[6] = {192, 168, 1, 208, 0xBA, 0xC0};
+		uint8_t bbmdIpMask[4] = {255, 255, 255, 0};
+		uint8_t periodIndex;
+		if (bbmdIpStr != "N" && bbmdIpStr != "n") {
+			for (uint8_t i = 0; i < 3; i++) {
+				periodIndex = bbmdIpStr.find(".");
+				bbmdIpAddress[i] = std::atoi(bbmdIpStr.substr(0, periodIndex).c_str());
+				bbmdIpStr = bbmdIpStr.substr(periodIndex + 1);
+			}
+			bbmdIpAddress[3] = std::atoi(bbmdIpStr.c_str());
+		}
+		if (bbmdPortStr != "N" && bbmdPortStr != "n") {
+			bbmdIpAddress[4] = std::atoi(bbmdPortStr.c_str()) / 256;
+			bbmdIpAddress[5] = std::atoi(bbmdPortStr.c_str()) % 256;
+		}
+		if (bbmdIpMaskStr != "N" && bbmdIpMaskStr != "n") {
+			for (uint8_t i = 0; i < 3; i++) {
+				periodIndex = bbmdIpMaskStr.find(".");
+				bbmdIpMask[i] = std::atoi(bbmdIpMaskStr.substr(0, periodIndex).c_str());
+				bbmdIpMaskStr = bbmdIpMaskStr.substr(periodIndex + 1);
+			}
+			bbmdIpMask[3] = std::atoi(bbmdIpMaskStr.c_str());
+		}
+			
+		fpAddBDTEntry(bbmdIpAddress, 6, bbmdIpMask, 4);
+		fpSetBBMD(g_database.device.instance, g_database.networkPort.instance);
+
+		break;
 	}
 	case 'i': {
 		// Increment the Analog Value
@@ -2073,6 +2124,13 @@ bool CallbackDeviceCommunicationControl(const uint32_t deviceInstance, const uin
 
 	// Must return true to allow for the DeviceCommunicationControl logic to continue
 	return true;
+}
+
+void CallbackLogDebugMessage(const char* message, const uint16_t messageLength, const uint8_t messageType) {
+	// This callback is called when the CAS BACnet Stack logs an error or info message
+	// In this callback, you will be able to access this debug message. This callback is optional.
+	std::cout << std::string(message, messageLength) << std::endl;
+	return;
 }
 
 bool HookTextMessage(const uint32_t sourceDeviceIdentifier, const bool useMessageClass, const uint32_t messageClassUnsigned, const char* messageClassString, const uint32_t messageClassStringLength, const uint8_t messagePriority, const char* message, const uint32_t messageLength, const uint8_t* connectionString, const uint8_t connectionStringLength, const uint8_t networkType, const uint16_t sourceNetwork, const uint8_t* sourceAddress, const uint8_t sourceAddressLength, uint16_t* errorClass, uint16_t* errorCode) {
