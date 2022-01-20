@@ -4,6 +4,7 @@
 
 ### 0.0.14.x (2021-Jan-20)
 - Added LogDebugMessage callback to example
+- Updated CAS BACnet Stack to version v3.26.0.0
 
 ### 0.0.13.x (2021-Jan-14)
 - Added BroadcastDistributionTable to example

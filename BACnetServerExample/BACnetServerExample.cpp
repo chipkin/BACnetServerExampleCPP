@@ -605,7 +605,6 @@ int main(int argc, char** argv)
 	// 6. Start the main loop
 	// ---------------------------------------------------------------------------
 	std::cout << "FYI: Entering main loop..." << std::endl ;
-	std::string debugMessage = "";
 	for (;;) {
 		// Call the DLLs loop function which checks for messages and processes them.
 		fpLoop();
@@ -622,13 +621,6 @@ int main(int argc, char** argv)
 
 		// Update values in the example database
 		g_database.Loop();
-
-		// Check for debug messages
-		if (debugMessage.c_str() != g_database.debugMessage && g_database.debugMessage != "") {
-			std::cout << "Debug message received! Message type: " << (g_database.debugMessageType == CASBACnetStackExampleConstants::BACNET_DEBUG_LOG_TYPE_ERROR ? "Error message" : "Info message") << std::endl;
-			std::cout << "Debug message: \n" << g_database.debugMessage << std::endl;
-			debugMessage = g_database.debugMessage;
-		}
 
 		// Call Sleep to give some time back to the system
 		Sleep(0); // Windows 
@@ -2137,10 +2129,7 @@ bool CallbackDeviceCommunicationControl(const uint32_t deviceInstance, const uin
 void CallbackLogDebugMessage(const char* message, const uint16_t messageLength, const uint8_t messageType) {
 	// This callback is called when the CAS BACnet Stack logs an error or info message
 	// In this callback, you will be able to access this debug message. This callback is optional.
-	if (message != NULL && messageLength != 0) {
-		g_database.debugMessageType = messageType;
-		g_database.debugMessage = std::string(message, messageLength);
-	}
+	std::cout << std::string(message, messageLength) << std::endl;
 	return;
 }
 

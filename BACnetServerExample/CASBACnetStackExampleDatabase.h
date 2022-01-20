@@ -273,8 +273,6 @@ class ExampleDatabase {
 		ExampleDatabasePositiveIntegerValue positiveIntegerValue;
 		ExampleDatabaseTimeValue timeValue;
 		ExampleDatabaseNetworkPort networkPort;
-		std::string debugMessage;
-		uint8_t debugMessageType;
 
 	// Storage for create objects
 	std::map<uint32_t, CreatedAnalogValue> CreatedAnalogValueData;
