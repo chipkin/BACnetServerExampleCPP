@@ -167,6 +167,16 @@ void ExampleDatabase::Setup() {
 	this->networkPort.FdBbmdAddressHostIp[3] = 126;
 	this->networkPort.FdBbmdAddressPort = 47809;
 	this->networkPort.FdSubscriptionLifetime = 3600;
+	this->dateTimeValue.instance = 60;
+	this->dateTimeValue.objectName = "DateTimeValue " + ExampleDatabase::GetColorName();
+	this->dateTimeValue.presentValueYear = 122;
+	this->dateTimeValue.presentValueMonth = 1;
+	this->dateTimeValue.presentValueDay = 28;
+	this->dateTimeValue.presentValueWeekDay = 5;
+	this->dateTimeValue.presentValueHour = 16;
+	this->dateTimeValue.presentValueMinute = 53;
+	this->dateTimeValue.presentValueSecond = 47;
+	this->dateTimeValue.presentValueHundredthSeconds = 55;	
 	this->LoadNetworkPortProperties() ; 
 }
 

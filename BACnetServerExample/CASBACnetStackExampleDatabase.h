@@ -249,6 +249,19 @@ struct CreatedAnalogValue {
 	}
 };
 
+class ExampleDatabaseDateTimeValue : public ExampleDatabaseBaseObject
+{
+	public:
+		uint8_t presentValueYear;
+		uint8_t presentValueMonth;
+		uint8_t presentValueDay;
+		uint8_t presentValueWeekDay;
+		uint8_t presentValueHour;
+		uint8_t presentValueMinute;
+		uint8_t presentValueSecond;
+		uint8_t presentValueHundredthSeconds;
+};
+
 class ExampleDatabase {
 
 	public:
@@ -273,6 +286,7 @@ class ExampleDatabase {
 		ExampleDatabasePositiveIntegerValue positiveIntegerValue;
 		ExampleDatabaseTimeValue timeValue;
 		ExampleDatabaseNetworkPort networkPort;
+		ExampleDatabaseDateTimeValue dateTimeValue;
 
 	// Storage for create objects
 	std::map<uint32_t, CreatedAnalogValue> CreatedAnalogValueData;
