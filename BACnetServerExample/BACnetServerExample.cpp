@@ -584,6 +584,7 @@ int main(int argc, char** argv)
 	ipPortConcat[5] = g_database.networkPort.BACnetIPUDPPort % 256;
 	fpAddBDTEntry(ipPortConcat, 6, g_database.networkPort.IPSubnetMask, 4);		// First BDT Entry must be server device
 
+
 	std::cout << "OK" << std::endl;
 
 	// Add the DateTimeValue Object

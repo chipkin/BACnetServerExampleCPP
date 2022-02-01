@@ -71,6 +71,7 @@ https://github.com/chipkin/BACnetServerExampleCPP
 
 FYI: Default to use device instance= 389999
 FYI: Loading CAS BACnet Stack functions... OK
+
 FYI: CAS BACnet Stack version: 3.27.0.0
 FYI: Connecting UDP Resource to port=[47808]... OK, Connected to port
 FYI: Registering the Callback Functions with the CAS BACnet Stack
