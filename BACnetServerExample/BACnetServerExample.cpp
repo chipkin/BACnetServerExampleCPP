@@ -583,10 +583,19 @@ int main(int argc, char** argv)
 	ipPortConcat[4] = g_database.networkPort.BACnetIPUDPPort / 256;
 	ipPortConcat[5] = g_database.networkPort.BACnetIPUDPPort % 256;
 	fpAddBDTEntry(ipPortConcat, 6, g_database.networkPort.IPSubnetMask, 4);		// First BDT Entry must be server device
-	fpSetBBMD(g_database.device.instance, g_database.networkPort.instance);
+
 
 	std::cout << "OK" << std::endl;
+
+	// Add the DateTimeValue Object
+	std::cout << "Added DateTimeValue. dateTimeValue.instance=[" << g_database.dateTimeValue.instance << "]... ";
+	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_DATETIME_VALUE, g_database.dateTimeValue.instance)) {
+		std::cerr << "Failed to add DateTimeValue" << std::endl;
+		return -1;
+	}
 	
+	std::cout << "OK" << std::endl;
+
 	// 5. Send I-Am of this device
 	// ---------------------------------------------------------------------------
 	// To be a good citizen on a BACnet network. We should announce ourself when we start up. 
@@ -1116,6 +1125,17 @@ bool CallbackGetPropertyDate(const uint32_t deviceInstance, const uint16_t objec
 			return true;
 		}
 	}
+	// Example of DateTime Value Object Present Value property
+	if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_DATETIME_VALUE && objectInstance == 60) {
+			if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE) {
+				*year = g_database.dateTimeValue.presentValueYear;
+				*month = g_database.dateTimeValue.presentValueMonth;
+				*day = g_database.dateTimeValue.presentValueDay;
+				*weekday = g_database.dateTimeValue.presentValueWeekDay;
+				return true;
+			}
+	}
+
 	return false;
 }
 
@@ -1364,6 +1384,16 @@ bool CallbackGetPropertyTime(const uint32_t deviceInstance, const uint16_t objec
 			*hundrethSeconds = 0;
 			return true;
 		}
+	}
+	// Example of DateTime Value Object Present Value property
+	if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_DATETIME_VALUE && objectInstance == 60) {
+			if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE) {
+				*hour = g_database.dateTimeValue.presentValueHour;
+				*minute = g_database.dateTimeValue.presentValueMinute;
+				*second = g_database.dateTimeValue.presentValueSecond;
+				*hundrethSeconds = g_database.dateTimeValue.presentValueHundredthSeconds;
+				return true;
+			}
 	}
 	return false;
 }
@@ -2006,6 +2036,16 @@ bool GetObjectName(const uint32_t deviceInstance, const uint16_t objectType, con
 			return false;
 		}
 		memcpy(value, g_database.networkPort.objectName.c_str(), stringSize);
+		*valueElementCount = (uint32_t) stringSize;
+		return true;
+	}
+	else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_DATETIME_VALUE && objectInstance == g_database.dateTimeValue.instance) {
+		stringSize = g_database.dateTimeValue.objectName.size();
+		if (stringSize > maxElementCount) {
+			std::cerr << "Error - not enough space to store full name of objectType=[" << objectType << "], objectInstance=[" << objectInstance <<" ]" << std::endl;
+			return false;
+		}
+		memcpy(value, g_database.dateTimeValue.objectName.c_str(), stringSize);
 		*valueElementCount = (uint32_t) stringSize;
 		return true;
 	}

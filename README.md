@@ -39,14 +39,17 @@ Pre-configured with the following example BACnet device and objects:
   - positive_integer_value: 48  (PositiveIntegerValue Turquoise)
   - time_value: 50  (TimeValue Umber)
   - NetworkPort: 56  (NetworkPort Vermilion)
+  - dateTimeValue: 60 (DateTimeValue White)
 
 The following keyboard commands can be issued in the server window:
 
-- **q**: Quit and exit the server
-- **i**: Increment the analog_value property Diamond by 1.1
-- **r**: Toggle the analog input reliability status
-- **f**: Send foreign device registration
-- **h**: Display help menu
+- **b**: Add (B)roadcast Distribution Table entry
+- **i**: (i)ncrement Analog Value: 2 by 1.1
+- **r**: Toggle the Analog Input: 0 (r)eliability status
+- **f**: Send Register (foreign) device message
+- **h**: (h)elp
+- **m**: Send text (m)essage
+- **q**: (q)uit
 
 ## Command arguments
 
@@ -63,12 +66,13 @@ For the example server to run properly, please enable all object types and featu
 ## Example Output
 
 ```txt
-CAS BACnet Stack Server Example v0.0.14.0
+CAS BACnet Stack Server Example v0.0.15.0
 https://github.com/chipkin/BACnetServerExampleCPP
 
 FYI: Default to use device instance= 389999
 FYI: Loading CAS BACnet Stack functions... OK
-FYI: CAS BACnet Stack version: 3.26.1.0
+
+FYI: CAS BACnet Stack version: 3.27.0.0
 FYI: Connecting UDP Resource to port=[47808]... OK, Connected to port
 FYI: Registering the Callback Functions with the CAS BACnet Stack
 Setting up server device. device.instance=[389999]

@@ -2,6 +2,10 @@
 
 ## Version 0.0.x
 
+### 0.0.15.x (2021-Jan-28)
+- Added DateTimeValue to example
+- Updated CAS BACnet Stack to version v3.27.0.0
+
 ### 0.0.14.x (2021-Jan-20)
 - Added LogDebugMessage callback to example
 - Updated CAS BACnet Stack to version v3.26.0.0

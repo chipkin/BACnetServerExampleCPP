@@ -71,7 +71,7 @@ public:
 	//static const uint16_t OBJECT_TYPE_DATEPATTERN_VALUE = 41;
 	static const uint16_t OBJECT_TYPE_DATE_VALUE = 42;
 	//static const uint16_t OBJECT_TYPE_DATETIMEPATTERN_VALUE = 43;
-	//static const uint16_t OBJECT_TYPE_DATETIME_VALUE = 44;
+	static const uint16_t OBJECT_TYPE_DATETIME_VALUE = 44;
 	static const uint16_t OBJECT_TYPE_INTEGER_VALUE = 45;
 	static const uint16_t OBJECT_TYPE_LARGE_ANALOG_VALUE = 46;
 	static const uint16_t OBJECT_TYPE_OCTETSTRING_VALUE = 47;
