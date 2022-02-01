@@ -583,7 +583,6 @@ int main(int argc, char** argv)
 	ipPortConcat[4] = g_database.networkPort.BACnetIPUDPPort / 256;
 	ipPortConcat[5] = g_database.networkPort.BACnetIPUDPPort % 256;
 	fpAddBDTEntry(ipPortConcat, 6, g_database.networkPort.IPSubnetMask, 4);		// First BDT Entry must be server device
-	fpSetBBMD(g_database.device.instance, g_database.networkPort.instance);
 
 	std::cout << "OK" << std::endl;
 
