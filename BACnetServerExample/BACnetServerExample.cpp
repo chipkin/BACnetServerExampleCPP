@@ -2130,16 +2130,14 @@ bool CallbackReinitializeDevice(const uint32_t deviceInstance, const uint32_t re
 	// Before handling the reinitializedState, first check the password.
 	// If your device does not require a password, then ignore any password passed in.
 	// Otherwise, validate the password.
-	//		If password invalid, or a password is required, but no password was provided: set errorCode to PasswordInvalid (26)
+	//		If password invalid, missing, or incorrect: set errorCode to PasswordInvalid (26)
 	// In this example, a password of 12345 is required.
 	
-	// Check if missing
 	if (password == NULL || passwordLength == 0) {
 		*errorCode = CASBACnetStackExampleConstants::ERROR_PASSWORD_FAILURE;
 		return false;
 	}
 
-	// Check if correct
 	if (strcmp(password, "12345") != 0) {
 		*errorCode = CASBACnetStackExampleConstants::ERROR_PASSWORD_FAILURE;
 		return false;
@@ -2182,13 +2180,13 @@ bool CallbackDeviceCommunicationControl(const uint32_t deviceInstance, const uin
 	// To handle the password:
 	// If your device does not require a password, then ignore any password passed in.
 	// Otherwise, validate the password.
-	//		If password invalid: set errorCode to PasswordInvalid (26)
-	//		If password is required, but no password was provided: set errorCode to MissingRequiredParameter (16)
+	//		If password invalid, missing, or incorrect: set errorCode to PasswordInvalid (26)
 	// In this example, a password of 12345 is required.
 	if (password == NULL || passwordLength == 0) {
-		*errorCode = CASBACnetStackExampleConstants::ERROR_MISSING_REQUIRED_PARAMETER;
+		*errorCode = CASBACnetStackExampleConstants::ERROR_PASSWORD_FAILURE;
 		return false;
 	}
+
 	if (strcmp(password, "12345") != 0) {
 		*errorCode = CASBACnetStackExampleConstants::ERROR_PASSWORD_FAILURE;
 		return false;
