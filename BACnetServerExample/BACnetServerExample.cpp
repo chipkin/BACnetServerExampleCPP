@@ -375,6 +375,7 @@ int main(int argc, char** argv)
 	fpSetProprietaryProperty(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 512 + 1, false, false, CASBACnetStackExampleConstants::DATA_TYPE_CHARACTER_STRING, false, false, false);
 	fpSetProprietaryProperty(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 512 + 2, true, false, CASBACnetStackExampleConstants::DATA_TYPE_CHARACTER_STRING, false, false, false);
 	fpSetProprietaryProperty(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 512 + 3, true, true, CASBACnetStackExampleConstants::DATA_TYPE_CHARACTER_STRING, false, false, false);
+	fpSetProprietaryProperty(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 512 + 4, false, false, CASBACnetStackExampleConstants::DATA_TYPE_DATETIME, false, false, false);
 
 	// Set the Present value to subscribable 
 	fpSetPropertySubscribable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
@@ -1103,7 +1104,7 @@ bool CallbackGetPropertyCharString(const uint32_t deviceInstance, const uint16_t
 // Callback used by the BACnet Stack to get Date property values from the user
 bool CallbackGetPropertyDate(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, uint8_t* year, uint8_t* month, uint8_t* day, uint8_t* weekday, const bool useArrayIndex, const uint32_t propertyArrayIndex)
 {
-	// Example of Date Value Object Present Value property
+	// Example of getting Date Value Object Present Value property
 	if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE) {
 		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_DATE_VALUE && objectInstance == g_database.dateValue.instance) {
 			*year = g_database.dateValue.presentValueYear;
@@ -1113,7 +1114,7 @@ bool CallbackGetPropertyDate(const uint32_t deviceInstance, const uint16_t objec
 			return true;
 		}
 	}
-	// Example of Device Local Date property
+	// Example of getting Device Local Date property
 	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_LOCAL_DATE) {
 		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_DEVICE && objectInstance == g_database.device.instance) {
 			time_t adjustedTime = time(0) - g_database.device.currentTimeOffset;
@@ -1125,15 +1126,25 @@ bool CallbackGetPropertyDate(const uint32_t deviceInstance, const uint16_t objec
 			return true;
 		}
 	}
-	// Example of DateTime Value Object Present Value property
+	// Example of getting DateTime Value Object Present Value property
 	if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_DATETIME_VALUE && objectInstance == 60) {
-			if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE) {
-				*year = g_database.dateTimeValue.presentValueYear;
-				*month = g_database.dateTimeValue.presentValueMonth;
-				*day = g_database.dateTimeValue.presentValueDay;
-				*weekday = g_database.dateTimeValue.presentValueWeekDay;
-				return true;
+		if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE) {
+			*year = g_database.dateTimeValue.presentValueYear;
+			*month = g_database.dateTimeValue.presentValueMonth;
+			*day = g_database.dateTimeValue.presentValueDay;
+			*weekday = g_database.dateTimeValue.presentValueWeekDay;
+			return true;
 			}
+	}
+	// Example of getting Analog Input object Date Time Proprietary property
+	if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_database.analogInput.instance) {
+		if (propertyIdentifier == 512 + 4) {
+			*year = g_database.analogInput.proprietaryYear;
+			*month = g_database.analogInput.proprietaryMonth;
+			*day = g_database.analogInput.proprietaryDay;
+			*weekday = g_database.analogInput.proprietaryWeekDay;
+			return true;
+		}
 	}
 
 	return false;
@@ -1363,7 +1374,7 @@ bool CallbackGetPropertyReal(uint32_t deviceInstance, uint16_t objectType, uint3
 // Callback used by the BACnet Stack to get Time property values from the user
 bool CallbackGetPropertyTime(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, uint8_t* hour, uint8_t* minute, uint8_t* second, uint8_t* hundrethSeconds, const bool useArrayIndex, const uint32_t propertyArrayIndex)
 {
-	// Example of Time Value Object Present Value property
+	// Example of getting Time Value Object Present Value property
 	if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE) {
 		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_TIME_VALUE && objectInstance == g_database.timeValue.instance) {
 			*hour = g_database.timeValue.presentValueHour;
@@ -1373,7 +1384,7 @@ bool CallbackGetPropertyTime(const uint32_t deviceInstance, const uint16_t objec
 			return true;
 		}
 	}
-	// Example of Device Local Time property
+	// Example of getting Device Local Time property
 	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_LOCAL_TIME) {
 		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_DEVICE && objectInstance == g_database.device.instance) {
 			time_t adjustedTime = time(0) - g_database.device.currentTimeOffset;
@@ -1385,16 +1396,27 @@ bool CallbackGetPropertyTime(const uint32_t deviceInstance, const uint16_t objec
 			return true;
 		}
 	}
-	// Example of DateTime Value Object Present Value property
+	// Example of getting DateTime Value Object Present Value property
 	if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_DATETIME_VALUE && objectInstance == 60) {
 			if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE) {
-				*hour = g_database.dateTimeValue.presentValueHour;
-				*minute = g_database.dateTimeValue.presentValueMinute;
-				*second = g_database.dateTimeValue.presentValueSecond;
-				*hundrethSeconds = g_database.dateTimeValue.presentValueHundredthSeconds;
-				return true;
+			*hour = g_database.dateTimeValue.presentValueHour;
+			*minute = g_database.dateTimeValue.presentValueMinute;
+			*second = g_database.dateTimeValue.presentValueSecond;
+			*hundrethSeconds = g_database.dateTimeValue.presentValueHundredthSeconds;
+			return true;
 			}
 	}
+	// Example of getting Analog Input object DateTime Proprietary property
+	if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_database.analogInput.instance) {
+		if (propertyIdentifier == 512 + 4) {
+			*hour = g_database.analogInput.proprietaryHour;
+			*minute = g_database.analogInput.proprietaryMinute;
+			*second = g_database.analogInput.proprietarySecond;
+			*hundrethSeconds = g_database.analogInput.proprietaryHundredthSeconds;
+			return true;
+		}
+	}
+
 	return false;
 }
 

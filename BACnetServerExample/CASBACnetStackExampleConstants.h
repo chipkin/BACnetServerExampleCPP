@@ -188,6 +188,7 @@ public:
 	static const uint32_t DATA_TYPE_DATE = 10;
 	static const uint32_t DATA_TYPE_TIME = 11;
 	static const uint32_t DATA_TYPE_BACNET_OBJECT_IDENTIFIER = 12;
+	static const uint32_t DATA_TYPE_DATETIME = 27;
 
 	// Reinitialized State
 	static const uint8_t REINITIALIZED_STATE_WARM_START = 1;

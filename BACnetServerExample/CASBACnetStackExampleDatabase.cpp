@@ -91,6 +91,14 @@ void ExampleDatabase::Setup() {
 	this->analogInput.presentValue = 1.001f;
 	this->analogInput.covIncurment = 2.0f; 
 	this->analogInput.reliability = 0; // no-fault-detected (0), unreliable-other (7)
+	this->analogInput.proprietaryYear = 122;
+	this->analogInput.proprietaryMonth = 3;
+	this->analogInput.proprietaryDay = 20;
+	this->analogInput.proprietaryWeekDay = 7;
+	this->analogInput.proprietaryHour = 12;
+	this->analogInput.proprietaryMinute = 23;
+	this->analogInput.proprietarySecond = 58;
+	this->analogInput.proprietaryHundredthSeconds = 55;
 	this->analogOutput.instance = 1;
 	this->analogOutput.objectName = "AnalogOutput " + ExampleDatabase::GetColorName();
 	this->analogValue.instance = 2;
