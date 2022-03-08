@@ -44,6 +44,16 @@ class ExampleDatabaseAnalogInput : public ExampleDatabaseBaseObject
 		float covIncurment; 
 		uint32_t reliability;
 		std::string description; // This is an optional property that has been enabled.  
+
+		// DateTime Proprietary Value
+		uint8_t proprietaryYear;
+		uint8_t proprietaryMonth;
+		uint8_t proprietaryDay;
+		uint8_t proprietaryWeekDay;
+		uint8_t proprietaryHour;
+		uint8_t proprietaryMinute;
+		uint8_t proprietarySecond;
+		uint8_t proprietaryHundredthSeconds;
 };
 
 class ExampleDatabaseAnalogOutput : public ExampleDatabaseBaseObject 
