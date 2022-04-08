@@ -197,6 +197,10 @@ public:
 	// Debug Message Type
 	static const uint8_t BACNET_DEBUG_LOG_TYPE_ERROR = 0;
 	static const uint8_t BACNET_DEBUG_LOG_TYPE_INFO = 1;
+
+	// Alarms and Events Notify Type Enumeration
+	static const uint8_t NOTIFY_TYPE_ALARM = 0;
+	static const uint8_t NOTIFY_TYPE_EVENT = 1;
 };
 
 #endif // __CASBACnetStackExampleConstants_h__

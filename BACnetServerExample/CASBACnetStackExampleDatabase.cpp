@@ -99,6 +99,11 @@ void ExampleDatabase::Setup() {
 	this->analogInput.proprietaryMinute = 23;
 	this->analogInput.proprietarySecond = 58;
 	this->analogInput.proprietaryHundredthSeconds = 55;
+	this->analogInput.notifyType = CASBACnetStackExampleConstants::NOTIFY_TYPE_ALARM;
+	this->analogInput.enableToOffNormalevent = true;
+	this->analogInput.enableToFaultEvent = true;
+	this->analogInput.enableToNormalEvents = true;
+	this->analogInput.enableEventDetection = true;
 	this->analogOutput.instance = 1;
 	this->analogOutput.objectName = "AnalogOutput " + ExampleDatabase::GetColorName();
 	this->analogValue.instance = 2;
@@ -185,6 +190,35 @@ void ExampleDatabase::Setup() {
 	this->dateTimeValue.presentValueMinute = 53;
 	this->dateTimeValue.presentValueSecond = 47;
 	this->dateTimeValue.presentValueHundredthSeconds = 55;	
+	this->notificationClass.instance = 61;
+	this->notificationClass.objectName = "NotificationClass " + ExampleDatabase::GetColorName();
+	this->notificationClass.toOffNormalPriority = 10;
+	this->notificationClass.toFaultPriority = 100;
+	this->notificationClass.toNormalPriority = 200;
+	this->notificationClass.toOffNormalAckRequired = true;
+	this->notificationClass.toFaultAckRequired = true;
+	this->notificationClass.toNormalAckRequired = true;
+	this->notificationClassRecipient.validDays = 127;
+    this->notificationClassRecipient.fromTimeHour = 0;
+    this->notificationClassRecipient.fromTimeMinute = 0;
+    this->notificationClassRecipient.fromTimeSecond = 0;
+    this->notificationClassRecipient.fromTimeHundrethSecond = 0;
+    this->notificationClassRecipient.toTimeHour = 23;
+    this->notificationClassRecipient.toTimeMinute = 59;
+    this->notificationClassRecipient.toTimeSecond = 59;
+    this->notificationClassRecipient.toTimeHundrethSecond = 99;
+    this->notificationClassRecipient.processIdentifier = 1;
+    this->notificationClassRecipient.issueConfirmedNotifications = false;
+    this->notificationClassRecipient.transitionToOffNormal = true;
+    this->notificationClassRecipient.transitionToFault = true;
+    this->notificationClassRecipient.transitionToNormal = true;
+    this->notificationClassRecipient.useRecipientDeviceChoice = false;
+    this->notificationClassRecipient.recipientDeviceInstance = 0;
+    this->notificationClassRecipient.useRecipientAddressChoice = true;
+    this->notificationClassRecipient.recipientNetworkNumber = 0;
+	uint8_t recipientMacAddr[6] = { 0xC0, 0xA8, 0x01, 0x54, 0xC0, 0xBA };
+    this->notificationClassRecipient.recipientMacAddress = recipientMacAddr;		// TODO
+    this->notificationClassRecipient.recipientMacAddressLength = 6;
 	this->LoadNetworkPortProperties() ; 
 }
 
