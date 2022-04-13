@@ -105,7 +105,12 @@ public:
 	static const uint32_t PROPERTY_IDENTIFIER_SYSTEM_STATUS = 112;
 	static const uint32_t PROPERTY_IDENTIFIER_UTC_OFFSET = 119;
 	static const uint32_t PROPERTY_IDENTIFIER_BIT_TEXT = 343;
-	
+
+	static const uint32_t PROPERTY_IDENTIFIER_LOW_LIMIT = 59;
+	static const uint32_t PROPERTY_IDENTIFIER_HIGH_LIMIT = 45;
+	static const uint32_t PROPERTY_IDENTIFIER_FAULT_LOW_LIMIT = 389;
+	static const uint32_t PROPERTY_IDENTIFIER_FAULT_HIGH_LIMIT = 388;
+	static const uint32_t PROPERTY_IDENTIFIER_NOTIFICATION_CLASS = 17;
 
 	static const uint32_t PROPERTY_IDENTIFIER_MAX_PRES_VALUE = 65;
 	static const uint32_t PROPERTY_IDENTIFIER_MIN_PRES_VALUE = 69;
@@ -197,6 +202,10 @@ public:
 	// Debug Message Type
 	static const uint8_t BACNET_DEBUG_LOG_TYPE_ERROR = 0;
 	static const uint8_t BACNET_DEBUG_LOG_TYPE_INFO = 1;
+
+	// Alarms and Events Notify Type Enumeration
+	static const uint8_t NOTIFY_TYPE_ALARM = 0;
+	static const uint8_t NOTIFY_TYPE_EVENT = 1;
 };
 
 #endif // __CASBACnetStackExampleConstants_h__
