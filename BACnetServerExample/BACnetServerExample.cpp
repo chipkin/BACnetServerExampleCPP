@@ -362,7 +362,7 @@ int main(int argc, char **argv) {
 
     // Add Objects
     // ---------------------------------------
-    // AnalogInput (AO)
+    // AnalogInput (AI)
     std::cout << "Adding AnalogInput. analogInput.instance=[" << g_database.analogInput.instance << "]... ";
     if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance)) {
         std::cerr << "Failed to add AnalogInput" << std::endl;
@@ -592,9 +592,12 @@ int main(int argc, char **argv) {
         return -1;
     }
 
+    std::cout << "OK" << std::endl;
+
     // Setup Alarms and Events
     // ---------------------------------------------------------------------------
     // Add NotificationClass object
+    std::cout << "Set up Alarms and Events for objects... ";
     if (!fpAddNotificationClassObject(g_database.device.instance, g_database.notificationClass.instance, g_database.notificationClass.toOffNormalPriority, g_database.notificationClass.toFaultPriority, g_database.notificationClass.toNormalPriority, g_database.notificationClass.toOffNormalAckRequired, g_database.notificationClass.toFaultAckRequired, g_database.notificationClass.toNormalAckRequired)) {
         std::cerr << "Failed to add NotificationClass" << std::endl;
     }
@@ -610,14 +613,14 @@ int main(int argc, char **argv) {
     }
 
     // Enable OUT_OF_RANGE event algorithm
-    if (!fpSetIntrinsicOutOfRangeAlgorithm(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 0.1, 20.0, 0.5, true, false, 0, false, 0, true)) {
+    if (!fpSetIntrinsicOutOfRangeAlgorithm(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, g_database.analogInput.lowLimit, g_database.analogInput.highLimit, 0.5, false, true, 0, false, 0, true)) {
         std::cerr << "Failed to enable OUT_OF_RANGE event algorithm" << std::endl;
     }
 
-    // Enable OUT_OF_RANGE fault algorithm
-    if (!fpSetFaultOutOfRangeAlgorithmReal(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 0.1, 20.0, true)) {
-        std::cerr << "Failed to enabel OUT_OF_RANGE fault algorithm" << std::endl;
-    }
+    //// Enable OUT_OF_RANGE fault algorithm
+    //if (!fpSetFaultOutOfRangeAlgorithmReal(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, g_database.analogInput.faultLowLimit, g_database.analogInput.faultHighLimit, true)) {
+    //    std::cerr << "Failed to enable OUT_OF_RANGE fault algorithm" << std::endl;
+    //}
 
     std::cout << "OK" << std::endl;
 
@@ -652,9 +655,15 @@ int main(int argc, char **argv) {
 
         // Handle any user input.
         // Note: User input in this example is used for the following:
-        //		i - increment the analog-input value. Used to test cov
+        //      a - Add recipient address
+        //      b - Add Broadcast Distribution Table entry
+        //		i - Increment the analog-input value. Used to test COV
+        //		r - Toggle Analog Input Reliability
+        //		f - Send Register Foreign Device message
         //		h - Display options
+        //      m - Send text (m)essage
         //		q - Quit
+        //      z - Reset Analog Input Present Value to (Zero) 0.1
         if (!DoUserInput()) {
             // User press 'q' to quit the example application.
             break;
@@ -662,6 +671,17 @@ int main(int argc, char **argv) {
 
         // Update values in the example database
         g_database.Loop();
+        
+        time_t currentTime = time(0);
+
+        static time_t updateOnceASecondTimer = 0;
+        if (updateOnceASecondTimer + 1 <= currentTime) {
+            updateOnceASecondTimer = currentTime;
+
+            if (fpValueUpdated != NULL) {
+                fpValueUpdated(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE);
+            }
+        }
 
         // Call Sleep to give some time back to the system
         Sleep(0); // Windows
@@ -675,11 +695,15 @@ int main(int argc, char **argv) {
 
 // Handle any user input.
 // Note: User input in this example is used for the following:
-//		i - increment the analog-input value. Used to test COV
+//      a - Add recipient address
+//      b - Add Broadcast Distribution Table entry
+//		i - Increment the analog-input value. Used to test COV
 //		r - Toggle Analog Input Reliability
 //		f - Send Register Foreign Device message
 //		h - Display options
+//      m - Send text (m)essage
 //		q - Quit
+//      z - Reset Analog Input Present Value to (Zero) 0.1
 bool DoUserInput() {
     // Check to see if the user hit any key
     if (!_kbhit()) {
@@ -696,11 +720,48 @@ bool DoUserInput() {
     case 'q': {
         return false;
     }
+    case 'a': {
+        // Add recipient to notification class object
+        // Ask for recipient Address
+        std::string recipientAddrStr;
+        std::cout << "\nEnter Recipient IP Address (Format: WWW.XXX.YYY.ZZZ::Port) (Enter [N] to use default value [192.168.1.28:47808]):";
+        std::cin >> recipientAddrStr;
+        uint8_t recipientAddr[6] = { 192, 168, 1, 28, 0XBA, 0xC0 };
+        uint8_t periodIndex;
+        if (recipientAddrStr != "N" && recipientAddrStr != "n") {
+            try {
+                // IP
+                for (uint8_t i = 0; i < 3; i++) {
+                    periodIndex = recipientAddrStr.find(".");
+                    recipientAddr[i] = std::atoi(recipientAddrStr.substr(0, periodIndex).c_str());
+                    recipientAddrStr = recipientAddrStr.substr(periodIndex + 1);
+                }
+                recipientAddr[3] = std::atoi(recipientAddrStr.c_str());
+
+                // Port
+                periodIndex = recipientAddrStr.find(":");
+                recipientAddrStr = recipientAddrStr.substr(periodIndex + 1);
+                recipientAddr[4] = std::atoi(recipientAddrStr.c_str()) / 256;
+                recipientAddr[5] = std::atoi(recipientAddrStr.c_str()) % 256;
+            }
+            catch (...) {
+                std::cerr << "Failed to add recipient, please check the input string's format" << std::endl;
+                break;
+            }
+        }
+
+        std::cout << "Recipient Added!" << std::endl;
+
+        if (!fpAddRecipientToNotificationClass(g_database.device.instance, g_database.notificationClass.instance, g_database.notificationClassRecipient.validDays, g_database.notificationClassRecipient.fromTimeHour, g_database.notificationClassRecipient.fromTimeMinute, g_database.notificationClassRecipient.fromTimeSecond, g_database.notificationClassRecipient.fromTimeHundrethSecond, g_database.notificationClassRecipient.toTimeHour, g_database.notificationClassRecipient.toTimeMinute, g_database.notificationClassRecipient.toTimeSecond, g_database.notificationClassRecipient.toTimeHundrethSecond, g_database.notificationClassRecipient.processIdentifier, g_database.notificationClassRecipient.issueConfirmedNotifications, g_database.notificationClassRecipient.transitionToOffNormal, g_database.notificationClassRecipient.transitionToFault, g_database.notificationClassRecipient.transitionToNormal, g_database.notificationClassRecipient.useRecipientDeviceChoice, g_database.notificationClassRecipient.recipientDeviceInstance, g_database.notificationClassRecipient.useRecipientAddressChoice, g_database.notificationClassRecipient.recipientNetworkNumber, recipientAddr, 6)) {
+            std::cerr << "Failed to add recipient for NotificationClass" << std::endl;
+        }
+        break;
+    }
     case 'b': {
         // Add BDT Entry
         // Ask for BBMD Address, Port, and Mask
         std::string bbmdIpStr, bbmdPortStr, bbmdIpMaskStr;
-        std::cout << "\nEnter BBMD IP Address (Format: WWW.XXX.YYY.ZZZ) (Enter empty string to use default value [192.168.1.208]):";
+        std::cout << "\nEnter BBMD IP Address (Format: WWW.XXX.YYY.ZZZ) (Enter [N] to use default value [192.168.1.208]):";
         std::cin >> bbmdIpStr;
         std::cout << "Enter BBMD IP Port (Enter [N] to use default value [47808])";
         std::cin >> bbmdPortStr;
@@ -709,29 +770,36 @@ bool DoUserInput() {
         uint8_t bbmdIpAddress[6] = {192, 168, 1, 208, 0xBA, 0xC0};
         uint8_t bbmdIpMask[4] = {255, 255, 255, 0};
         uint8_t periodIndex;
-        if (bbmdIpStr != "N" && bbmdIpStr != "n") {
-            for (uint8_t i = 0; i < 3; i++) {
-                periodIndex = bbmdIpStr.find(".");
-                bbmdIpAddress[i] = std::atoi(bbmdIpStr.substr(0, periodIndex).c_str());
-                bbmdIpStr = bbmdIpStr.substr(periodIndex + 1);
+        try {
+            if (bbmdIpStr != "N" && bbmdIpStr != "n") {
+                for (uint8_t i = 0; i < 3; i++) {
+                    periodIndex = bbmdIpStr.find(".");
+                    bbmdIpAddress[i] = std::atoi(bbmdIpStr.substr(0, periodIndex).c_str());
+                    bbmdIpStr = bbmdIpStr.substr(periodIndex + 1);
+                }
+                bbmdIpAddress[3] = std::atoi(bbmdIpStr.c_str());
             }
-            bbmdIpAddress[3] = std::atoi(bbmdIpStr.c_str());
-        }
-        if (bbmdPortStr != "N" && bbmdPortStr != "n") {
-            bbmdIpAddress[4] = std::atoi(bbmdPortStr.c_str()) / 256;
-            bbmdIpAddress[5] = std::atoi(bbmdPortStr.c_str()) % 256;
-        }
-        if (bbmdIpMaskStr != "N" && bbmdIpMaskStr != "n") {
-            for (uint8_t i = 0; i < 3; i++) {
-                periodIndex = bbmdIpMaskStr.find(".");
-                bbmdIpMask[i] = std::atoi(bbmdIpMaskStr.substr(0, periodIndex).c_str());
-                bbmdIpMaskStr = bbmdIpMaskStr.substr(periodIndex + 1);
+            if (bbmdPortStr != "N" && bbmdPortStr != "n") {
+                bbmdIpAddress[4] = std::atoi(bbmdPortStr.c_str()) / 256;
+                bbmdIpAddress[5] = std::atoi(bbmdPortStr.c_str()) % 256;
             }
-            bbmdIpMask[3] = std::atoi(bbmdIpMaskStr.c_str());
-        }
+            if (bbmdIpMaskStr != "N" && bbmdIpMaskStr != "n") {
+                for (uint8_t i = 0; i < 3; i++) {
+                    periodIndex = bbmdIpMaskStr.find(".");
+                    bbmdIpMask[i] = std::atoi(bbmdIpMaskStr.substr(0, periodIndex).c_str());
+                    bbmdIpMaskStr = bbmdIpMaskStr.substr(periodIndex + 1);
+                }
+                bbmdIpMask[3] = std::atoi(bbmdIpMaskStr.c_str());
+            }
 
-        fpAddBDTEntry(bbmdIpAddress, 6, bbmdIpMask, 4);
-        fpSetBBMD(g_database.device.instance, g_database.networkPort.instance);
+            fpAddBDTEntry(bbmdIpAddress, 6, bbmdIpMask, 4);
+            fpSetBBMD(g_database.device.instance, g_database.networkPort.instance);
+
+            std::cout << "BDT entry added!" << std::endl;
+        }
+        catch (...) {
+            std::cout << "Failed to add BDT entry" << std::endl;
+        }
         break;
     }
     case 'i': {
@@ -792,6 +860,11 @@ bool DoUserInput() {
         }
         break;
     }
+    case 'z': {
+        // Reset Analog Input Present Value to 0.1
+        g_database.analogInput.presentValue = 0.1;
+        break;
+    }
 
     case 'h':
     default: {
@@ -804,6 +877,7 @@ bool DoUserInput() {
                   << std::endl;
 
         std::cout << "Help:" << std::endl;
+        std::cout << "a - (A)dd recipient address" << std::endl;
         std::cout << "b - Add (B)roadcast Distribution Table entry" << std::endl;
         std::cout << "i - (i)ncrement Analog Value: " << g_database.analogValue.instance << " by 1.1" << std::endl;
         std::cout << "r - Toggle the Analog Input: 0 (r)eliability status" << std::endl;
@@ -812,6 +886,7 @@ bool DoUserInput() {
         std::cout << "h - (h)elp" << std::endl;
         std::cout << "m - Send text (m)essage" << std::endl;
         std::cout << "q - (q)uit" << std::endl;
+        std::cout << "z - Reset Analog Input Present Value to (Zero) 0.1" << std::endl;
         std::cout << std::endl;
         break;
     }
@@ -841,7 +916,17 @@ uint16_t CallbackReceiveMessage(uint8_t *message, const uint16_t maxMessageLengt
 
     // Attempt to read bytes
     int bytesRead = g_udp.GetMessage(message, maxMessageLength, ipAddress, &port);
+
     if (bytesRead > 0) {
+        std::cout << "\nReceived message: \n";
+        for (int i = 0; i < bytesRead; i++) {
+            std::cout << std::hex << int(message[i]);
+        }
+        std::cout << "\n";
+        for (int i = 0; i < bytesRead; i++) {
+            std::cout << message[i];
+        }
+        std::cout << "\n";
         ChipkinCommon::CEndianness::ToBigEndian(&port, sizeof(uint16_t));
         std::cout << std::endl
                   << "FYI: Received message from [" << ipAddress << ":" << port << "], length [" << bytesRead << "]" << std::endl;
@@ -935,6 +1020,7 @@ uint16_t CallbackSendMessage(const uint8_t *message, const uint16_t messageLengt
     }
     */
 
+    /*
     // Get the JSON rendered version of the just sent message
     static char jsonRenderBuffer[MAX_RENDER_BUFFER_LENGTH];
     if (fpDecodeAsJSON((char *)message, messageLength, jsonRenderBuffer, MAX_RENDER_BUFFER_LENGTH) > 0) {
@@ -943,6 +1029,7 @@ uint16_t CallbackSendMessage(const uint8_t *message, const uint16_t messageLengt
         std::cout << "---------------------" << std::endl;
         memset(jsonRenderBuffer, 0, MAX_RENDER_BUFFER_LENGTH);
     }
+    */
 
     return messageLength;
 }
@@ -1345,6 +1432,20 @@ bool CallbackGetPropertyReal(uint32_t deviceInstance, uint16_t objectType, uint3
     } else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_MIN_PRES_VALUE && objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_VALUE && objectInstance == g_database.analogValue.instance) {
         *value = g_database.analogValue.minPresValue;
         return true;
+    }
+
+    // Analog Input Alarms and Events
+    else if(propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_LOW_LIMIT && objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_database.analogInput.instance) {
+        *value = g_database.analogInput.lowLimit;
+    }
+    else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_HIGH_LIMIT && objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_database.analogInput.instance) {
+        *value = g_database.analogInput.highLimit;
+    }
+    else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_FAULT_LOW_LIMIT && objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_database.analogInput.instance) {
+        *value = g_database.analogInput.faultLowLimit;
+    }
+    else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_FAULT_HIGH_LIMIT && objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_database.analogInput.instance) {
+        *value = g_database.analogInput.faultHighLimit;
     }
 
     return false;

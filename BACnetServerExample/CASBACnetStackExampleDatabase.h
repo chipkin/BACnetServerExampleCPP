@@ -57,6 +57,11 @@ public:
 
     // Alarms and Events
     uint8_t notifyType;
+    uint32_t notificationClass;
+    float lowLimit;
+    float highLimit;
+    float faultLowLimit;
+    float faultHighLimit;
     bool enableToOffNormalevent;
     bool enableToFaultEvent;
     bool enableToNormalEvents;
@@ -266,7 +271,7 @@ public:
     bool recipientDeviceInstance;
     bool useRecipientAddressChoice;
     uint16_t recipientNetworkNumber;
-    uint8_t *recipientMacAddress;
+    uint8_t recipientMacAddress[6];
     uint32_t recipientMacAddressLength;
 };
 

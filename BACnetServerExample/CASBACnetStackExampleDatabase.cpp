@@ -99,11 +99,16 @@ void ExampleDatabase::Setup() {
 	this->analogInput.proprietaryMinute = 23;
 	this->analogInput.proprietarySecond = 58;
 	this->analogInput.proprietaryHundredthSeconds = 55;
-	this->analogInput.notifyType = CASBACnetStackExampleConstants::NOTIFY_TYPE_ALARM;
+	this->analogInput.notifyType = CASBACnetStackExampleConstants::NOTIFY_TYPE_EVENT;
 	this->analogInput.enableToOffNormalevent = true;
 	this->analogInput.enableToFaultEvent = true;
 	this->analogInput.enableToNormalEvents = true;
 	this->analogInput.enableEventDetection = true;
+	this->analogInput.lowLimit = 0.1;
+	this->analogInput.faultLowLimit = 0.0;
+	this->analogInput.highLimit = 10.1;
+	this->analogInput.faultHighLimit = 30.1;
+	this->analogInput.notificationClass = 61;
 	this->analogOutput.instance = 1;
 	this->analogOutput.objectName = "AnalogOutput " + ExampleDatabase::GetColorName();
 	this->analogValue.instance = 2;
@@ -216,8 +221,14 @@ void ExampleDatabase::Setup() {
     this->notificationClassRecipient.recipientDeviceInstance = 0;
     this->notificationClassRecipient.useRecipientAddressChoice = true;
     this->notificationClassRecipient.recipientNetworkNumber = 0;
-	uint8_t recipientMacAddr[6] = { 0xC0, 0xA8, 0x01, 0x54, 0xC0, 0xBA };
-    this->notificationClassRecipient.recipientMacAddress = recipientMacAddr;		// TODO
+	// TODO
+	this->notificationClassRecipient.recipientMacAddress[0] = 192;		
+	this->notificationClassRecipient.recipientMacAddress[1] = 168;
+	this->notificationClassRecipient.recipientMacAddress[2] = 1;
+	this->notificationClassRecipient.recipientMacAddress[3] = 28;
+	this->notificationClassRecipient.recipientMacAddress[4] = 0xBA;
+	this->notificationClassRecipient.recipientMacAddress[5] = 0xC0;
+
     this->notificationClassRecipient.recipientMacAddressLength = 6;
 	this->LoadNetworkPortProperties() ; 
 }
