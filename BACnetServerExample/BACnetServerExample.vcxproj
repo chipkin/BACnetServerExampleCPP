@@ -200,6 +200,7 @@
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetAuthorizationExemption.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetAuthorizationMode.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetBackupState.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetBBMD.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetBDTEntry.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetBinaryLightingPV.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetBinaryPV.cpp" />
@@ -239,6 +240,10 @@
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetCreateObjectProcessor.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetCreateObjectRequest.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDatabase.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDataLink.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDataLinkIPv4.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDataLinkLayer.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDataLinkMSTP.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDateRange.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDateTime.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDBDevice.cpp" />
@@ -335,6 +340,7 @@
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetMessageClass.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetMessagePriority.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetMSTPPacket.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetNetworkLayer.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetNetworkLayerProtocolMessage.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetNetworkLayerVendorProprietaryMessage.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetNetworkNumberIs.cpp" />
@@ -503,6 +509,7 @@
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetUnconfirmedTextMessageRequest.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetUTCTimeSynchronizationProcessor.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetUTCTimeSynchronizationRequest.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetVirtualRouter.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetVTClass.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetVTCloseError.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetWhatIsNetworkNumber.cpp" />
@@ -557,6 +564,7 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetAuthorizationExemption.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetAuthorizationMode.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetBackupState.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetBBMD.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetBDTEntry.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetBinaryLightingPV.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetBinaryPV.h" />
@@ -596,6 +604,10 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetCreateObjectProcessor.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetCreateObjectRequest.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDatabase.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDataLink.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDataLinkIPv4.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDataLinkLayer.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDataLinkMSTP.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDateRange.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDateTime.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDBDevice.h" />
@@ -693,6 +705,7 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetMessageClass.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetMessagePriority.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetMSTPPacket.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetNetworkLayer.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetNetworkLayerProtocolMessage.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetNetworkLayerVendorProprietaryMessage.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetNetworkNumberIs.h" />
@@ -867,6 +880,7 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetUnconfirmedTextMessageRequest.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetUTCTimeSynchronizationProcessor.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetUTCTimeSynchronizationRequest.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetVirtualRouter.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetVTClass.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetVTCloseError.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetWhatIsNetworkNumber.h" />

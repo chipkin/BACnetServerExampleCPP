@@ -54,6 +54,9 @@ class ExampleDatabaseAnalogInput : public ExampleDatabaseBaseObject
 		uint8_t proprietaryMinute;
 		uint8_t proprietarySecond;
 		uint8_t proprietaryHundredthSeconds;
+
+		// Proprietary Real
+		float proprietaryReal;
 };
 
 class ExampleDatabaseAnalogOutput : public ExampleDatabaseBaseObject 

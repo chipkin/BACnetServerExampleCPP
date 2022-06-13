@@ -60,7 +60,7 @@ ExampleDatabase g_database; // The example database that stores current values.
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.16";  // See CHANGELOG.md for a full list of changes.
+const std::string APPLICATION_VERSION = "0.0.17";  // See CHANGELOG.md for a full list of changes.
 const uint32_t MAX_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
@@ -376,6 +376,7 @@ int main(int argc, char** argv)
 	fpSetProprietaryProperty(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 512 + 2, true, false, CASBACnetStackExampleConstants::DATA_TYPE_CHARACTER_STRING, false, false, false);
 	fpSetProprietaryProperty(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 512 + 3, true, true, CASBACnetStackExampleConstants::DATA_TYPE_CHARACTER_STRING, false, false, false);
 	fpSetProprietaryProperty(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 512 + 4, false, false, CASBACnetStackExampleConstants::DATA_TYPE_DATETIME, false, false, false);
+	fpSetProprietaryProperty(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 512 + 5, false, true, CASBACnetStackExampleConstants::DATA_TYPE_REAL, false, false, false);
 
 	// Set the Present value to subscribable 
 	fpSetPropertySubscribable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
@@ -1367,6 +1368,10 @@ bool CallbackGetPropertyReal(uint32_t deviceInstance, uint16_t objectType, uint3
 		*value = g_database.analogValue.minPresValue;
 		return true;
 	}
+	else if (propertyIdentifier == 512 + 5 && objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_database.analogInput.instance) {
+		*value = g_database.analogInput.proprietaryReal;
+		return true;
+	}
 
 	return false;
 }
@@ -1779,6 +1784,10 @@ bool CallbackSetPropertyReal(const uint32_t deviceInstance, const uint16_t objec
 			g_database.analogInput.covIncurment = value;
 			return true;
 		}
+	}
+	else if (propertyIdentifier == 512 + 5 && objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_database.analogInput.instance) {
+		g_database.analogInput.proprietaryReal = value;
+		return true;
 	}
 	return false;
 }

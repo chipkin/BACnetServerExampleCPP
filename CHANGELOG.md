@@ -2,6 +2,10 @@
 
 ## Version 0.0.x
 
+### 0.0.17.x (2022-Jun-13)
+- Added example of Writing to a ProprietaryProperty
+- Updated CAS BACnet Stack to version v3.30.9
+
 ### 0.0.16.x (2022-Mar-07)
 - Added read-only DateTime proprietary property to analog input
 - Updated ReinitializeDevice password check errorCode
