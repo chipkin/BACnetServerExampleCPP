@@ -190,9 +190,11 @@
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetAccumulatorStatus.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetAcknowledgeAlarmProcessor.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetAcknowledgeAlarmRequest.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetAcknowledgementFilter.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetAction.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetAddress.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetAddressBinding.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetAlarmSummary.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetAssignedLandingCalls.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetAuthenticationFactor.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetAuthenticationFactorType.cpp" />
@@ -244,6 +246,7 @@
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDataLinkIPv4.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDataLinkLayer.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDataLinkMSTP.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDataLinkSC.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDateRange.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDateTime.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDBDevice.cpp" />
@@ -268,6 +271,7 @@
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetDoorValue.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetEnableDisable.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetEngineeringUnits.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetEnrollmentSummary.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetError.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetErrorBase.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetErrorClass.cpp" />
@@ -280,6 +284,7 @@
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetEventAlgorithm.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetEventNotificationRequest.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetEventState.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetEventStateFilter.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetEventSummary.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetEventType.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetFaultAlgorithm.cpp" />
@@ -400,6 +405,7 @@
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetPrimitiveTIME.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetPrimitiveUINT.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetPriorityArray.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetPriorityFilter.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetPriorityValue.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetProgramError.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetProgramRequest.cpp" />
@@ -444,6 +450,25 @@
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetRouterAvailableToNetwork.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetRouterBusyToNetwork.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetRoutingTableEntry.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSCAddressResolution.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSCAddressResolutionACK.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSCAdvertisement.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSCAdvertisementSolicitation.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSCBVLCResult.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSCBVLL.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSCCommon.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSCConnectAccept.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSCConnectRequest.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSCDisconnectACK.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSCDisconnectRequest.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSCEncapsulatedNPDU.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSCHeaderOption.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSCHeartbeatACK.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSCHeartbeatRequest.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSCHubConnector.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSCPacket.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSCProprietaryMessage.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSCWebsocket.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSecurityLevel.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSecurityPolicy.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSegmentation.cpp" />
@@ -465,6 +490,7 @@
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackDebug.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackEventNotificationParameters.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackInvokeIds.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackMemoryBuffer.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackMessageGenerator.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackNetworkKey.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetStackNetworkPortBase.cpp" />
@@ -553,10 +579,12 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetAccumulatorStatus.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetAcknowledgeAlarmProcessor.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetAcknowledgeAlarmRequest.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetAcknowledgementFilter.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetAction.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetAddress.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetAddressBinding.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetAlarmAndEventAlgorithmResult.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetAlarmSummary.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetAssignedLandingCalls.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetAuthenticationFactor.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetAuthenticationFactorType.h" />
@@ -608,8 +636,10 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDataLinkIPv4.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDataLinkLayer.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDataLinkMSTP.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDataLinkSC.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDateRange.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDateTime.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDaysOfWeek.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDBDevice.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDBObject.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDBProperty.h" />
@@ -632,6 +662,7 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetDoorValue.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetEnableDisable.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetEngineeringUnits.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetEnrollmentSummary.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetError.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetErrorBase.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetErrorClass.h" />
@@ -644,7 +675,9 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetEventAlgorithm.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetEventNotificationRequest.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetEventState.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetEventStateFilter.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetEventSummary.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetEventTransitionBits.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetEventType.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetFaultAlgorithm.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetFaultType.h" />
@@ -688,6 +721,7 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetLightingInProgress.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetLightingOperation.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetLightingTransition.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetLimitEnable.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetListedFaultAlgorithm.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetListOfReadAccessResults.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetListOfReadAccessSpecifications.h" />
@@ -765,6 +799,7 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetPrimitiveTIME.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetPrimitiveUINT.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetPriorityArray.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetPriorityFilter.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetPriorityValue.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetProgramError.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetProgramRequest.h" />
@@ -810,6 +845,26 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetRouterAvailableToNetwork.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetRouterBusyToNetwork.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetRoutingTableEntry.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSCAddressResolution.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSCAddressResolutionACK.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSCAdvertisement.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSCAdvertisementSolicitation.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSCBVLCResult.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSCBVLL.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSCCommon.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSCConnectAccept.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSCConnectRequest.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSCConstants.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSCDisconnectACK.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSCDisconnectRequest.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSCEncapsulatedNPDU.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSCHeaderOption.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSCHeartbeatACK.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSCHeartbeatRequest.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSCHubConnector.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSCPacket.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSCProprietaryMessage.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSCWebsocket.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSecurityLevel.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSecurityPolicy.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSegmentation.h" />
@@ -835,6 +890,7 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackEventNotificationParameters.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackInvokeIds.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackListItems.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackMemoryBuffer.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackMessageGenerator.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackNetworkKey.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetStackNetworkPortBase.h" />
@@ -914,6 +970,10 @@
     <ClInclude Include="CASBACnetStackExampleDatabase.h" />
     <ClInclude Include="CIBuildSettings.h" />
     <ClInclude Include="SimpleUDP.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\CHANGELOG.md" />
+    <None Include="..\README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

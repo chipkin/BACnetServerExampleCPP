@@ -57,10 +57,11 @@
 // =======================================
 CSimpleUDP g_udp; // UDP resource
 ExampleDatabase g_database; // The example database that stores current values.
+bool g_bbmdEnabled; // Flag for whether bbmd was enabled or not.  Users can enable bbmd by pressing 'b' after the application has started
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.17";  // See CHANGELOG.md for a full list of changes.
+const std::string APPLICATION_VERSION = "0.0.18";  // See CHANGELOG.md for a full list of changes.
 const uint32_t MAX_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
@@ -128,6 +129,8 @@ int main(int argc, char** argv)
 		std::cout << "FYI: Default to use device instance= " << g_database.device.instance << std::endl;
 	}
 
+	// Initialize global flags
+	g_bbmdEnabled = false;
 
 	// 1. Load the CAS BACnet stack functions
 	// ---------------------------------------------------------------------------
@@ -576,9 +579,6 @@ int main(int argc, char** argv)
 		std::cerr << "Failed to add NetworkPort" << std::endl;
 		return -1;
 	}
-	fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT, g_database.networkPort.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_BBMD_ACCEPT_FD_REGISTRATIONS, true);
-	fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT, g_database.networkPort.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_BBMD_BROADCAST_DISTRIBUTION_TABLE, true);
-	fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT, g_database.networkPort.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_BBMD_FOREIGN_DEVICE_TABLE, true);
 
 	uint8_t ipPortConcat[6];
 	memcpy(ipPortConcat, g_database.networkPort.IPAddress, 4);
@@ -709,7 +709,17 @@ bool DoUserInput()
 		}
 			
 		fpAddBDTEntry(bbmdIpAddress, 6, bbmdIpMask, 4);
-		fpSetBBMD(g_database.device.instance, g_database.networkPort.instance);
+
+		if (!g_bbmdEnabled) {
+			// BBMD Properties of the Network Port Object, only enable if another BBMD is added to the BDT table
+			fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT, g_database.networkPort.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_BBMD_ACCEPT_FD_REGISTRATIONS, true);
+			fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT, g_database.networkPort.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_BBMD_BROADCAST_DISTRIBUTION_TABLE, true);
+			fpSetPropertyEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT, g_database.networkPort.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_BBMD_FOREIGN_DEVICE_TABLE, true);
+			fpSetBBMD(g_database.device.instance, g_database.networkPort.instance);
+
+			g_bbmdEnabled = true;
+		}
+
 		break;
 	}
 	case 'i': {
@@ -851,7 +861,7 @@ uint16_t CallbackReceiveMessage(uint8_t* message, const uint16_t maxMessageLengt
 		
 		// Process the message as JSON
 		static char jsonRenderBuffer[MAX_RENDER_BUFFER_LENGTH];
-		if (fpDecodeAsJSON((char*)message, bytesRead, jsonRenderBuffer, MAX_RENDER_BUFFER_LENGTH) > 0) {
+		if (fpDecodeAsJSON((char*)message, bytesRead, jsonRenderBuffer, MAX_RENDER_BUFFER_LENGTH, CASBACnetStackExampleConstants::NETWORK_TYPE_IP) > 0) {
 			std::cout << "---------------------" << std::endl;
 			std::cout << jsonRenderBuffer << std::endl;
 			std::cout << "---------------------" << std::endl;
@@ -919,7 +929,7 @@ uint16_t CallbackSendMessage(const uint8_t* message, const uint16_t messageLengt
 	
 	// Get the JSON rendered version of the just sent message
 	static char jsonRenderBuffer[MAX_RENDER_BUFFER_LENGTH];
-	if (fpDecodeAsJSON((char*)message, messageLength, jsonRenderBuffer, MAX_RENDER_BUFFER_LENGTH) > 0) {
+	if (fpDecodeAsJSON((char*)message, messageLength, jsonRenderBuffer, MAX_RENDER_BUFFER_LENGTH, networkType) > 0) {
 		std::cout << "---------------------" << std::endl;
 		std::cout << jsonRenderBuffer << std::endl;
 		std::cout << "---------------------" << std::endl;
@@ -1877,6 +1887,16 @@ bool GetObjectName(const uint32_t deviceInstance, const uint16_t objectType, con
 		}
 		memcpy(value, g_database.analogInput.objectName.c_str(), stringSize);
 		*valueElementCount = (uint32_t) stringSize;
+		return true;
+	}
+	else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_OUTPUT && objectInstance == g_database.analogOutput.instance) {
+		stringSize = g_database.analogOutput.objectName.size();
+		if (stringSize > maxElementCount) {
+			std::cerr << "Error - not enough space to store full name of objectType=[" << objectType << "], objectInstance=[" << objectInstance << " ]" << std::endl;
+			return false;
+		}
+		memcpy(value, g_database.analogOutput.objectName.c_str(), stringSize);
+		*valueElementCount = (uint32_t)stringSize;
 		return true;
 	}
 	else if (objectType == 389 ) {
