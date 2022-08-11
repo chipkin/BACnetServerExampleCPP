@@ -2,24 +2,33 @@
 
 ## Version 0.0.x
 
+### 0.0.18.x (2022-Aug-11)
+
+- Updated CAS BACnet Stack to version 4.1.5
+
 ### 0.0.17.x (2022-Jun-13)
+
 - Added example of Writing to a ProprietaryProperty
 - Updated CAS BACnet Stack to version v3.30.9
 
 ### 0.0.16.x (2022-Mar-07)
+
 - Added read-only DateTime proprietary property to analog input
 - Updated ReinitializeDevice password check errorCode
 - Updated CAS BACnet Stack to version v3.29.0.0
 
 ### 0.0.15.x (2022-Jan-28)
+
 - Added DateTimeValue to example
 - Updated CAS BACnet Stack to version v3.27.0.0
 
 ### 0.0.14.x (2022-Jan-20)
+
 - Added LogDebugMessage callback to example
 - Updated CAS BACnet Stack to version v3.26.0.0
 
 ### 0.0.13.x (2022-Jan-14)
+
 - Added BroadcastDistributionTable to example
 
 ### 0.0.12.x (2021-Dec-08)

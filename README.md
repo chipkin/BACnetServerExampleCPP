@@ -2,6 +2,10 @@
 
 A basic BACnet IP server example written in C++ using the [CAS BACnet Stack](https://store.chipkin.com/services/stacks/bacnet-stack). Includes various sample BACnet objects and services.
 
+## Supported CAS BACnet Stack Version
+
+This example project uses version 4.1.5 of the CAS BACnet Stack
+
 ## Releases
 
 Build versions of this example can be downloaded from the releases page:
