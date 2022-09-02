@@ -100,6 +100,9 @@ void ExampleDatabase::Setup() {
 	this->analogInput.proprietarySecond = 58;
 	this->analogInput.proprietaryHundredthSeconds = 55;
 	this->analogInput.proprietaryReal = 1.234f;
+	this->analogInput.proprietaryArrayOfReal.push_back(1.01f);
+	this->analogInput.proprietaryArrayOfReal.push_back(2.02f);
+	this->analogInput.proprietaryArrayOfReal.push_back(3.03f);
 	this->analogOutput.instance = 1;
 	this->analogOutput.objectName = "AnalogOutput " + ExampleDatabase::GetColorName();
 	this->analogValue.instance = 2;

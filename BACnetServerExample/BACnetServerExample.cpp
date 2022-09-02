@@ -61,7 +61,7 @@ bool g_bbmdEnabled; // Flag for whether bbmd was enabled or not.  Users can enab
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.18";  // See CHANGELOG.md for a full list of changes.
+const std::string APPLICATION_VERSION = "0.0.19";  // See CHANGELOG.md for a full list of changes.
 const uint32_t MAX_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
@@ -380,6 +380,7 @@ int main(int argc, char** argv)
 	fpSetProprietaryProperty(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 512 + 3, true, true, CASBACnetStackExampleConstants::DATA_TYPE_CHARACTER_STRING, false, false, false);
 	fpSetProprietaryProperty(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 512 + 4, false, false, CASBACnetStackExampleConstants::DATA_TYPE_DATETIME, false, false, false);
 	fpSetProprietaryProperty(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 512 + 5, false, true, CASBACnetStackExampleConstants::DATA_TYPE_REAL, false, false, false);
+	fpSetProprietaryProperty(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, 512 + 6, false, false, CASBACnetStackExampleConstants::DATA_TYPE_REAL, true, false, false);
 
 	// Set the Present value to subscribable 
 	fpSetPropertySubscribable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
@@ -1382,6 +1383,11 @@ bool CallbackGetPropertyReal(uint32_t deviceInstance, uint16_t objectType, uint3
 		*value = g_database.analogInput.proprietaryReal;
 		return true;
 	}
+	// Example of Proprietary Array of Real primitives
+	else if (propertyIdentifier == 512 + 6 && objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_database.analogInput.instance && useArrayIndex) {
+		*value = g_database.analogInput.proprietaryArrayOfReal[propertyArrayIndex - 1];
+		return true;
+	}
 
 	return false;
 }
@@ -1528,6 +1534,13 @@ bool CallbackGetPropertyUInt(uint32_t deviceInstance, uint16_t objectType, uint3
 	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_FD_SUBSCRIPTION_LIFETIME) {
 		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT && objectInstance == g_database.networkPort.instance) {
 			*value = g_database.networkPort.FdSubscriptionLifetime;
+			return true;
+		}
+	}
+	// Example of Customer Property that is an array. This returns the size of the array
+	else if (propertyIdentifier == 512 + 6) {
+		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_database.analogInput.instance) {
+			*value = g_database.analogInput.proprietaryArrayOfReal.size();
 			return true;
 		}
 	}

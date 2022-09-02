@@ -57,6 +57,9 @@ class ExampleDatabaseAnalogInput : public ExampleDatabaseBaseObject
 
 		// Proprietary Real
 		float proprietaryReal;
+
+		// Proprietary Array of Reals
+		std::vector<float> proprietaryArrayOfReal;
 };
 
 class ExampleDatabaseAnalogOutput : public ExampleDatabaseBaseObject 
