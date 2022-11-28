@@ -2,6 +2,10 @@
 
 ## Version 0.0.x
 
+### 0.0.19.x (2022-Sep-02)
+
+- Added exapmle of a ProprietaryProperty that is an array of Real Primitives
+
 ### 0.0.18.x (2022-Aug-11)
 
 - Updated CAS BACnet Stack to version 4.1.5
