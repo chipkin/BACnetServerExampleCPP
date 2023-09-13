@@ -4,7 +4,7 @@
 
 ### 0.0.20.x (2023-Sep-13)
 
-- Calulate the number of states in a Multi-State by the number of elements in the stateText vector [Issues/31](https://github.com/chipkin/BACnetServerExampleCPP/issues/31)
+- Calculate the number of states in a Multi-State by the number of elements in the stateText vector [Issues/31](https://github.com/chipkin/BACnetServerExampleCPP/issues/31)
 - Updated device's application-software-version (12) property to reflect the application version [Issues/32](https://github.com/chipkin/BACnetServerExampleCPP/issues/32)
 - Changed the RELINQUISH_DEFAULT of 1 for multiStateOutput instead of the CAS BACnet Stack's default of 0 [Issues/33](https://github.com/chipkin/BACnetServerExampleCPP/issues/33)
 
