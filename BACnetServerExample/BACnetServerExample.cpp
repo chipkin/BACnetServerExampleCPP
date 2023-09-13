@@ -61,7 +61,7 @@ bool g_bbmdEnabled; // Flag for whether bbmd was enabled or not.  Users can enab
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.19";  // See CHANGELOG.md for a full list of changes.
+const std::string APPLICATION_VERSION = "0.0.20";  // See CHANGELOG.md for a full list of changes.
 const uint32_t MAX_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
@@ -454,6 +454,7 @@ int main(int argc, char** argv)
 		std::cerr << "Failed to add MultiStateOutput" << std::endl;
 		return -1;
 	}
+	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_OUTPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_STATE_TEXT, true);
 	std::cout << "OK" << std::endl;
 
 	// MultiStateValue (MSV)
@@ -463,6 +464,7 @@ int main(int argc, char** argv)
 		return -1;
 	}
 	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_VALUE, g_database.multiStateValue.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
+	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_VALUE, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_STATE_TEXT, true);
 	std::cout << "OK" << std::endl;
 
 	// BitstringValue (BSV)
@@ -586,8 +588,6 @@ int main(int argc, char** argv)
 	ipPortConcat[4] = g_database.networkPort.BACnetIPUDPPort / 256;
 	ipPortConcat[5] = g_database.networkPort.BACnetIPUDPPort % 256;
 	fpAddBDTEntry(ipPortConcat, 6, g_database.networkPort.IPSubnetMask, 4);		// First BDT Entry must be server device
-
-
 	std::cout << "OK" << std::endl;
 
 	// Add the DateTimeValue Object
@@ -599,6 +599,12 @@ int main(int argc, char** argv)
 	
 	std::cout << "OK" << std::endl;
 
+	// Debug. Print the current IP address of this device incase there are muliple network cards on the PC that is using the 
+	// Example. This is not required, its just for debug 
+	std::cout << "FYI: NetworkPort.IPAddress: " << (int)g_database.networkPort.IPAddress[0] << "." << (int)g_database.networkPort.IPAddress[1] << "." << (int)g_database.networkPort.IPAddress[2] << "." << (int)g_database.networkPort.IPAddress[3] << std::endl;
+	std::cout << "FYI: NetworkPort.IPSubnetMask: " << (int)g_database.networkPort.IPSubnetMask[0] << "." << (int)g_database.networkPort.IPSubnetMask[1] << "." << (int)g_database.networkPort.IPSubnetMask[2] << "." << (int)g_database.networkPort.IPSubnetMask[3] << std::endl;
+	std::cout << "FYI: NetworkPort.BroadcastIPAddress: " << (int)g_database.networkPort.BroadcastIPAddress[0] << "." << (int)g_database.networkPort.BroadcastIPAddress[1] << "." << (int)g_database.networkPort.BroadcastIPAddress[2] << "." << (int)g_database.networkPort.BroadcastIPAddress[3] << std::endl;
+	
 	// 5. Send I-Am of this device
 	// ---------------------------------------------------------------------------
 	// To be a good citizen on a BACnet network. We should announce ourself when we start up. 
@@ -621,6 +627,7 @@ int main(int argc, char** argv)
 		return false;
 	}
 
+	
 	// 6. Start the main loop
 	// ---------------------------------------------------------------------------
 	std::cout << "FYI: Entering main loop..." << std::endl ;
@@ -1088,6 +1095,13 @@ bool CallbackGetPropertyCharString(const uint32_t deviceInstance, const uint16_t
 		}
 		return false;
 	}
+	else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_DEVICE && propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_APPLICATION_SOFTWARE_VERSION)
+	{
+		*valueElementCount = snprintf(value, maxElementCount, APPLICATION_VERSION.c_str());
+		return true;
+	}
+	
+
 	else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && propertyIdentifier == 512 + 1 && objectInstance == g_database.analogInput.instance)
 	{
 		*valueElementCount = snprintf( value, maxElementCount, "Example custom property 512 + 1");
@@ -1104,9 +1118,23 @@ bool CallbackGetPropertyCharString(const uint32_t deviceInstance, const uint16_t
 		return true;
 	}
 	else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_INPUT && propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_STATE_TEXT && objectInstance == g_database.multiStateInput.instance) {
-		if (useArrayIndex && propertyArrayIndex > 0 && propertyArrayIndex <= g_database.multiStateInput.numberOfStates) {
+		if (useArrayIndex && propertyArrayIndex > 0 && propertyArrayIndex <= g_database.multiStateInput.stateText.size()) {
 			// 0 is number of dates. 
-			*valueElementCount = snprintf(value, maxElementCount, g_database.multiStateInput.stateText[propertyArrayIndex-1].c_str());
+			*valueElementCount = snprintf(value, maxElementCount, g_database.multiStateInput.stateText[propertyArrayIndex - 1].c_str());
+			return true;
+		}
+	}
+	else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_OUTPUT && propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_STATE_TEXT && objectInstance == g_database.multiStateOutput.instance) {
+		if (useArrayIndex && propertyArrayIndex > 0 && propertyArrayIndex <= g_database.multiStateOutput.stateText.size()) {
+			// 0 is number of dates. 
+			*valueElementCount = snprintf(value, maxElementCount, g_database.multiStateOutput.stateText[propertyArrayIndex - 1].c_str());
+			return true;
+		}
+	}
+	else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_VALUE && propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_STATE_TEXT && objectInstance == g_database.multiStateValue.instance) {
+		if (useArrayIndex && propertyArrayIndex > 0 && propertyArrayIndex <= g_database.multiStateValue.stateText.size()) {
+			// 0 is number of dates. 
+			*valueElementCount = snprintf(value, maxElementCount, g_database.multiStateValue.stateText[propertyArrayIndex - 1].c_str());
 			return true;
 		}
 	}
@@ -1459,6 +1487,14 @@ bool CallbackGetPropertyUInt(uint32_t deviceInstance, uint16_t objectType, uint3
 			return true;
 		}
 	}
+	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_RELINQUISH_DEFAULT) {
+		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_OUTPUT && objectInstance == g_database.multiStateOutput.instance) {
+			*value = g_database.multiStateOutput.relinquishDefault;
+			return true;
+		}
+	}
+
+
 	// Example of Multi-State Output Priority Array property
 	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRIORITY_ARRAY) {
 		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_OUTPUT && objectInstance == g_database.multiStateOutput.instance) {
@@ -1502,23 +1538,32 @@ bool CallbackGetPropertyUInt(uint32_t deviceInstance, uint16_t objectType, uint3
 	}
 	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_NUMBER_OF_STATES) {
 		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_INPUT && objectInstance == g_database.multiStateInput.instance) {
-			*value = g_database.multiStateInput.numberOfStates;
+			*value = g_database.multiStateInput.stateText.size();
 			return true;
 		}
 		else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_OUTPUT && objectInstance == g_database.multiStateOutput.instance) {
-			*value = g_database.multiStateOutput.numberOfStates;
+			*value = g_database.multiStateOutput.stateText.size();
 			return true;
 		}
 		else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_VALUE && objectInstance == g_database.multiStateValue.instance) {
-			*value = g_database.multiStateValue.numberOfStates;
+			*value = g_database.multiStateValue.stateText.size();
 			return true;
 		}
 	}
 	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_STATE_TEXT) {
 		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_INPUT && objectInstance == g_database.multiStateInput.instance) {
-			*value = g_database.multiStateInput.numberOfStates;
+			*value = g_database.multiStateInput.stateText.size();
 			return true;
 		}
+		else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_OUTPUT && objectInstance == g_database.multiStateOutput.instance) {
+			*value = g_database.multiStateOutput.stateText.size();
+			return true;
+		}
+		else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_VALUE && objectInstance == g_database.multiStateValue.instance) {
+			*value = g_database.multiStateValue.stateText.size();
+			return true;
+		}
+
 	}
 	// Network Port Object FdBbmdAddress Port
 	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_FD_BBMD_ADDRESS) {

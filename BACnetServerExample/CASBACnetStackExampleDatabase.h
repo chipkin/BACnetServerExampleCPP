@@ -120,13 +120,10 @@ class ExampleDatabaseMultiStateInput : public ExampleDatabaseBaseObject
 {
 	public:
 		uint32_t presentValue ;
-		uint32_t numberOfStates;
 		std::vector<std::string> stateText; 
 
 		ExampleDatabaseMultiStateInput() {
 			this->presentValue = 1 ; // A value of zero is invalid.
-			this->numberOfStates = 3;
-
 			this->stateText.push_back("One");
 			this->stateText.push_back("Two");
 			this->stateText.push_back("Three");
@@ -138,12 +135,18 @@ class ExampleDatabaseMultiStateOutput : public ExampleDatabaseBaseObject
 	public:
 		bool priorityArrayNulls[ExampleDatabaseBaseObject::PRIORITY_ARRAY_LENGTH] ;
 		uint32_t priorityArrayValues[ExampleDatabaseBaseObject::PRIORITY_ARRAY_LENGTH] ;
-		uint32_t numberOfStates;
+		std::vector<std::string> stateText; 
+
+		uint32_t relinquishDefault = 1; // Zero is not a valid value
 
 		ExampleDatabaseMultiStateOutput() {
 			memset(this->priorityArrayValues, 1, sizeof(uint32_t) * ExampleDatabaseBaseObject::PRIORITY_ARRAY_LENGTH);
 			memset(this->priorityArrayNulls, true, sizeof(bool) * ExampleDatabaseBaseObject::PRIORITY_ARRAY_LENGTH);
-			this->numberOfStates = 5;
+
+			this->stateText.push_back("Light on");
+			this->stateText.push_back("Light off");
+			this->stateText.push_back("Light blinking");
+
 		}
 };
 
@@ -151,11 +154,16 @@ class ExampleDatabaseMultiStateValue : public ExampleDatabaseBaseObject
 {
 	public:
 		uint32_t presentValue ;
-		uint32_t numberOfStates;
-
+		std::vector<std::string> stateText; 
+		
 		ExampleDatabaseMultiStateValue() {
 			this->presentValue = 1 ;  // A value of zero is invalid.
-			this->numberOfStates = 4;
+		
+			this->stateText.push_back("goldfish");
+			this->stateText.push_back("cat");
+			this->stateText.push_back("dog");
+			this->stateText.push_back("cow");
+
 		}
 };
 
