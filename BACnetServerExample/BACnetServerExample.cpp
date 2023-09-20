@@ -1550,7 +1550,7 @@ bool CallbackGetPropertyUInt(uint32_t deviceInstance, uint16_t objectType, uint3
 			return true;
 		}
 	}
-	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_STATE_TEXT) {
+	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_STATE_TEXT && useArrayIndex && propertyArrayIndex == 0) {
 		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_MULTI_STATE_INPUT && objectInstance == g_database.multiStateInput.instance) {
 			*value = g_database.multiStateInput.stateText.size();
 			return true;
