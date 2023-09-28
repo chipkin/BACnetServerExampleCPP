@@ -1260,6 +1260,12 @@
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\CErrorContainer.cpp">
       <Filter>CASBACnetStack</Filter>
     </ClCompile>
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetSequenceOfPropertyValue.cpp">
+      <Filter>CASBACnetStack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\MSTP.c">
+      <Filter>CASBACnetStack</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CASBACnetStackExampleConstants.h">
@@ -2480,9 +2486,27 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\version.h">
       <Filter>CASBACnetStack</Filter>
     </ClInclude>
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetSequenceOfPropertyValue.h">
+      <Filter>CASBACnetStack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\CIBuildSettings.h">
+      <Filter>CASBACnetStack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\licensee.h">
+      <Filter>CASBACnetStack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\MSTP.h">
+      <Filter>CASBACnetStack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\stdafx.h">
+      <Filter>CASBACnetStack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\CHANGELOG.md" />
     <None Include="..\README.md" />
+    <None Include="..\submodules\cas-bacnet-stack\source\readme.md">
+      <Filter>CASBACnetStack</Filter>
+    </None>
   </ItemGroup>
 </Project>
