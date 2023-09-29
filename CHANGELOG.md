@@ -2,6 +2,11 @@
 
 ## Version 0.0.x
 
+### 0.0.21.x (2023-Sep-29)
+
+- Updated preprocessor macro to include ENABLE_DATA_LINK_LAYER_IPV4
+- Updated Windows SDK version [Issues/35](https://github.com/chipkin/BACnetServerExampleCPP/issues/35)
+
 ### 0.0.20.x (2023-Sep-13)
 
 - Calculate the number of states in a Multi-State by the number of elements in the stateText vector [Issues/31](https://github.com/chipkin/BACnetServerExampleCPP/issues/31)

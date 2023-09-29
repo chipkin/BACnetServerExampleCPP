@@ -61,7 +61,7 @@ bool g_bbmdEnabled; // Flag for whether bbmd was enabled or not.  Users can enab
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.20";  // See CHANGELOG.md for a full list of changes.
+const std::string APPLICATION_VERSION = "0.0.21";  // See CHANGELOG.md for a full list of changes.
 const uint32_t MAX_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
