@@ -6,6 +6,7 @@
 
 - Updated preprocessor macro to include ENABLE_DATA_LINK_LAYER_IPV4, ENABLE_STRING_LITERALS, ENABLE_DECODE_AS_JSON, ENABLE_DECODE_AS_XML, ENABLE_BACNET_API_DEBUG_LOGGING, ENABLE_ALL_OBJECT_TYPES, ENABLE_ALL_BIBBS
 - Updated Windows SDK version [Issues/35](https://github.com/chipkin/BACnetServerExampleCPP/issues/35)
+- Tested using BACnetStack version 4.1.19.0
 
 ### 0.0.20.x (2023-Sep-13)
 
