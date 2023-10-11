@@ -61,7 +61,7 @@ bool g_bbmdEnabled; // Flag for whether bbmd was enabled or not.  Users can enab
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.20";  // See CHANGELOG.md for a full list of changes.
+const std::string APPLICATION_VERSION = "0.0.21";  // See CHANGELOG.md for a full list of changes.
 const uint32_t MAX_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
@@ -88,18 +88,18 @@ bool CallbackGetPropertyTime(const uint32_t deviceInstance, const uint16_t objec
 bool CallbackGetPropertyUInt(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, uint32_t* value, const bool useArrayIndex, const uint32_t propertyArrayIndex);
 
 // Set Property Functions
-bool CallbackSetPropertyBitString(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const bool* value, const uint32_t length, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode);
-bool CallbackSetPropertyBool(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const bool value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode);
-bool CallbackSetPropertyCharString(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const char* value, const uint32_t length, const uint8_t encodingType, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode);
-bool CallbackSetPropertyDate(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint8_t year, const uint8_t month, const uint8_t day, const uint8_t weekday, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode);
-bool CallbackSetPropertyDouble(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const double value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode);
-bool CallbackSetPropertyEnum(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint32_t value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode);
+bool CallbackSetPropertyBitString(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const bool* value, const uint32_t length, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode);
+bool CallbackSetPropertyBool(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const bool value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode);
+bool CallbackSetPropertyCharString(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const char* value, const uint32_t length, const uint8_t encodingType, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode);
+bool CallbackSetPropertyDate(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint8_t year, const uint8_t month, const uint8_t day, const uint8_t weekday, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode);
+bool CallbackSetPropertyDouble(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const double value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode);
+bool CallbackSetPropertyEnum(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint32_t value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode);
 bool CallbackSetPropertyNull(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode);
-bool CallbackSetPropertyOctetString(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint8_t* value, const uint32_t length, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode);
-bool CallbackSetPropertyInt(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const int32_t value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode);
-bool CallbackSetPropertyReal(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const float value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode);
-bool CallbackSetPropertyTime(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint8_t hour, const uint8_t minute, const uint8_t second, const uint8_t hundrethSeconds, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode);
-bool CallbackSetPropertyUInt(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint32_t value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode);
+bool CallbackSetPropertyOctetString(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint8_t* value, const uint32_t length, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode);
+bool CallbackSetPropertyInt(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const int32_t value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode);
+bool CallbackSetPropertyReal(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const float value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode);
+bool CallbackSetPropertyTime(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint8_t hour, const uint8_t minute, const uint8_t second, const uint8_t hundrethSeconds, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode);
+bool CallbackSetPropertyUInt(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint32_t value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode);
 bool CallbackCreateObject(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance);
 bool CallbackDeleteObject(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance);
 
@@ -767,9 +767,9 @@ bool DoUserInput()
 		memcpy(connectionString, g_database.networkPort.FdBbmdAddressHostIp, 4);
 		connectionString[4] = g_database.networkPort.FdBbmdAddressPort / 256;
 		connectionString[5] = g_database.networkPort.FdBbmdAddressPort % 256;
-		std::cout << "Sending Register Foreign Device to" << g_database.networkPort.FdBbmdAddressHostIp[0] << "." << 
-			g_database.networkPort.FdBbmdAddressHostIp[1] << "." << g_database.networkPort.FdBbmdAddressHostIp[2] << "." <<
-			g_database.networkPort.FdBbmdAddressHostIp[3] << ":" << g_database.networkPort.FdBbmdAddressPort << std::endl;
+		std::cout << "Sending Register Foreign Device to " << static_cast<uint16_t>(g_database.networkPort.FdBbmdAddressHostIp[0]) << "." <<
+			static_cast<uint16_t>(g_database.networkPort.FdBbmdAddressHostIp[1]) << "." << static_cast<uint16_t>(g_database.networkPort.FdBbmdAddressHostIp[2]) << "." <<
+			static_cast<uint16_t>(g_database.networkPort.FdBbmdAddressHostIp[3]) << ":" << g_database.networkPort.FdBbmdAddressPort << std::endl;
 
 		if (!fpSendRegisterForeignDevice(g_database.networkPort.FdSubscriptionLifetime, connectionString, 6)) {
 			std::cout << "Error - failed to send Register Foreign Device" << std::endl;
@@ -784,9 +784,9 @@ bool DoUserInput()
 		connectionString[5] = g_database.networkPort.FdBbmdAddressPort % 256;
 
 		uint8_t message[24] = "This is a test message.";
-		std::cout << "Sending text message to" << g_database.networkPort.FdBbmdAddressHostIp[0] << "." << 
-			g_database.networkPort.FdBbmdAddressHostIp[1] << "." << g_database.networkPort.FdBbmdAddressHostIp[2] << "." <<
-			g_database.networkPort.FdBbmdAddressHostIp[3] << ":" << g_database.networkPort.FdBbmdAddressPort << std::endl;
+		std::cout << "Sending text message to " << static_cast<uint16_t>(g_database.networkPort.FdBbmdAddressHostIp[0]) << "." <<
+			static_cast<uint16_t>(g_database.networkPort.FdBbmdAddressHostIp[1]) << "." << static_cast<uint16_t>(g_database.networkPort.FdBbmdAddressHostIp[2]) << "." <<
+			static_cast<uint16_t>(g_database.networkPort.FdBbmdAddressHostIp[3]) << ":" << g_database.networkPort.FdBbmdAddressPort << std::endl;
 
 		if (!CallbackSendMessage(message, 24, connectionString, 6, CASBACnetStackExampleConstants::NETWORK_TYPE_BACNET_IP, true)) {
 			std::cout << "Error - failed to send Text Message" << std::endl;
@@ -1259,7 +1259,7 @@ bool CallbackGetPropertyEnum(uint32_t deviceInstance, uint16_t objectType, uint3
 		return true;
 	}
 
-
+	
 	// We could not answer this request. 
 	return false;
 }
@@ -1361,7 +1361,7 @@ bool CallbackGetPropertyInt(uint32_t deviceInstance, uint16_t objectType, uint32
 // Callback used by the BACnet Stack to get Real property values from the user
 bool CallbackGetPropertyReal(uint32_t deviceInstance, uint16_t objectType, uint32_t objectInstance, uint32_t propertyIdentifier, float* value, bool useArrayIndex, uint32_t propertyArrayIndex)
 {
-
+	
 	// Example of Analog Input / Value Object Present Value property
 	if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE) {
 		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_database.analogInput.instance) {
@@ -1465,7 +1465,7 @@ bool CallbackGetPropertyTime(const uint32_t deviceInstance, const uint16_t objec
 			return true;
 		}
 	}
-
+	
 	return false;
 }
 
@@ -1593,7 +1593,7 @@ bool CallbackGetPropertyUInt(uint32_t deviceInstance, uint16_t objectType, uint3
 }
 
 // Callback used by the BACnet Stack to set Bitstring property values to the user
-bool CallbackSetPropertyBitString(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const bool* value, const uint32_t length, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode)
+bool CallbackSetPropertyBitString(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const bool* value, const uint32_t length, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode)
 {
 	if (deviceInstance == g_database.device.instance) {
 		// Example of writing to Bitstring Value Object Present Value property
@@ -1617,13 +1617,13 @@ bool CallbackSetPropertyBitString(const uint32_t deviceInstance, const uint16_t 
 }
 
 // Callback used by the BACnet Stack to set Boolean property values to the user
-bool CallbackSetPropertyBool(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const bool value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode)
+bool CallbackSetPropertyBool(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const bool value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode)
 {
 	return false;
 }
 
 // Callback used by the BACnet Stack to set Charstring property values to the user
-bool CallbackSetPropertyCharString(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const char* value, const uint32_t length, const uint8_t encodingType, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode)
+bool CallbackSetPropertyCharString(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const char* value, const uint32_t length, const uint8_t encodingType, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode)
 {
 	if (deviceInstance == g_database.device.instance) {
 		// Example of setting Charstring Value Object Present Value property
@@ -1662,7 +1662,7 @@ bool CallbackSetPropertyCharString(const uint32_t deviceInstance, const uint16_t
 }
 
 // Callback used by the BACnet Stack to set Date property values to the user
-bool CallbackSetPropertyDate(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint8_t year, const uint8_t month, const uint8_t day, const uint8_t weekday, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode)
+bool CallbackSetPropertyDate(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint8_t year, const uint8_t month, const uint8_t day, const uint8_t weekday, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode)
 {
 	if (deviceInstance == g_database.device.instance) {
 		// Example of setting Date Value Present Value property
@@ -1680,7 +1680,7 @@ bool CallbackSetPropertyDate(const uint32_t deviceInstance, const uint16_t objec
 }
 
 // Callback used by the BACnet Stack to set Double property values to the user
-bool CallbackSetPropertyDouble(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const double value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode)
+bool CallbackSetPropertyDouble(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const double value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode)
 {
 	if (deviceInstance == g_database.device.instance) {
 		// Example of setting Large Analog Value Object Present Value property
@@ -1695,7 +1695,7 @@ bool CallbackSetPropertyDouble(const uint32_t deviceInstance, const uint16_t obj
 }
 
 // Callback used by the BACnet Stack to set Enumerated property values to the user
-bool CallbackSetPropertyEnum(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint32_t value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode)
+bool CallbackSetPropertyEnum(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint32_t value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode)
 {
 	if (deviceInstance == g_database.device.instance) {
 		if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE) {
@@ -1746,7 +1746,7 @@ bool CallbackSetPropertyNull(const uint32_t deviceInstance, const uint16_t objec
 }
 
 // Callback used by the BACnet Stack to set OctetString property values to the user
-bool CallbackSetPropertyOctetString(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint8_t* value, const uint32_t length, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode)
+bool CallbackSetPropertyOctetString(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint8_t* value, const uint32_t length, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode)
 {
 	if (deviceInstance == g_database.device.instance) {
 		// Example of setting Octet String Value Object Present Value property
@@ -1792,7 +1792,7 @@ bool CallbackSetPropertyOctetString(const uint32_t deviceInstance, const uint16_
 }
 
 // Callback used by the BACnet Stack to set Integer property values to the user
-bool CallbackSetPropertyInt(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const int32_t value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode)
+bool CallbackSetPropertyInt(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const int32_t value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode)
 {
 	if (deviceInstance == g_database.device.instance) {
 		// Example of setting Integer Value Object Present Value property
@@ -1820,7 +1820,7 @@ bool CallbackSetPropertyInt(const uint32_t deviceInstance, const uint16_t object
 }
 
 // Callback used by the BACnet Stack to set Real property values to the user
-bool CallbackSetPropertyReal(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const float value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode)
+bool CallbackSetPropertyReal(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const float value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode)
 {
 	if (deviceInstance != g_database.device.instance) {
 		return false; // Not this device.
@@ -1861,7 +1861,7 @@ bool CallbackSetPropertyReal(const uint32_t deviceInstance, const uint16_t objec
 }
 
 // Callback used by the BACnet Stack to set Time property values to the user
-bool CallbackSetPropertyTime(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint8_t hour, const uint8_t minute, const uint8_t second, const uint8_t hundrethSeconds, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode)
+bool CallbackSetPropertyTime(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint8_t hour, const uint8_t minute, const uint8_t second, const uint8_t hundrethSeconds, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode)
 {
 	if (deviceInstance == g_database.device.instance) {
 		// Example of setting Time Value Object Present Value property
@@ -1879,7 +1879,7 @@ bool CallbackSetPropertyTime(const uint32_t deviceInstance, const uint16_t objec
 }
 
 // Callback used by the BACnet Stack to set Date property values to the user
-bool CallbackSetPropertyUInt(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint32_t value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, unsigned int* errorCode)
+bool CallbackSetPropertyUInt(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint32_t value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode)
 {
 	if (deviceInstance == g_database.device.instance) {
 		if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE) {

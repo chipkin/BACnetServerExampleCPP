@@ -2,6 +2,18 @@
 
 ## Version 0.0.x
 
+### 0.0.22.x (2023-Oct-11)
+
+- Fixed conversion issues between unsigned int* and uint32_t* for the errorCode parameter in CallbackSetProperty functions [Issues/42](https://github.com/chipkin/BACnetServerExampleCPP/issues/42)
+- Fixed display of Foreign Device BBMD Address Host IP for sending text messages and foreign device registration
+- Tested using BACnetStack version 4.1.19.0
+
+### 0.0.21.x (2023-Sep-29)
+
+- Updated preprocessor macro to include ENABLE_DATA_LINK_LAYER_IPV4, ENABLE_STRING_LITERALS, ENABLE_DECODE_AS_JSON, ENABLE_DECODE_AS_XML, ENABLE_BACNET_API_DEBUG_LOGGING, ENABLE_ALL_OBJECT_TYPES, ENABLE_ALL_BIBBS
+- Updated Windows SDK version [Issues/35](https://github.com/chipkin/BACnetServerExampleCPP/issues/35)
+- Tested using BACnetStack version 4.1.19.0
+
 ### 0.0.20.x (2023-Sep-13)
 
 - Calculate the number of states in a Multi-State by the number of elements in the stateText vector [Issues/31](https://github.com/chipkin/BACnetServerExampleCPP/issues/31)
