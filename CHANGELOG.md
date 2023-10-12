@@ -2,6 +2,11 @@
 
 ## Version 0.0.x
 
+### 0.0.23.x (2023-Oct-12)
+
+- Fixed spelling mistake to avoid confusion
+- Tested using BACnetStack version 4.1.19.0
+
 ### 0.0.22.x (2023-Oct-11)
 
 - Fixed conversion issues between unsigned int* and uint32_t* for the errorCode parameter in CallbackSetProperty functions [Issues/42](https://github.com/chipkin/BACnetServerExampleCPP/issues/42)

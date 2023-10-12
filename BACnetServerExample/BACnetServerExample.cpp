@@ -61,7 +61,7 @@ bool g_bbmdEnabled; // Flag for whether bbmd was enabled or not.  Users can enab
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.21";  // See CHANGELOG.md for a full list of changes.
+const std::string APPLICATION_VERSION = "0.0.23";  // See CHANGELOG.md for a full list of changes.
 const uint32_t MAX_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
@@ -367,7 +367,7 @@ int main(int argc, char** argv)
 
 	// Add Objects
 	// ---------------------------------------
-	// AnalogInput (AO) 
+	// AnalogInput (AI) 
 	std::cout << "Adding AnalogInput. analogInput.instance=[" << g_database.analogInput.instance << "]... ";
 	if (!fpAddObject(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance)) {
 		std::cerr << "Failed to add AnalogInput" << std::endl;
