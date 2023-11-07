@@ -2,6 +2,17 @@
 
 ## Version 0.0.x
 
+### 0.0.24.x (2023-Nov-06)
+
+- Refactored register callbacks and setting up device into helper functions.
+- Implemented functionality for warm start.
+- Renamed g_database to g_exampleDatabase to better express that the database in the project is unaffiliated to the CAS BACnet Stack.
+
+### 0.0.23.x (2023-Oct-12)
+
+- Fixed spelling mistake to avoid confusion
+- Tested using BACnetStack version 4.1.19.0
+
 ### 0.0.22.x (2023-Oct-11)
 
 - Fixed conversion issues between unsigned int* and uint32_t* for the errorCode parameter in CallbackSetProperty functions [Issues/42](https://github.com/chipkin/BACnetServerExampleCPP/issues/42)
