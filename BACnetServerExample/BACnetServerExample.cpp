@@ -97,6 +97,7 @@ bool CallbackSetPropertyDate(const uint32_t deviceInstance, const uint16_t objec
 bool CallbackSetPropertyDouble(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const double value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode);
 bool CallbackSetPropertyEnum(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint32_t value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode);
 bool CallbackSetPropertyNull(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode);
+bool CallbackSetPropertyObjectIdentifier(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint16_t valueObjectType, const uint32_t valueObjectInstance, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode);
 bool CallbackSetPropertyOctetString(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint8_t* value, const uint32_t length, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode);
 bool CallbackSetPropertyInt(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const int32_t value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode);
 bool CallbackSetPropertyReal(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const float value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode);
@@ -258,6 +259,7 @@ void RegisterCallbacks() {
 	fpRegisterCallbackSetPropertyDouble(CallbackSetPropertyDouble);
 	fpRegisterCallbackSetPropertyEnumerated(CallbackSetPropertyEnum);
 	fpRegisterCallbackSetPropertyNull(CallbackSetPropertyNull);
+	fpRegisterCallbackSetPropertyObjectIdentifier(CallbackSetPropertyObjectIdentifier);
 	fpRegisterCallbackSetPropertyOctetString(CallbackSetPropertyOctetString);
 	fpRegisterCallbackSetPropertySignedInteger(CallbackSetPropertyInt);
 	fpRegisterCallbackSetPropertyReal(CallbackSetPropertyReal);
@@ -421,6 +423,11 @@ bool SetupDevice() {
 	}
 	// Object Name
 	if (!fpSetPropertyWritable(g_exampleDatabase.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_DEVICE, g_exampleDatabase.device.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_OBJECT_NAME, true)) {
+		std::cerr << "Failed to make the object name property writable for Device" << std::endl;
+		return false;
+	}
+	// Object Identifier
+	if (!fpSetPropertyWritable(g_exampleDatabase.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_DEVICE, g_exampleDatabase.device.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_OBJECT_IDENTIFIER, true)) {
 		std::cerr << "Failed to make the object name property writable for Device" << std::endl;
 		return false;
 	}
@@ -1838,6 +1845,22 @@ bool CallbackSetPropertyOctetString(const uint32_t deviceInstance, const uint16_
 				}
 			}
 		}
+	}
+	return false;
+}
+
+// Callback used by the BACnet Stack to set Object Identifier property values to the user
+bool CallbackSetPropertyObjectIdentifier(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const uint16_t valueObjectType, const uint32_t valueObjectInstance, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode)
+{
+	if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_OBJECT_IDENTIFIER &&
+		objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_DEVICE &&
+		objectInstance == g_exampleDatabase.device.instance)
+	{
+
+		// This value needs to be saved to the EEprom
+		g_exampleDatabase.device.instance = valueObjectInstance;
+		std::cout << "Database: " << g_exampleDatabase.device.instance << std::endl;
+		return true;
 	}
 	return false;
 }
