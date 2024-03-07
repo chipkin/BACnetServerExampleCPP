@@ -2,6 +2,10 @@
 
 ## Version 0.0.x
 
+### 0.0.25.x (2024-Mar-06)
+
+- Implemented functionality for writing the object identifier of a device object type.
+
 ### 0.0.24.x (2023-Nov-06)
 
 - Refactored register callbacks and setting up device into helper functions.
