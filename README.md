@@ -1,14 +1,17 @@
 # BACnet Server Example C++
 
-A basic BACnet IP server example written in C++ using the [CAS BACnet Stack](https://store.chipkin.com/services/stacks/bacnet-stack). Includes various sample BACnet objects and services.
+A BACnet IP server example written in C++ using the [CAS BACnet Stack](https://store.chipkin.com/services/stacks/bacnet-stack). Includes various BACnet objects and services. 
+The executable can be used to test the BACnet client's ability to poll and visualize various BACnet object types.  
+
+This example implements many of the available features of the CAS BACnet Stack. Most BACnet server devices will only implement a small subsection of these features.
 
 ## Supported CAS BACnet Stack Version
 
-This example project uses version 4.1.5 of the CAS BACnet Stack
+This example project uses version 4.1.18 of the [CAS BACnet Stack](https://store.chipkin.com/services/stacks/bacnet-stack)
 
-## Releases
+## Releases / Downloads
 
-Build versions of this example can be downloaded from the releases page:
+Built versions of this example can be downloaded from the releases page:
 
 [https://github.com/chipkin/BACnetServerExampleCPP/releases](https://github.com/chipkin/BACnetServerExampleCPP/releases)
 
@@ -22,7 +25,7 @@ Run the executable included in the zip file.
 
 Pre-configured with the following example BACnet device and objects:
 
-- **Device**: 389999 (Device Rainbow)
+- **Device**: 380001 (Device Rainbow)
   - analog_input: 0  (AnalogInput Bronze)
   - analog_output: 1  (AnalogOutput Chartreuse)
   - analog_value: 2  (AnalogValue Diamond)
@@ -42,8 +45,8 @@ Pre-configured with the following example BACnet device and objects:
   - octetstring_value: 47  (OctetstringValue Silver)
   - positive_integer_value: 48  (PositiveIntegerValue Turquoise)
   - time_value: 50  (TimeValue Umber)
-  - NetworkPort: 56  (NetworkPort Vermilion)
-  - dateTimeValue: 60 (DateTimeValue White)
+  - network_port: 56  (NetworkPort Vermilion)
+  - date_time_value: 60 (DateTimeValue White)
 
 The following keyboard commands can be issued in the server window:
 
@@ -61,22 +64,22 @@ The first argument is the device instance. If no arguments are defined then the 
 
 ## Build
 
-A [Visual studio 2019](https://visualstudio.microsoft.com/downloads/) project is included with this project. This project is also auto built using [Gitlab CI](https://docs.gitlab.com/ee/ci/) on every commit.
+A [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/) project is included with this project. This project is also auto-built using [Gitlab CI](https://docs.gitlab.com/ee/ci/) on every commit.
 
 The [CAS BACnet Stack submodule](https://github.com/chipkin/BACnetServerExampleCPP/issues/8) is required for compilation.
 
-For the example server to run properly, please enable all object types and features of the CAS BACNet Stack. For more details, please reference `Enabling optional functionality` and `Compiling example projects` sections of the *Quick Start Guide* (please contact Chipkin for this document).
+For the example server to run properly, please enable all object types and features of the CAS BACnet Stack. For more details, please reference the `Enabling optional functionality` and `Compiling example projects` sections of the *Quick Start Guide* (Please contact [Chipkin](https://store.chipkin.com/contact-us) for this document).
 
 ## Example Output
 
 ```txt
-CAS BACnet Stack Server Example v0.0.15.0
+CAS BACnet Stack Server Example v0.0.20.0
 https://github.com/chipkin/BACnetServerExampleCPP
 
 FYI: Default to use device instance= 389999
 FYI: Loading CAS BACnet Stack functions... OK
 
-FYI: CAS BACnet Stack version: 3.27.0.0
+FYI: CAS BACnet Stack version: 4.1.18.0
 FYI: Connecting UDP Resource to port=[47808]... OK, Connected to port
 FYI: Registering the Callback Functions with the CAS BACnet Stack
 Setting up server device. device.instance=[389999]
@@ -91,8 +94,8 @@ Added TrendLogMultiple. trendLogMultiple.instance=[27]... OK
 Added NetworkPort. networkPort.instance=[56]... OK
 FYI: Sending I-AM broadcast
 ...
-FYI: Entering main loop...
+FYI: Entering the main loop...
 ...
-FYI: Received message from [10.9.2.159:47808], length [25]
+FYI: Received a message from [10.9.2.159:47808], length [25]
 ...
 ```
