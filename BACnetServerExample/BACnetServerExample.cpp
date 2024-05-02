@@ -1381,8 +1381,8 @@ bool CallbackGetPropertyReal(uint32_t deviceInstance, uint16_t objectType, uint3
 	// Example of Analog Input / Value Object Present Value property
 	if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE) {
 		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_database.analogInput.instance) {
-			// *value = g_database.analogInput.presentValue;
-			return false;
+			*value = g_database.analogInput.presentValue;
+			return true;
 		}
 		else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_VALUE && objectInstance == g_database.analogValue.instance) {
 			*value = g_database.analogValue.presentValue;
