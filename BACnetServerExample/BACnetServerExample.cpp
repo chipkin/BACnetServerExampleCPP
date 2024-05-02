@@ -465,9 +465,9 @@ bool SetupDevice() {
 	fpSetPropertyWritable(g_exampleDatabase.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_exampleDatabase.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_COV_INCURMENT, true);
 
 	// Enable the description, units and Reliability property 
-	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_DESCRIPTION, true);
-	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_RELIABILITY, true);
-	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_UNITS, true);
+	fpSetPropertyByObjectTypeEnabled(g_exampleDatabase.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_DESCRIPTION, true);
+	fpSetPropertyByObjectTypeEnabled(g_exampleDatabase.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_RELIABILITY, true);
+	fpSetPropertyByObjectTypeEnabled(g_exampleDatabase.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_UNITS, true);
 
 	// Enable a specific property to be subscribable for COVProperty 
 	fpSetPropertySubscribable(g_exampleDatabase.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_exampleDatabase.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_RELIABILITY, true);
@@ -1120,17 +1120,17 @@ bool CallbackGetPropertyCharString(const uint32_t deviceInstance, const uint16_t
 	}
 	// Example of Device Desription
 	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_DESCRIPTION) {
-		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_DEVICE && objectInstance == g_database.device.instance) {
-			if (g_database.device.description.size() <= maxElementCount) {
-				memcpy(value, g_database.device.description.c_str(), g_database.device.description.size());
-				*valueElementCount = (uint32_t)g_database.device.description.size();
+		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_DEVICE && objectInstance == g_exampleDatabase.device.instance) {
+			if (g_exampleDatabase.device.description.size() <= maxElementCount) {
+				memcpy(value, g_exampleDatabase.device.description.c_str(), g_exampleDatabase.device.description.size());
+				*valueElementCount = (uint32_t)g_exampleDatabase.device.description.size();
 				return true;
 			}
 		}
-		else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_database.analogInput.instance) {
-			if (g_database.analogInput.description.size() <= maxElementCount) {
-				memcpy(value, g_database.analogInput.description.c_str(), g_database.analogInput.description.size());
-				*valueElementCount = (uint32_t)g_database.analogInput.description.size();
+		else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_exampleDatabase.analogInput.instance) {
+			if (g_exampleDatabase.analogInput.description.size() <= maxElementCount) {
+				memcpy(value, g_exampleDatabase.analogInput.description.c_str(), g_exampleDatabase.analogInput.description.size());
+				*valueElementCount = (uint32_t)g_exampleDatabase.analogInput.description.size();
 				return true;
 			}
 		}
@@ -1318,8 +1318,8 @@ bool CallbackGetPropertyEnum(uint32_t deviceInstance, uint16_t objectType, uint3
 		}
 	}
 	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_UNITS) {
-		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_database.analogInput.instance) {
-			*value = g_database.analogInput.units;
+		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_exampleDatabase.analogInput.instance) {
+			*value = g_exampleDatabase.analogInput.units;
 			return true;
 		}
 	}
