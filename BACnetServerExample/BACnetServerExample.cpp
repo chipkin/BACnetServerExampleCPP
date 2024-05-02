@@ -386,9 +386,10 @@ int main(int argc, char** argv)
 	fpSetPropertySubscribable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE, true);
 	fpSetPropertyWritable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_COV_INCURMENT, true);
 
-	// Enable the description, and Reliability property 
+	// Enable the description, units and Reliability property 
 	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_DESCRIPTION, true);
 	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_RELIABILITY, true);
+	fpSetPropertyByObjectTypeEnabled(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_UNITS, true);
 
 	// Enable a specific property to be subscribable for COVProperty 
 	fpSetPropertySubscribable(g_database.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_database.analogInput.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_RELIABILITY, true);
@@ -1061,10 +1062,19 @@ bool CallbackGetPropertyCharString(const uint32_t deviceInstance, const uint16_t
 	}
 	// Example of Device Desription
 	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_DESCRIPTION) {
-		if (g_database.device.description.size() <= maxElementCount) {
-			memcpy(value, g_database.device.description.c_str(), g_database.device.description.size());
-			*valueElementCount = (uint32_t)g_database.device.description.size();
-			return true;
+		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_DEVICE && objectInstance == g_database.device.instance) {
+			if (g_database.device.description.size() <= maxElementCount) {
+				memcpy(value, g_database.device.description.c_str(), g_database.device.description.size());
+				*valueElementCount = (uint32_t)g_database.device.description.size();
+				return true;
+			}
+		}
+		else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_database.analogInput.instance) {
+			if (g_database.analogInput.description.size() <= maxElementCount) {
+				memcpy(value, g_database.analogInput.description.c_str(), g_database.analogInput.description.size());
+				*valueElementCount = (uint32_t)g_database.analogInput.description.size();
+				return true;
+			}
 		}
 		return false;
 	}
@@ -1249,6 +1259,12 @@ bool CallbackGetPropertyEnum(uint32_t deviceInstance, uint16_t objectType, uint3
 			return true;
 		}
 	}
+	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_UNITS) {
+		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_database.analogInput.instance) {
+			*value = g_database.analogInput.units;
+			return true;
+		}
+	}
 	
 	// Debug for customer 
 	if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_SYSTEM_STATUS &&
@@ -1365,8 +1381,8 @@ bool CallbackGetPropertyReal(uint32_t deviceInstance, uint16_t objectType, uint3
 	// Example of Analog Input / Value Object Present Value property
 	if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRESENT_VALUE) {
 		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_database.analogInput.instance) {
-			*value = g_database.analogInput.presentValue;
-			return true;
+			// *value = g_database.analogInput.presentValue;
+			return false;
 		}
 		else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_VALUE && objectInstance == g_database.analogValue.instance) {
 			*value = g_database.analogValue.presentValue;

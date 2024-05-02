@@ -43,6 +43,7 @@ class ExampleDatabaseAnalogInput : public ExampleDatabaseBaseObject
 		float presentValue ;
 		float covIncurment; 
 		uint32_t reliability;
+		uint32_t units;
 		std::string description; // This is an optional property that has been enabled.  
 
 		// DateTime Proprietary Value
@@ -92,8 +93,8 @@ class ExampleDatabaseBinaryInput : public ExampleDatabaseBaseObject
 class ExampleDatabaseBinaryOutput : public ExampleDatabaseBaseObject 
 {
 	public:
-		bool priorityArrayNulls[ExampleDatabaseBaseObject::PRIORITY_ARRAY_LENGTH] ;
-		bool priorityArrayValues[ExampleDatabaseBaseObject::PRIORITY_ARRAY_LENGTH] ;
+		bool priorityArrayNulls[ExampleDatabaseBaseObject::PRIORITY_ARRAY_LENGTH];
+		bool priorityArrayValues[ExampleDatabaseBaseObject::PRIORITY_ARRAY_LENGTH];
 
 		ExampleDatabaseBinaryOutput() {
 			memset(this->priorityArrayValues, 0, sizeof(bool) * ExampleDatabaseBaseObject::PRIORITY_ARRAY_LENGTH);

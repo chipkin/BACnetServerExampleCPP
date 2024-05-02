@@ -88,6 +88,7 @@ void ExampleDatabase::Setup() {
 	this->analogInput.instance = 0; 
 	this->analogInput.objectName = "AnalogInput " + ExampleDatabase::GetColorName();
 	this->analogInput.description = "Incurments once a second";
+	this->analogInput.units = 5;
 	this->analogInput.presentValue = 1.001f;
 	this->analogInput.covIncurment = 2.0f; 
 	this->analogInput.reliability = 0; // no-fault-detected (0), unreliable-other (7)
