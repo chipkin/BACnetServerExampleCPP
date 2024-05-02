@@ -2,6 +2,11 @@
 
 ## Version 0.0.x
 
+### 0.0.26.x (2024-May-02)
+
+- Analog input has optional property units (value is volts [5]).
+- Analog input now outputs "Incurments once a second" instead of the default string.
+
 ### 0.0.25.x (2024-Mar-06)
 
 - Implemented functionality for writing the object identifier of a device object type.
