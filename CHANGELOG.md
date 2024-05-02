@@ -2,6 +2,33 @@
 
 ## Version 0.0.x
 
+### 0.0.25.x (2024-Mar-06)
+
+- Implemented functionality for writing the object identifier of a device object type.
+
+### 0.0.24.x (2023-Nov-06)
+
+- Refactored register callbacks and setting up device into helper functions.
+- Implemented functionality for warm start.
+- Renamed g_database to g_exampleDatabase to better express that the database in the project is unaffiliated to the CAS BACnet Stack.
+
+### 0.0.23.x (2023-Oct-12)
+
+- Fixed spelling mistake to avoid confusion
+- Tested using BACnetStack version 4.1.19.0
+
+### 0.0.22.x (2023-Oct-11)
+
+- Fixed conversion issues between unsigned int* and uint32_t* for the errorCode parameter in CallbackSetProperty functions [Issues/42](https://github.com/chipkin/BACnetServerExampleCPP/issues/42)
+- Fixed display of Foreign Device BBMD Address Host IP for sending text messages and foreign device registration
+- Tested using BACnetStack version 4.1.19.0
+
+### 0.0.21.x (2023-Sep-29)
+
+- Updated preprocessor macro to include ENABLE_DATA_LINK_LAYER_IPV4, ENABLE_STRING_LITERALS, ENABLE_DECODE_AS_JSON, ENABLE_DECODE_AS_XML, ENABLE_BACNET_API_DEBUG_LOGGING, ENABLE_ALL_OBJECT_TYPES, ENABLE_ALL_BIBBS
+- Updated Windows SDK version [Issues/35](https://github.com/chipkin/BACnetServerExampleCPP/issues/35)
+- Tested using BACnetStack version 4.1.19.0
+
 ### 0.0.20.x (2023-Sep-13)
 
 - Calculate the number of states in a Multi-State by the number of elements in the stateText vector [Issues/31](https://github.com/chipkin/BACnetServerExampleCPP/issues/31)
