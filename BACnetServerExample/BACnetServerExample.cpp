@@ -63,13 +63,13 @@ time_t g_warmStartTimer; // Timer used for delaying the warm start.
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.26";  // See CHANGELOG.md for a full list of changes.
+const std::string APPLICATION_VERSION = "0.0.27";  // See CHANGELOG.md for a full list of changes.
 const uint32_t MAX_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
 // Callback Functions to Register to the DLL
 // Message Functions
-uint16_t CallbackReceiveMessage(uint8_t* message, const uint16_t maxMessageLength, uint8_t* receivedConnectionString, const uint8_t maxConnectionStringLength, uint8_t* receivedConnectionStringLength, uint8_t* networkType);
+uint16_t CallbackReceiveMessage(uint8_t* message, const uint16_t maxMessageLength, uint8_t* sourceConnectionString, uint8_t* sourceConnectionStringLength, uint8_t* destinationConnectionString, uint8_t* destinationConnectionStringLength, const uint8_t maxConnectionStringLength, uint8_t* networkType);
 uint16_t CallbackSendMessage(const uint8_t* message, const uint16_t messageLength, const uint8_t* connectionString, const uint8_t connectionStringLength, const uint8_t networkType, bool broadcast);
 
 // System Functions
@@ -201,7 +201,7 @@ int main(int argc, char** argv)
 		}
 
 		// Call the DLLs loop function which checks for messages and processes them.
-		fpLoop();
+		fpTick();
 
 		// Handle any user input.
 		// Note: User input in this example is used for the following:
@@ -879,14 +879,14 @@ bool DoUserInput()
 }
 
 // Callback used by the BACnet Stack to check if there is a message to process
-uint16_t CallbackReceiveMessage(uint8_t* message, const uint16_t maxMessageLength, uint8_t* receivedConnectionString, const uint8_t maxConnectionStringLength, uint8_t* receivedConnectionStringLength, uint8_t* networkType)
+uint16_t CallbackReceiveMessage(uint8_t* message, const uint16_t maxMessageLength, uint8_t* sourceConnectionString, uint8_t* sourceConnectionStringLength, uint8_t* destinationConnectionString, uint8_t* destinationConnectionStringLength, const uint8_t maxConnectionStringLength, uint8_t* networkType)
 {
 	// Check parameters
 	if (message == NULL || maxMessageLength == 0) {
 		std::cerr << "Invalid input buffer" << std::endl;
 		return 0;
 	}
-	if (receivedConnectionString == NULL || maxConnectionStringLength == 0) {
+	if (sourceConnectionString == NULL || maxConnectionStringLength == 0) {
 		std::cerr << "Invalid connection string buffer" << std::endl;
 		return 0;
 	}
@@ -905,14 +905,14 @@ uint16_t CallbackReceiveMessage(uint8_t* message, const uint16_t maxMessageLengt
 		std::cout << std::endl <<  "FYI: Received message from [" << ipAddress << ":" << port << "], length [" << bytesRead << "]" << std::endl;
 
 		// Convert the IP Address to the connection string
-		if (!ChipkinCommon::ChipkinConvert::IPAddressToBytes(ipAddress, receivedConnectionString, maxConnectionStringLength)) {
+		if (!ChipkinCommon::ChipkinConvert::IPAddressToBytes(ipAddress, sourceConnectionString, maxConnectionStringLength)) {
 			std::cerr << "Failed to convert the ip address into a connectionString" << std::endl;
 			return 0;
 		}
-		receivedConnectionString[4] = port / 256;
-		receivedConnectionString[5] = port % 256;
+		sourceConnectionString[4] = port / 256;
+		sourceConnectionString[5] = port % 256;
 
-		*receivedConnectionStringLength = 6;
+		*sourceConnectionStringLength = 6;
 		*networkType = CASBACnetStackExampleConstants::NETWORK_TYPE_IP;
 
 		/*

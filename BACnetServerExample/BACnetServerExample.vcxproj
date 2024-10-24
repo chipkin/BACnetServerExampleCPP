@@ -575,12 +575,12 @@ ENABLE_ALL_OBJECT_TYPES
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\BACnetWriteStatus.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\CASBACnetStackDLL.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\CErrorContainer.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\ChipkinConvert.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\ChipkinEndianness.cpp" />
+    <ClCompile Include="..\submodules\cas-bacnet-stack\source\ChipkinUtilities.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\IRenderable.cpp" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\MSTP.c" />
     <ClCompile Include="..\submodules\cas-bacnet-stack\source\XMLRenderer.cpp" />
-    <ClCompile Include="..\submodules\cas-bacnet-stack\submodules\cas-common\source\ChipkinConvert.cpp" />
-    <ClCompile Include="..\submodules\cas-bacnet-stack\submodules\cas-common\source\ChipkinEndianness.cpp" />
-    <ClCompile Include="..\submodules\cas-bacnet-stack\submodules\cas-common\source\ChipkinUtilities.cpp" />
     <ClCompile Include="BACnetServerExample.cpp" />
     <ClCompile Include="CASBACnetStackExampleDatabase.cpp" />
     <ClCompile Include="SimpleUDP.cpp" />
@@ -798,6 +798,7 @@ ENABLE_ALL_OBJECT_TYPES
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetObjectPropertyReference.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetObjectSpecifier.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetObjectType.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetObjectTypesSupported.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetOptionalUnsigned.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetOriginalBroadcastNPDU.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\BACnetOriginalUnicastNPDU.h" />
@@ -979,20 +980,17 @@ ENABLE_ALL_OBJECT_TYPES
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\CASBACnetStackDLL.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\CASBACnetStackOptions.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\CErrorContainer.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\ChipkinConvert.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\ChipkinEndianness.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\ChipkinRenderer.h" />
-    <ClInclude Include="..\submodules\cas-bacnet-stack\source\CIBuildSettings.h" />
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\ChipkinUtilities.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\datatypes.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\endianness.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\ICodable.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\IRenderable.h" />
-    <ClInclude Include="..\submodules\cas-bacnet-stack\source\licensee.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\MSTP.h" />
-    <ClInclude Include="..\submodules\cas-bacnet-stack\source\stdafx.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\version.h" />
     <ClInclude Include="..\submodules\cas-bacnet-stack\source\XMLRenderer.h" />
-    <ClInclude Include="..\submodules\cas-bacnet-stack\submodules\cas-common\source\ChipkinConvert.h" />
-    <ClInclude Include="..\submodules\cas-bacnet-stack\submodules\cas-common\source\ChipkinEndianness.h" />
-    <ClInclude Include="..\submodules\cas-bacnet-stack\submodules\cas-common\source\ChipkinUtilities.h" />
     <ClInclude Include="CASBACnetStackExampleConstants.h" />
     <ClInclude Include="CASBACnetStackExampleDatabase.h" />
     <ClInclude Include="CIBuildSettings.h" />
@@ -1001,7 +999,6 @@ ENABLE_ALL_OBJECT_TYPES
   <ItemGroup>
     <None Include="..\CHANGELOG.md" />
     <None Include="..\README.md" />
-    <None Include="..\submodules\cas-bacnet-stack\source\readme.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

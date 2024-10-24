@@ -7,7 +7,7 @@ This example implements many of the available features of the CAS BACnet Stack. 
 
 ## Supported CAS BACnet Stack Version
 
-This example project uses version 4.1.18 of the [CAS BACnet Stack](https://store.chipkin.com/services/stacks/bacnet-stack)
+This example project uses version 5.1.0 of the [CAS BACnet Stack](https://store.chipkin.com/services/stacks/bacnet-stack)
 
 ## Releases / Downloads
 

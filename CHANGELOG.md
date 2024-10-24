@@ -2,6 +2,10 @@
 
 ## Version 0.0.x
 
+### 0.0.27.x (2024-Oct-24)
+
+- Updated example to use with BACnetStack version 5.1.2.0
+
 ### 0.0.26.x (2024-May-02)
 
 - Analog input has optional property units (value is volts [5]).
