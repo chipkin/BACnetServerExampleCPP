@@ -1,11 +1,13 @@
 # Change Log
 
-## Version 0.0.x
+## Version 1.0.x
 
-### 0.0.27.x (2024-Oct-25)
+### 1.0.0.x (2024-Oct-25)
 
 - Updated example to use with BACnetStack version 5.1.2.0
 - Added an example of Out Of Service
+
+## Version 0.0.x
 
 ### 0.0.26.x (2024-May-02)
 
