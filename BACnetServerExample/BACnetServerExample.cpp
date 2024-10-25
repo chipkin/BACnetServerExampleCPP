@@ -63,13 +63,13 @@ time_t g_warmStartTimer; // Timer used for delaying the warm start.
 
 // Constants
 // =======================================
-const std::string APPLICATION_VERSION = "0.0.26";  // See CHANGELOG.md for a full list of changes.
+const std::string APPLICATION_VERSION = "1.0.0";  // See CHANGELOG.md for a full list of changes.
 const uint32_t MAX_RENDER_BUFFER_LENGTH = 1024 * 20;
 
 
 // Callback Functions to Register to the DLL
 // Message Functions
-uint16_t CallbackReceiveMessage(uint8_t* message, const uint16_t maxMessageLength, uint8_t* receivedConnectionString, const uint8_t maxConnectionStringLength, uint8_t* receivedConnectionStringLength, uint8_t* networkType);
+uint16_t CallbackReceiveMessage(uint8_t* message, const uint16_t maxMessageLength, uint8_t* sourceConnectionString, uint8_t* sourceConnectionStringLength, uint8_t* destinationConnectionString, uint8_t* destinationConnectionStringLength, const uint8_t maxConnectionStringLength, uint8_t* networkType);
 uint16_t CallbackSendMessage(const uint8_t* message, const uint16_t messageLength, const uint8_t* connectionString, const uint8_t connectionStringLength, const uint8_t networkType, bool broadcast);
 
 // System Functions
@@ -201,7 +201,7 @@ int main(int argc, char** argv)
 		}
 
 		// Call the DLLs loop function which checks for messages and processes them.
-		fpLoop();
+		fpTick();
 
 		// Handle any user input.
 		// Note: User input in this example is used for the following:
@@ -655,6 +655,18 @@ bool SetupDevice() {
 	}
 	std::cout << "OK" << std::endl;
 
+	// AnalogInput - OutOfService Example (AI) 
+	std::cout << "Added AnalogInput OutOfService Example. analogInputOutOfService.instance=[" << g_exampleDatabase.analogInputOutOfService.instance << "]... ";
+	if (!fpAddObject(g_exampleDatabase.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_exampleDatabase.analogInputOutOfService.instance)) {
+		std::cerr << "Failed to add AnalogInput OutOfService Example" << std::endl;
+		return -1;
+	}
+
+	// Make out of service writable
+	fpSetPropertyWritable(g_exampleDatabase.device.instance, CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT, g_exampleDatabase.analogInputOutOfService.instance, CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_OUT_OF_SERVICE, true);
+
+	std::cout << "OK" << std::endl;
+
 	// Add the Network Port Object
 	std::cout << "Added NetworkPort. networkPort.instance=[" << g_exampleDatabase.networkPort.instance << "]... ";
 	if (!fpAddNetworkPortObject(g_exampleDatabase.device.instance, g_exampleDatabase.networkPort.instance, CASBACnetStackExampleConstants::NETWORK_TYPE_IPV4, CASBACnetStackExampleConstants::PROTOCOL_LEVEL_BACNET_APPLICATION, CASBACnetStackExampleConstants::NETWORK_PORT_LOWEST_PROTOCOL_LAYER)) {
@@ -879,14 +891,14 @@ bool DoUserInput()
 }
 
 // Callback used by the BACnet Stack to check if there is a message to process
-uint16_t CallbackReceiveMessage(uint8_t* message, const uint16_t maxMessageLength, uint8_t* receivedConnectionString, const uint8_t maxConnectionStringLength, uint8_t* receivedConnectionStringLength, uint8_t* networkType)
+uint16_t CallbackReceiveMessage(uint8_t* message, const uint16_t maxMessageLength, uint8_t* sourceConnectionString, uint8_t* sourceConnectionStringLength, uint8_t* destinationConnectionString, uint8_t* destinationConnectionStringLength, const uint8_t maxConnectionStringLength, uint8_t* networkType)
 {
 	// Check parameters
 	if (message == NULL || maxMessageLength == 0) {
 		std::cerr << "Invalid input buffer" << std::endl;
 		return 0;
 	}
-	if (receivedConnectionString == NULL || maxConnectionStringLength == 0) {
+	if (sourceConnectionString == NULL || maxConnectionStringLength == 0) {
 		std::cerr << "Invalid connection string buffer" << std::endl;
 		return 0;
 	}
@@ -905,14 +917,14 @@ uint16_t CallbackReceiveMessage(uint8_t* message, const uint16_t maxMessageLengt
 		std::cout << std::endl <<  "FYI: Received message from [" << ipAddress << ":" << port << "], length [" << bytesRead << "]" << std::endl;
 
 		// Convert the IP Address to the connection string
-		if (!ChipkinCommon::ChipkinConvert::IPAddressToBytes(ipAddress, receivedConnectionString, maxConnectionStringLength)) {
+		if (!ChipkinCommon::ChipkinConvert::IPAddressToBytes(ipAddress, sourceConnectionString, maxConnectionStringLength)) {
 			std::cerr << "Failed to convert the ip address into a connectionString" << std::endl;
 			return 0;
 		}
-		receivedConnectionString[4] = port / 256;
-		receivedConnectionString[5] = port % 256;
+		sourceConnectionString[4] = port / 256;
+		sourceConnectionString[5] = port % 256;
 
-		*receivedConnectionStringLength = 6;
+		*sourceConnectionStringLength = 6;
 		*networkType = CASBACnetStackExampleConstants::NETWORK_TYPE_IP;
 
 		/*
@@ -1108,6 +1120,13 @@ bool CallbackGetPropertyBool(uint32_t deviceInstance, uint16_t objectType, uint3
 			return true;
 		}
 	}
+	// AnalogInput - OutOfService Example
+	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_OUT_OF_SERVICE) {
+		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_exampleDatabase.analogInputOutOfService.instance) {
+			*value = g_exampleDatabase.analogInputOutOfService.outOfService;
+			return true;
+		}
+	}
 	return false;
 }
 
@@ -1131,6 +1150,13 @@ bool CallbackGetPropertyCharString(const uint32_t deviceInstance, const uint16_t
 			if (g_exampleDatabase.analogInput.description.size() <= maxElementCount) {
 				memcpy(value, g_exampleDatabase.analogInput.description.c_str(), g_exampleDatabase.analogInput.description.size());
 				*valueElementCount = (uint32_t)g_exampleDatabase.analogInput.description.size();
+				return true;
+			}
+		}
+		else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_exampleDatabase.analogInputOutOfService.instance) {
+			if (g_exampleDatabase.analogInputOutOfService.description.size() <= maxElementCount) {
+				memcpy(value, g_exampleDatabase.analogInputOutOfService.description.c_str(), g_exampleDatabase.analogInputOutOfService.description.size());
+				*valueElementCount = (uint32_t)g_exampleDatabase.analogInputOutOfService.description.size();
 				return true;
 			}
 		}
@@ -1309,6 +1335,16 @@ bool CallbackGetPropertyEnum(uint32_t deviceInstance, uint16_t objectType, uint3
 			*value = g_exampleDatabase.analogInput.reliability; 
 			return true;
 		}
+		// Analog Input - OutOfService Example
+		else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_exampleDatabase.analogInputOutOfService.instance) {
+			if (g_exampleDatabase.analogInputOutOfService.outOfService) {
+				*value = g_exampleDatabase.analogInputOutOfService.tempReliability;
+			}
+			else {
+				*value = g_exampleDatabase.analogInputOutOfService.reliability;
+			}
+			return true;
+		}
 	}
 	// Network Port Object - FdBbmdAddress Host Type
 	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_FD_BBMD_ADDRESS) {
@@ -1320,6 +1356,11 @@ bool CallbackGetPropertyEnum(uint32_t deviceInstance, uint16_t objectType, uint3
 	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_UNITS) {
 		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_exampleDatabase.analogInput.instance) {
 			*value = g_exampleDatabase.analogInput.units;
+			return true;
+		}
+		// Analog Input - OutOfService Example
+		else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_exampleDatabase.analogInputOutOfService.instance) {
+			*value = g_exampleDatabase.analogInputOutOfService.units;
 			return true;
 		}
 	}
@@ -1451,6 +1492,16 @@ bool CallbackGetPropertyReal(uint32_t deviceInstance, uint16_t objectType, uint3
 			*value = g_exampleDatabase.CreatedAnalogValueData[objectInstance].value;
 			return true;
 		}
+		// Check if this is for the analog input out of service example
+		else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_exampleDatabase.analogInputOutOfService.instance) {
+			if (g_exampleDatabase.analogInputOutOfService.outOfService) {
+				*value = g_exampleDatabase.analogInputOutOfService.tempPresentValue;
+			}
+			else {
+				*value = g_exampleDatabase.analogInputOutOfService.presentValue;
+			}
+			return true;
+		}
 	}
 	// Example of Analog Output Priority Array property
 	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_PRIORITY_ARRAY) {
@@ -1470,7 +1521,7 @@ bool CallbackGetPropertyReal(uint32_t deviceInstance, uint16_t objectType, uint3
 		}
 	}
 	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_COV_INCURMENT && objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_exampleDatabase.analogInput.instance) {
-		*value = g_exampleDatabase.analogInput.covIncurment;
+		*value = g_exampleDatabase.analogInput.covIncrement;
 		return true;
 	}
 	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_MAX_PRES_VALUE && objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_VALUE && objectInstance == g_exampleDatabase.analogValue.instance) {
@@ -1693,6 +1744,16 @@ bool CallbackSetPropertyBitString(const uint32_t deviceInstance, const uint16_t 
 // Callback used by the BACnet Stack to set Boolean property values to the user
 bool CallbackSetPropertyBool(const uint32_t deviceInstance, const uint16_t objectType, const uint32_t objectInstance, const uint32_t propertyIdentifier, const bool value, const bool useArrayIndex, const uint32_t propertyArrayIndex, const uint8_t priority, uint32_t* errorCode)
 {
+	if (deviceInstance == g_exampleDatabase.device.instance) {
+		// AnalogInput - OutOfService Example
+		if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_OUT_OF_SERVICE) {
+			if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_exampleDatabase.analogInputOutOfService.instance) {
+				g_exampleDatabase.analogInputOutOfService.outOfService = value;
+				return true;
+			}
+		}
+	}
+
 	return false;
 }
 
@@ -1783,6 +1844,15 @@ bool CallbackSetPropertyEnum(const uint32_t deviceInstance, const uint16_t objec
 				g_exampleDatabase.binaryOutput.priorityArrayValues[priority - 1] = value;
 				g_exampleDatabase.binaryOutput.priorityArrayNulls[priority - 1] = false;
 				return true;
+			}
+		}
+		else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_RELIABILITY) {
+			// Example of setting reliability to an object that is OutOfService
+			if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_exampleDatabase.analogInputOutOfService.instance) {
+				if (g_exampleDatabase.analogInputOutOfService.outOfService) {
+					g_exampleDatabase.analogInputOutOfService.tempReliability = value;
+					return true;
+				}
 			}
 		}
 	}
@@ -1936,10 +2006,17 @@ bool CallbackSetPropertyReal(const uint32_t deviceInstance, const uint16_t objec
 			g_exampleDatabase.CreatedAnalogValueData[objectInstance].value = value;
 			return true;
 		}
+		// Example of setting presentValue to an object that is OutOfService
+		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_exampleDatabase.analogInputOutOfService.instance) {
+			if (g_exampleDatabase.analogInputOutOfService.outOfService) {
+				g_exampleDatabase.analogInputOutOfService.tempPresentValue = value;
+				return true;
+			}
+		}
 	}
 	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_COV_INCURMENT) {
 		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_exampleDatabase.analogInput.instance) {
-			g_exampleDatabase.analogInput.covIncurment = value;
+			g_exampleDatabase.analogInput.covIncrement = value;
 			return true;
 		}
 	}
@@ -2248,6 +2325,16 @@ bool GetObjectName(const uint32_t deviceInstance, const uint16_t objectType, con
 		*valueElementCount = (uint32_t) stringSize;
 		return true;
 	}
+	else if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_exampleDatabase.analogInputOutOfService.instance) {
+		stringSize = g_exampleDatabase.analogInputOutOfService.objectName.size();
+		if (stringSize > maxElementCount) {
+			std::cerr << "Error - not enough space to store full name of objectType=[" << objectType << "], objectInstance=[" << objectInstance << " ]" << std::endl;
+			return false;
+		}
+		memcpy(value, g_exampleDatabase.analogInputOutOfService.objectName.c_str(), stringSize);
+		*valueElementCount = (uint32_t)stringSize;
+		return true;
+		}
 	else {
 		// Check if the value is an Analog Value and check if it was a created object
 		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_VALUE && g_exampleDatabase.CreatedAnalogValueData.count(objectInstance) > 0) {
@@ -2411,4 +2498,5 @@ bool HookTextMessage(const uint32_t sourceDeviceIdentifier, const bool useMessag
 	*errorCode = notConfiguredErrorCode;
 	return false;
 }
+
 
