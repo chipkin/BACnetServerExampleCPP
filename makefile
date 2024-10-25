@@ -8,16 +8,15 @@ NAME := BACnetServerExampleCPP_linux_x64_Release
 #
 CFLAGS := -m64 -Wall -std=c++11
 
-DEBUGFLAGS = -O0 -g3 -DCAS_BACNET_STACK_LIB_TYPE_LIB
-RELEASEFLAGS = -O3 -DCAS_BACNET_STACK_LIB_TYPE_LIB
+DEBUGFLAGS = -O0 -g3
+RELEASEFLAGS = -O3
 OBJECTFLAGS = -c -fmessage-length=0 -fPIC -MMD -MP
 LDFLAGS = -static
 
-SOURCES = $(wildcard BACnetServerExample/*.cpp) $(wildcard submodules/cas-bacnet-stack/adapters/cpp/*.cpp)  $(wildcard submodules/cas-bacnet-stack/submodules/cas-common/source/*.cpp) 
+SOURCES = $(wildcard BACnetServerExample/*.cpp) $(wildcard submodules/cas-bacnet-stack/adapters/cpp/*.cpp)  $(wildcard submodules/cas-bacnet-stack/source/*.cpp) 
 OBJECTS = $(addprefix obj/,$(notdir $(SOURCES:.cpp=.o)))
-INCLUDES = -IBACnetServerExample -Isubmodules/cas-bacnet-stack/adapters/cpp -Isubmodules/cas-bacnet-stack/source -Isubmodules/cas-bacnet-stack/submodules/cas-common/source -Isubmodules/cas-bacnet-stack/submodules/xml2json/include
-LIBPATH = -Lbin 
-LIB = -ldl -lCASBACnetStack_x64_Release 
+INCLUDES = -IBACnetServerExample -Isubmodules/cas-bacnet-stack/adapters/cpp -Isubmodules/cas-bacnet-stack/source -Isubmodules/cas-bacnet-stack/submodules/xml2json/include
+LIB = -ldl
 
 # Build Target
 TARGET = $(NAME)
@@ -46,7 +45,7 @@ obj/%.o: submodules/cas-bacnet-stack/adapters/cpp/%.cpp
 	@echo 'Finished building: $<'
 	@echo ' '
 
-obj/%.o: submodules/cas-bacnet-stack/submodules/cas-common/source/%.cpp
+obj/%.o: submodules/cas-bacnet-stack/source/%.cpp
 	@mkdir -p obj
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'

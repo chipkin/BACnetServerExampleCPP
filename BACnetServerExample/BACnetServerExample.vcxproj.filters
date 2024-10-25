@@ -2498,6 +2498,9 @@
     <ClInclude Include="..\submodules\cas-bacnet-stack\adapters\cpp\CASBACnetStackAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\submodules\cas-bacnet-stack\source\CIBuildSettings.h">
+      <Filter>CASBACnetStack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\CHANGELOG.md" />

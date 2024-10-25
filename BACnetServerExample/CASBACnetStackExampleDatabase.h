@@ -41,7 +41,7 @@ class ExampleDatabaseAnalogInput : public ExampleDatabaseBaseObject
 {
 	public:
 		float presentValue ;
-		float covIncurment; 
+		float covIncrement;
 		uint32_t reliability;
 		uint32_t units;
 		std::string description; // This is an optional property that has been enabled.  
@@ -61,6 +61,18 @@ class ExampleDatabaseAnalogInput : public ExampleDatabaseBaseObject
 
 		// Proprietary Array of Reals
 		std::vector<float> proprietaryArrayOfReal;
+};
+
+class ExampleDatabaseAnalogInputOutOfService : public ExampleDatabaseBaseObject
+{
+	public:
+		float presentValue;
+		float tempPresentValue;
+		uint32_t reliability;
+		uint32_t tempReliability;
+		uint32_t units;
+		bool outOfService;
+		std::string description; // This is an optional property that has been enabled.
 };
 
 class ExampleDatabaseAnalogOutput : public ExampleDatabaseBaseObject 
@@ -291,6 +303,7 @@ class ExampleDatabase {
 
 	public:
 		ExampleDatabaseAnalogInput analogInput;
+		ExampleDatabaseAnalogInputOutOfService analogInputOutOfService;
 		ExampleDatabaseAnalogOutput analogOutput;
 		ExampleDatabaseAnalogValue analogValue;
 		ExampleDatabaseBinaryInput binaryInput;

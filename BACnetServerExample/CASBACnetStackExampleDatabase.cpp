@@ -87,10 +87,10 @@ void ExampleDatabase::Setup() {
 	// Set the object name properites. 
 	this->analogInput.instance = 0; 
 	this->analogInput.objectName = "AnalogInput " + ExampleDatabase::GetColorName();
-	this->analogInput.description = "Incurments once a second";
+	this->analogInput.description = "Increments once a second";
 	this->analogInput.units = 5;
 	this->analogInput.presentValue = 1.001f;
-	this->analogInput.covIncurment = 2.0f; 
+	this->analogInput.covIncrement = 2.0f; 
 	this->analogInput.reliability = 0; // no-fault-detected (0), unreliable-other (7)
 	this->analogInput.proprietaryYear = 122;
 	this->analogInput.proprietaryMonth = 3;
@@ -190,6 +190,15 @@ void ExampleDatabase::Setup() {
 	this->dateTimeValue.presentValueMinute = 53;
 	this->dateTimeValue.presentValueSecond = 47;
 	this->dateTimeValue.presentValueHundredthSeconds = 55;	
+	this->analogInputOutOfService.instance = 100;
+	this->analogInputOutOfService.objectName = "AnalogInput OutOfService " + ExampleDatabase::GetColorName();
+	this->analogInputOutOfService.description = "Example of using out of service functionality";
+	this->analogInputOutOfService.units = 64;	// degrees-fahrenheit
+	this->analogInputOutOfService.presentValue = 55.0f;
+	this->analogInputOutOfService.tempPresentValue = 55.0f;
+	this->analogInputOutOfService.reliability = 0;
+	this->analogInputOutOfService.tempReliability = 0;
+	this->analogInputOutOfService.outOfService = false;
 	this->LoadNetworkPortProperties() ; 
 }
 
