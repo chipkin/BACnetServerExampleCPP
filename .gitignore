@@ -46,3 +46,9 @@ BACnetServerExample/Release/
 BACnetServerExample/x64/
 
 bin/
+
+*.lastbuildstate
+*.tlog
+*.log
+*.recipe
+*.idb

@@ -80,10 +80,12 @@ class ExampleDatabaseAnalogOutput : public ExampleDatabaseBaseObject
 	public:
 		bool priorityArrayNulls[ExampleDatabaseBaseObject::PRIORITY_ARRAY_LENGTH] ;
 		float priorityArrayValues[ExampleDatabaseBaseObject::PRIORITY_ARRAY_LENGTH] ;
+		float reqlinquishDefault = 0;
 
 		ExampleDatabaseAnalogOutput() {
 			memset(this->priorityArrayValues, 0, sizeof(float) * ExampleDatabaseBaseObject::PRIORITY_ARRAY_LENGTH);
 			memset(this->priorityArrayNulls, true, sizeof(bool) * ExampleDatabaseBaseObject::PRIORITY_ARRAY_LENGTH);
+			this->reqlinquishDefault = 0;
 		}
 };
 
@@ -272,6 +274,7 @@ class ExampleDatabaseNetworkPort : public ExampleDatabaseBaseObject
 		bool ChangesPending;
 		uint8_t FdBbmdAddressHostType;	// 0 = None, 1 = IpAddress, 2 = Name
 		uint8_t FdBbmdAddressHostIp[4];
+		std::string FdBbmdAddressHostName;
 		uint16_t FdBbmdAddressPort;
 		uint16_t FdSubscriptionLifetime;
 };
