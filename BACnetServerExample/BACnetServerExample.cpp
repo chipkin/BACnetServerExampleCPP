@@ -1232,6 +1232,17 @@ bool CallbackGetPropertyCharString(const uint32_t deviceInstance, const uint16_t
 			return true;
 		}
 	}
+	// Network Port Object FdBbmdAddress Host (as Name)
+	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_FD_BBMD_ADDRESS) {
+		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT && objectInstance == g_exampleDatabase.networkPort.instance) {
+			if (useArrayIndex && propertyArrayIndex == CASBACnetStackExampleConstants::FD_BBMD_ADDRESS_HOST) {
+				*valueElementCount = snprintf(value, maxElementCount, g_exampleDatabase.networkPort.FdBbmdAddressHostName.c_str());
+				return true;
+			}
+		}
+	}
+
+
 	return false;
 }
 
@@ -1443,7 +1454,7 @@ bool CallbackGetPropertyOctetString(const uint32_t deviceInstance, const uint16_
 	// Network Port Object FdBbmdAddress Host (as IP Address)
 	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_FD_BBMD_ADDRESS) {
 		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT && objectInstance == g_exampleDatabase.networkPort.instance) {
-			if (useArrayIndex && propertyArrayIndex == CASBACnetStackExampleConstants::HOST_TYPE_IPADDRESS) {
+			if (useArrayIndex && propertyArrayIndex == CASBACnetStackExampleConstants::FD_BBMD_ADDRESS_HOST) {
 				memcpy(value, g_exampleDatabase.networkPort.FdBbmdAddressHostIp, 4);
 				*valueElementCount = 4;
 				return true;
@@ -1530,6 +1541,10 @@ bool CallbackGetPropertyReal(uint32_t deviceInstance, uint16_t objectType, uint3
 	}
 	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_MIN_PRES_VALUE && objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_VALUE && objectInstance == g_exampleDatabase.analogValue.instance) {
 		*value = g_exampleDatabase.analogValue.minPresValue;
+		return true;
+	}
+	else if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_RELINQUISH_DEFAULT && objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_OUTPUT && objectInstance == g_exampleDatabase.analogOutput.instance) {
+		*value = g_exampleDatabase.analogOutput.reqlinquishDefault;
 		return true;
 	}
 	else if (propertyIdentifier == 512 + 5 && objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_ANALOG_INPUT && objectInstance == g_exampleDatabase.analogInput.instance) {
@@ -1793,6 +1808,17 @@ bool CallbackSetPropertyCharString(const uint32_t deviceInstance, const uint16_t
 		}
 	}
 
+	// Example of setting FdBbmdAddress Host Name
+	if (propertyIdentifier == CASBACnetStackExampleConstants::PROPERTY_IDENTIFIER_FD_BBMD_ADDRESS) {
+		if (objectType == CASBACnetStackExampleConstants::OBJECT_TYPE_NETWORK_PORT && objectInstance == g_exampleDatabase.networkPort.instance) {
+			if (useArrayIndex && propertyArrayIndex == CASBACnetStackExampleConstants::FD_BBMD_ADDRESS_HOST) {
+				g_exampleDatabase.networkPort.FdBbmdAddressHostName = std::string(value, length);
+				g_exampleDatabase.networkPort.FdBbmdAddressHostType = 2; // name
+				return true;
+			}
+		}
+	}
+
 	return false;
 }
 
@@ -1925,6 +1951,7 @@ bool CallbackSetPropertyOctetString(const uint32_t deviceInstance, const uint16_
 					else {
 						// Store new value and set changes pending to true
 						memcpy(g_exampleDatabase.networkPort.FdBbmdAddressHostIp, value, length);
+						g_exampleDatabase.networkPort.FdBbmdAddressHostType = 1; // ipAddress
 						g_exampleDatabase.networkPort.ChangesPending = true;
 						return true;
 					}

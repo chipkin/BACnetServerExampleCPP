@@ -2,6 +2,10 @@
 
 ## Version 1.0.x
 
+### 1.0.1.x (2025-Dec-19)
+
+- Updated example to support FD_BBMD_ADDRESS with a Hostname instead of just an IP Address
+
 ### 1.0.0.x (2024-Oct-25)
 
 - Updated example to use with BACnetStack version 5.1.2.0
